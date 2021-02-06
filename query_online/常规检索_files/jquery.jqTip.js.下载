@@ -1,0 +1,95 @@
+/**
+ * 基于jquery的悬浮提示插件
+ *
+ * @author zhengchj
+ * @mail zhengchj@neusoft.com
+ *
+ *  example:$(selector).jqTip({
+ *      title:"",            标题
+ *      content:"",          内容
+ *      width:"",            内容区域宽度
+ *      height:""            内容区域高度
+ *  })
+ *
+ *
+ *  update log
+ *
+ *
+ *  v1.0.0         基本功能完成
+ * 
+ * 	v1.1.0         新增setTipContent，setTipTitle方法
+ *
+ */
+(function($){
+
+    var settings={
+        title:"title",               //标题
+        content:"content"          //内容
+    }
+
+	/**
+     *动态修改悬浮提示窗口内容
+     *
+     * @param content    配置内容
+     * @author zhengchj
+     * @mail zhengchj@neusoft.com
+     */
+	$.fn.setTipContent=function(content){
+		var target=$(this);
+		var tipDialog=target.data("tipDialog");
+		if(!tipDialog)
+			return;
+		tipDialog.find(".jq-tip-content").html(content);
+	}
+
+	/**
+     *动态修改悬浮提示窗口标题
+     *
+     * @param title    配置标题
+     * @author zhengchj
+     * @mail zhengchj@neusoft.com
+     */
+	$.fn.setTipTitle=function(title){
+		var target=$(this);
+		var tipDialog=target.data("tipDialog");
+		if(!tipDialog)
+			return;
+		tipDialog.find("h1").html(title);
+	}
+
+
+
+
+    /**
+     *扩展jquery原型
+     *
+     * @param options    配置参数
+     * @author zhengchj
+     * @mail zhengchj@neusoft.com
+     */
+    $.fn.jqTip=function(options){
+        var target=$(this);
+        options= $.extend(true,settings,options||settings);
+        var tipDialog=$("<div></div>").addClass("jq-tip-dialog");
+        var title=$("<h1>"+options.title+"</h1>");
+        var content=$("<div></div>").html(options.content).addClass("jq-tip-content");
+        var contentArea=$("<div></div>").width(options.width).height(options.height).append(content);
+        var wrapper=$("<div></div>").addClass("wrapper").append(contentArea);		
+        tipDialog.append(title).append(wrapper);
+        $("body").append(tipDialog);
+		target.data("tipDialog",tipDialog);//缓存悬浮提示窗口，以便setTipContent方法中获取
+        target.bind({
+            mousemove:function(e){
+                tipDialog.css({
+                    left: e.pageX+5,
+                    top: e.pageY+10,
+                    display:"block"
+                })
+            },
+            mouseleave:function(){
+                tipDialog.css("display","none");
+            }
+        })
+    }
+    
+})(jQuery);

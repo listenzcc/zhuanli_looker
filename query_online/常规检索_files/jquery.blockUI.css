@@ -1,0 +1,14 @@
+.blockUI{
+	font-size: 14px;
+}
+span.blockUI-span{
+	display:inline-block !important;
+    *display:inline !important;
+    *zoom:1 !important;
+    padding-left:28px !important;
+    background-image:url("images/loading.gif") !important;
+    background-repeat:no-repeat !important;
+    background-position:0 2px !important;
+    line-height:28px !important;
+    height:28px !important;
+}

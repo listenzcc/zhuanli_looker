@@ -1,0 +1,31 @@
+.jq-tip-dialog{
+    position: absolute;
+    background-color: #F7F7F7;
+    display: none;
+    border: 1px solid #CCCCCC;
+    z-index: 999;
+    
+}
+.jq-tip-dialog h1{
+    padding:10px 0px 10px 10px;
+	font-size:14px;
+	color:#7F9DB9;
+	font-weight:bold;
+    border-bottom: 1px solid #CCCCCC;
+}
+.jq-tip-dialog .wrapper>div{
+    background-color: #F7F7F7;
+}
+.jq-tip-dialog .wrapper>div .jq-tip-content{
+    padding:15px;
+    font-size:12px;
+	line-height:20px;
+	word-break:break-all;
+	word-wrap:break-word;
+}
+.jq-tip-dialog .wrapper>div .jq-tip-content li {
+	list-style-type:none;
+}
+.jq-tip-dialog .wrapper>div .jq-tip-content span {
+	color:#AA0000;
+}

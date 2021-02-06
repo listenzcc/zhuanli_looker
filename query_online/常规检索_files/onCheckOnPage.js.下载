@@ -1,0 +1,24 @@
+var allFlag = 0;
+function onCheckOnPage(){
+	if(allFlag == 0){
+		addToDb();
+	}
+}
+
+function addToDb(){
+	allFlag = 1;
+	$.ajax({
+		type : "POST",
+		dataType : 'json',
+		async : false,
+		url : contextPath+"/patentsearch/pageIsUesdMDkyMQ-pageUsed.shtml", 
+		success : function(data) {
+		},
+		error : function() {
+		}
+	});
+}
+
+function onCheckOnPageByMouseOver(){
+	
+}

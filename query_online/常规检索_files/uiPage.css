@@ -1,0 +1,51 @@
+.uipage, .uipage div{
+  float: left;
+  height: 32px;
+  line-height: 32px;
+  font-size:14px;
+  position:relative;
+}
+.uipage .page_bottom{
+	position: relative;
+}
+.uipage .page_bottom a{
+  float: left;
+  border: 1px solid #DDD;
+  margin: 0 2px;
+  background: #f4f4f4;
+  padding: 9px 5px;
+  display: block;
+  height: 12px;
+  line-height: 12px;
+  color: #343539;
+}
+
+.uipage .page_bottom a.active{color: #e7363c;border: 0;background: #FFF;}
+
+.uipage .page_bottom .input_bottom{
+  width: 70px !important;
+  margin: 0 5px;
+  display: block;
+  height: 30px;
+  float: left;
+  border: 1px solid #c8c8c8;
+  vertical-align: middle;
+  text-align: center;
+}
+.uipage .page_bottom .input_bottom input[type='text']{
+  width: 60px !important; 
+  border: none;
+  outline: none;
+  font-size: 14px;
+  height: 25px;
+  background: none;
+  line-height:25px;
+  padding:0;
+  text-align: center;
+  border: 0px solid #fff;
+}
+.uipage .page_bottom p{
+  float: left;
+  margin-left: 5px !important;
+  font-size: 14px !important;
+}

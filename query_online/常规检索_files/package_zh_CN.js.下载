@@ -1,0 +1,872 @@
+//------- 系统公用 start --------/
+sipo={};
+sipo.portal={};
+sipo.search={};
+sipo.analysis={};
+sipo.tip = "提示";
+//------- 系统公用 end   --------/
+//------- 门户子系统 start --------/
+//个人中心导航START
+sipo.portal.personalCenter={};
+sipo.portal.personalCenter.myMessage="消息中心";
+sipo.portal.personalCenter.myEXP="我的检索式";
+sipo.portal.personalCenter.myFile="我的收藏夹";
+sipo.portal.personalCenter.myProject="我的分析库";
+sipo.portal.personalCenter.myAnalysisReport="我的分析报告";
+sipo.portal.personalCenter.selectOne="至少选择一个功能";
+sipo.portal.personalCenter.setFunction="常用功能设置";
+//个人中心导航END
+
+//登录
+sipo.portal.login={};
+sipo.portal.login.valerror="验证码错误！<br/>Verification Code Error!";
+sipo.portal.login.usernameerror="用户名或密码错误！<br/> Username or password error!";
+sipo.portal.login.passworderror="用户名或密码错误！<br/> Username or password error!";
+sipo.portal.login.usernamenotexist="该用户名不存在，请重新输入！";
+sipo.portal.login.usernamenull="用户名不能为空，请输入用户名！";
+sipo.portal.login.passwordnull="密码不能为空，请输入密码！";
+sipo.portal.login.validatenull="验证码不能为空，请输入验证码！";
+sipo.portal.login.validateTelGd="固定电话请用数字“-”，如010-12345678";
+sipo.portal.login.validateUserPhone="手机号码请用11位数字，如：13412345678";
+sipo.portal.login.validateUserCompany="请填写公司名称，如：东软集团股份有限公司";
+sipo.portal.login.validateUserComTel="请填写公司电话，限用数字和“-”，如010-12345678";
+sipo.portal.login.validateUserFaxTel="传真格式为地区号码+电话号码，如：12345678";
+sipo.portal.login.validateUserFaxCode="邮政编码的长度为6位，必有和数字，如：100088";
+sipo.portal.login.validateUserNameDiv="姓名长度必须在1-20之间，必须以中文/英文开头，只能包含“·”、中文和英文";
+sipo.portal.login.usernosession="会话时间超时，请重新登录，再进行维护操作！";
+sipo.portal.login.fullnameerror="* 姓名必须以中文/英文开头，只能包含“.”、中文和英文";
+//浏览量统计
+sipo.portal.statistic={};
+sipo.portal.statistic.timenull="时间不能为空！";
+sipo.portal.statistic.begintimenull="起始日期不能为空！";
+sipo.portal.statistic.endtimenull="截止日期不能为空！";
+sipo.portal.statistic.begintimebiggerthanendtime="开始日期要小于截止日期！";
+sipo.portal.statistic.noselectcatalog="请选择栏目之后再执行查询操作！";
+sipo.portal.statistic.viewnumstatistic="浏览量统计";
+sipo.portal.statistic.noTJ="无统计信息";
+sipo.portal.statistic.index="系统统计";
+sipo.portal.statistic.search="专利检索";
+sipo.portal.statistic.analysis="专利分析";
+sipo.portal.statistic.notice="通知公告";
+sipo.portal.statistic.statistic="专利统计快报";
+sipo.portal.statistic.perspective="专利新视点";
+sipo.portal.statistic.lectures="专利知识";
+sipo.portal.statistic.app="专利申请指南";
+sipo.portal.statistic.classicproblem="经典问题";
+sipo.portal.statistic.case1="经典案例分析";
+sipo.portal.statistic.law="政策法规";
+
+
+//在线问题
+sipo.portal.question={};
+sipo.portal.question.descriptiontoolong="问题描述字数不得超过2000！";
+sipo.portal.question.confirmsubmit="您确定要提交问题?";
+sipo.portal.question.pleasewritetitle="请您先填写问题！";
+sipo.portal.question.refrence="引用位于";
+sipo.portal.question.ofinformation="的信息";
+sipo.portal.question.cancelref="取消引用";
+sipo.portal.question.picturemax="*注意：最多上传5个图片，每个图片最大为5M，允许上传的图片格式为JPG JPEG GIF BMP PNG TIFF TIF。";
+sipo.portal.question.confirmdelete="您确定要删除问题?";
+sipo.portal.question.titletoolong="问题标题字数不得超过150！";
+sipo.portal.question.descriptiontoolong="问题描述字数不得超过2000！";
+sipo.portal.question.confirmsubmit="您确定要提交问题?";
+sipo.portal.question.pleasewritetitle="请您先填写问题！";
+sipo.portal.question.suredelete="确定删除此条回复？";
+sipo.portal.question.suremodify="确定对此条回复进行修改？";
+sipo.portal.question.modifyinfonull="修改后信息不能为空";
+sipo.portal.question.modifytoolong="修改后信息字数不能超过1000";
+sipo.portal.question.isuploading="请将要上传的图片提交后，或取消上传后，再进行其他操作";
+sipo.portal.question.fileNames="已上传的图片:";
+sipo.portal.question.confirmdeletepic="您确定要删除此图片?";
+sipo.portal.question.deletepic="删除";
+sipo.portal.question.scanPicture="查看图片";
+sipo.portal.question.nopictureupload="未上传任何图片";
+sipo.portal.question.noreferencemore="请不要多次引用";
+//维护在线问题
+sipo.portal.questionmgr={};
+sipo.portal.questionmgr.isanswer="确定对此问题进行回复？回复的信息需管理员审核后方可发布。";
+sipo.portal.questionmgr.uploadnamenotnull="请填写上传图片的名称";
+sipo.portal.questionmgr.uploadfilenotnull="请选择您要上传的图片";
+sipo.portal.questionmgr.uploadnametoolong="上传图片的名称不能超过20个字";
+sipo.portal.questionmgr.uploaddescriptiontoolong="上传图片的说明不能超过300个字";
+sipo.portal.questionmgr.textareatoolong="回复信息在引用后不能超过1000个字";
+sipo.portal.questionmgr.uploadnamecontainsepcode="图片名称中含有非法字符，请重新输入";
+sipo.portal.questionmgr.uploaddescriptioncontainsepcode="图片说明中含有非法字符，请重新输入";
+//咨询信箱
+sipo.portal.mail={};
+sipo.portal.mail.mailtitlenull="请输入咨询标题";
+sipo.portal.mail.personalmailnull="请输入联系邮箱";
+sipo.portal.mail.mailerror="邮箱格式不正确，请重新输入";
+sipo.portal.mail.detailnull="请输入详细内容";
+sipo.portal.mail.validcodeerror="验证码输入不正确，请重新输入";
+sipo.portal.mail.validcodenull="请输入验证码";
+//专利运用 start
+sipo.portal.transaction={};
+sipo.portal.transaction.check="通过";
+sipo.portal.transaction.uncheck="未审核";
+sipo.portal.transaction.oppose="未通过";
+sipo.portal.transaction.anFalse="您输入的申请号错误，请输入正确的申请号";
+sipo.portal.transaction.pnFalse="您输入的公开号错误，请输入正确的公开号";
+sipo.portal.transaction.fal="系统错误，请联系管理员";
+sipo.portal.transaction.fullnameerror=" * 姓名必须以中文/英文开头，只能包含“.”“·”、中文和英文,包含“·”的时候后面必须跟上对应的名字，多个名字之间用英文“,”隔开";
+sipo.portal.transaction.textnotspecialcode="输入框中中不能含有\" \' \& \, \< \> \/ \\ \|";
+sipo.portal.transaction.readfalse="申请号为空,不能阅读专利信息";
+
+//图片管理
+sipo.portal.picmgr={};
+sipo.portal.picmgr.maxfive="最多上传五个文件！";
+//------- 门户子系统 end   --------/
+
+//------- 检索子系统 start --------/
+/******* 王澍 start *********/
+
+//文献下载设置
+sipo.search.download = {};
+sipo.search.download.getDownloadItemError = "获取下载文献设置信息出错！";
+sipo.search.download.freshValidateCodeError = "刷新验证码出错！";
+sipo.search.download.downloadPrompt = "请至少选择下载信息中的一项！";
+sipo.search.download.validateCodeError = "验证码不正确，请重新输入！";
+
+//网页抓取
+sipo.search.webspider = {};
+sipo.search.webspider.title = "网页抓取";
+sipo.search.webspider.bgsnatch = "后台抓取";
+sipo.search.webspider.getting = "文献信息正在抓取，请稍候...";
+sipo.search.webspider.success = "文献信息抓取成功，请<span onclick='document.location.reload()' style='cursor:pointer;color:blue'>刷新</span>页面！";
+sipo.search.webspider.failed = "抓取失败";
+
+//在线翻译
+sipo.search.translate = {};
+sipo.search.translate.title = "在线翻译";
+sipo.search.translate.translating = "翻译中...";
+sipo.search.translate.nomessage = "无翻译结果。";
+sipo.search.translate.error = "翻译失败。";
+sipo.search.translate.oriText = "原文";
+sipo.search.translate.tarText = "译文";
+
+//详细浏览
+sipo.search.view = {};
+sipo.search.view.topTip = "温馨提示：已到顶部！";
+sipo.search.view.bottomTip = "温馨提示：已到底部！";
+sipo.search.view.ok = "确定";
+sipo.search.view.highLightDlgTitle = "高亮显示设置";
+sipo.search.view.highLightSearchKeyword = "开启检索关键字";
+sipo.search.view.highLightTip = "'#'号为模糊匹配符（注：模糊匹配符只限在英文中使用）";
+sipo.search.view.select = "选择";
+sipo.search.view.cancel = "取消";
+sipo.search.view.apply = "应用";
+sipo.search.view.focusDlgTitle = "聚焦显示设置";
+sipo.search.view.downloadLiteraDlgTitle = "文献下载设置";
+sipo.search.view.download = "下载";
+sipo.search.view.formatDlgTitle = "格式设置信息";
+
+sipo.search.view.prompt = {};
+sipo.search.view.prompt.charLimited = "关键词不能超过36个字符";
+sipo.search.view.prompt.invalidChar = "输入内容含有非法字符";
+sipo.search.view.prompt.keywordRepead = "关键字重复，请修改";
+sipo.search.view.prompt.select = "请先选择文献！";
+
+sipo.search.fullImage = {};
+sipo.search.fullImage.flashTip = "您可能没有安装最新版本FLASH插件,请点击下载安装";
+
+//查看审查结果
+sipo.search.examine = {};
+sipo.search.examine.popMessage = "浏览审查结果只支持美国和欧专局专利文献！";
+sipo.search.examine.notSupportMessage = "浏览审查结果暂不支持日本和韩国专利文献！";
+sipo.search.examine.systemRecommend = "系统推荐检索号码：";
+sipo.search.examine.searchChoose = "系统推荐检索入口：";
+sipo.search.examine.searchWarn = "注意：在US网站检索时需要验证码。"; 
+sipo.search.examine.RecommendSearchWeb = "推荐检索网址";
+sipo.search.examine.noRecommend = "当前文献号码格式不符合规则，无系统推荐号码。";
+sipo.search.examine.noSearchChoose = "当前文献号码格式不符合规则，无系统推荐检索入口。";
+
+/******* 王澍 end *********/
+
+/******* 郝亮 start *********/
+//表格检索
+sipo.search.tableSearch={};
+sipo.search.tableSearch.setSearchZd="设置检索字段";
+sipo.search.tableSearch.selectAll="全选";
+sipo.search.tableSearch.chancelAll="全取消";
+sipo.search.tableSearch.resetDefaultSettings="恢复默认设置";
+sipo.search.tableSearch.save="保存";
+sipo.search.tableSearch.ok="确定";
+sipo.search.tableSearch.tips="提示";
+sipo.search.tableSearch.limitNumZm="只允许输入数字，长度不能超过3！"
+sipo.search.tableSearch.chancel="取消";
+sipo.search.tableSearch.selectTargetLang="请选择扩展语言!";
+sipo.search.tableSearch.inputContent="请先输入内容！";
+sipo.search.tableSearch.letterAndNumber3="请输入正确的号码格式，如：CN123456789";
+sipo.search.tableSearch.checkDateFormat="日期格式不正确，请重新输入！";
+sipo.search.tableSearch.mustinput="请先输入内容！";
+sipo.search.tableSearch.showBlockTableX="表格项正在加载，请稍候……";
+sipo.search.tableSearch.searching="数据正在加载，请稍候……";
+sipo.search.tableSearch.addSuccess="增加成功";
+sipo.search.tableSearch.add="增加";
+//表格检索END
+//文献收藏夹START
+sipo.search.literaDB = {};
+sipo.search.literaDB.add = "新增";
+sipo.search.literaDB.modify = "修改";
+sipo.search.literaDB.addLiteraDB = "加入文献收藏夹";
+sipo.search.literaDB.confirmDeleteMsg = "检索文献删除后将无法恢复，是否确认删除？";
+sipo.search.literaDB.deleteSuccess = "删除成功";
+sipo.search.literaDB.deleteFailure = "删除失败";
+sipo.search.literaDB.overNum = "文献收藏夹数量超过系统限制，无法创建。";
+sipo.search.literaDB.createSuccess = "创建成功";
+sipo.search.literaDB.createFailure = "创建失败";
+sipo.search.literaDB.joinNumOver = "您选择的记录数量超过系统限制，无法执行加入操作。";
+sipo.search.literaDB.cover = "文献数量超过系统限制，是否执行覆盖操作？";
+sipo.search.literaDB.joinSuccess = "追加成功";
+sipo.search.literaDB.createAndJoinSuccess = "创建并追加成功";
+sipo.search.literaDB.joinRefuse = "未检索到相关文献，不能执行追加操作。";
+sipo.search.literaDB.ifCover = "覆盖后当前文献库原有的所有记录将被删除，是否确认覆盖？";
+sipo.search.literaDB.coverSuccess = "覆盖成功";
+sipo.search.literaDB.coverRefuse = "未检索到相关文献，不能执行覆盖操作。";
+sipo.search.literaDB.modifySuccess = "修改成功";
+sipo.search.literaDB.modifyFailure = "修改失败";
+sipo.search.literaDB.chooseDeleteRecord = "请选择要删除的记录！";
+sipo.search.literaDB.confirmDeleteLiteraDBMsg = "文献收藏夹删除后将无法恢复，并且文献收藏夹中包含的文献会同时删除，是否确认删除？";
+sipo.search.literaDB.loadData = sipo.search.loading;
+sipo.search.literaDB.validation = "文献库名称只能输入汉字、字母、数字和下划线";
+sipo.search.literaDB.reopen = "要添加的专利文献数据已改变，请重新打开本页面。";
+sipo.search.literaDB.addSuccess = "加入成功。";
+sipo.search.literaDB.addRefuse = "未检索到相关文献，不能执行加入操作。";
+sipo.search.literaDB.inputLiteraDBName = "请输入文献收藏夹名称";
+sipo.search.literaDB.an="申请号";
+sipo.search.literaDB.pn="公开（公告）号";
+sipo.search.literaDB.pubDate="公开（公告）日";
+sipo.search.literaDB.title="发明名称";
+sipo.search.literaDB.ipc="IPC";
+sipo.search.literaDB.appname="申请（专利权）人";
+sipo.search.literaDB.inventor="发明人";
+sipo.search.literaDB.deleteOrNo='是否要删除?';
+sipo.search.literaDB.ok='确定';
+sipo.search.literaDB.cancel='取消';
+sipo.search.literaDB.modifyButton='修改';
+sipo.search.literaDB.resertButton='重置';
+//文献收藏夹END
+//导出
+sipo.search.exportFile = {};
+sipo.search.exportFile.popMessage = "没有要导出的数据。";
+//导出END
+sipo.search.chooseRecord = "请选择文献";//引文同族对比文献也使用词条，保证提示一致
+// 检索历史
+sipo.search.history = {};
+sipo.search.history.nonexistLitera = "不存在检索文献记录！";
+sipo.search.history.confirmDeleteMsg = "检索历史删除后将无法恢复，并且会删除与其关联的检索历史，是否确认删除？";
+sipo.search.history.deleteHistory = "请选择要删除的检索历史"
+sipo.search.history.deleteSuccess = "删除成功！";
+sipo.search.history.nonexistHistory = "不存在检索历史记录！";
+sipo.search.history.confirmClearMsg = "检索历史列表清空后将无法恢复，是否确认清空？";
+sipo.search.history.limitSuccess = "限定成功！";
+sipo.search.history.unlimitSuccess = "取消限定成功！";
+sipo.search.history.unlimitAllSuccess = "取消全部限定成功！";
+sipo.search.history.noneLimit = "没有限定范围！";
+sipo.search.history.LawStateSuccess = "执行递进检索成功！";
+sipo.search.history.historyOverflow = "检索历史列表存储已满，父检索式已被删除！";
+sipo.search.history.loadData = sipo.search.loading;
+sipo.search.history.tipMsgText = "支持使用检索运算符";
+sipo.search.history.tipMsgDate = "日期支持年月日无分隔（月日两位）；支持间隔符-、.；可以只输入年份或年月。如20101005、2010-10-05、2010.10.05、2010、201010。";
+sipo.search.history.confirmUnLimit = "是否确认取消限定？";
+sipo.search.history.confirmUnAllLimit = "是否确认取消全部限定？";
+sipo.search.history.onlinePush = "推送功能每次推送数据，推送一条检索数据";
+sipo.search.history.notonlinePush = "推送数据不能超过十万条";
+sipo.search.history.onlinePushNotNull = "推送数据不能为空";
+sipo.search.history.onlinePushsearchExp = "此检索式已经推送过了，一条检索式只能推送一次";
+sipo.search.history.onlinePushUser = "在线系统没有此用户";
+sipo.search.history.onlinePushWait = "推送任务已加入等待队列，稍后系统会为您自动推送，可能需要等待一段时间，请刷新在线专利信息分析系统的公告页面查看推送情况！";
+sipo.search.history.notOnlinePush = "系统等待队列已满，请30分钟后再试！";
+sipo.search.history.onlinePushData = "正在向在线专利信息分析系统推送数据，请刷新在线专利信息分析系统的日志页面查看推送进度！";
+sipo.search.history.searchExp="检索式";
+sipo.search.history.secondSearch="二次检索";
+
+/******* 郝亮 end *********/
+
+/******* 房庇寒 start *********/
+//常规检索
+sipo.search.generalsearch={};
+sipo.search.generalsearch.loading = "数据正在加载，请稍后...";
+sipo.search.generalsearch.tips="提示";
+sipo.search.generalsearch.inputContent="请输入查询内容！";
+sipo.search.generalsearch.OK="确定";
+
+//sipo.search.generalsearch.cue={};
+//sipo.search.generalsearch.cue.defaultTitile="检索规则";
+//sipo.search.generalsearch.cue.defaultContent1="<li>支持二目逻辑运算符<span>AND</span>、<span>OR</span>。</li>";
+//sipo.search.generalsearch.cue.defaultContent2="<li>多个检索词之间用空格间隔，如：<span>智能 手机</span>。</li>";
+//sipo.search.generalsearch.cue.defaultContent3="<li>系统默认二目逻辑运算符是<span>AND</span>,如输入<span>智能 手机</span>，系统按照<span>智能 AND 手机</span>进行检索。</li>";
+//sipo.search.generalsearch.cue.defaultContent4="<li>日期支持间隔符<span>\"-\"</span>、<span>\".\"</span>，支持如下格式：<span>YYYY-MM-DD、YYYY.MM.DD、YYYYMMDD、YYYYMM、YYYY</span>。</li>";
+//sipo.search.generalsearch.cue.defaultContent5="<li>支持半角<span>()</span>算符，如输入<span>国产 (智能 手机)</span>，系统优先执行<span>智能 AND 手机</span>，然后将所得结果集与<span>国产</span>进行<span>AND</span>运算。</li>";
+//sipo.search.generalsearch.cue.defaultContent6="<li>如果检索条件中包含<span>空格、保留关键字</span>或<span>运算符</span>，需使用<span>半角双引号</span>，如：<span>\"WILLIAMS AND LANE INC\"</span>。</li>";
+//sipo.search.generalsearch.cue.defaultContent=sipo.search.generalsearch.cue.defaultContent1+sipo.search.generalsearch.cue.defaultContent2+sipo.search.generalsearch.cue.defaultContent3+sipo.search.generalsearch.cue.defaultContent4+sipo.search.generalsearch.cue.defaultContent5+sipo.search.generalsearch.cue.defaultContent6;
+//自建专题库检索start
+sipo.search.buildDataBase={};
+sipo.search.buildDataBase.buildBase="自建专题库";
+sipo.search.buildDataBase.theNodeNoEXP="此节点上没有记录检索式"
+sipo.search.buildDataBase.selectOneNode="请选择左侧树上的一个节点";
+sipo.search.buildDataBase.selectOneChildNode="请选择一个子节点";
+sipo.search.buildDataBase.theNodeExitsEXP="此节点已经存在检索式";
+sipo.search.buildDataBase.addSuccess="增加成功"
+//企业自建专题库检索end
+//药物检索
+sipo.search.medsearch = {};
+sipo.search.medsearch.loading="数据正在加载，请稍后...";
+sipo.search.medsearch.tips="提示";
+sipo.search.medsearch.OK="确定";
+sipo.search.medsearch.selectCondition="请至少选择一个检索条件！";
+sipo.search.medsearch.selectRecord="请选择要生成检索式的记录！";
+sipo.search.medsearch.inputContent="请输入查询内容！";
+sipo.search.medsearch.inputStructure="请输入查询结构！";
+sipo.search.medsearch.medNameNotNull="药材名称不能为空！";
+sipo.search.medsearch.medNameOver8="药材名称不能超过8个字！";
+sipo.search.medsearch.medNameIllegal="药材名称只能包含中文！";
+sipo.search.medsearch.saving="保存中...";
+sipo.search.medsearch.commonHerbs="常用药材表";
+sipo.search.medsearch.configTableItems="配置检索字段";
+sipo.search.medsearch.selectAll="全选";
+sipo.search.medsearch.cancelAll="全部取消";
+sipo.search.medsearch.resetConfig="恢复默认设置";
+sipo.search.medsearch.saveConfig="保存";
+
+sipo.search.medsearch.result = {};
+sipo.search.medsearch.result.searchview = "搜索式";
+sipo.search.medsearch.result.tableview = "列表式";
+
+// 注册
+sipo.portal.register={};
+sipo.portal.register.usernameerror="长度4-20个非空白字符，须字母、下划线、数字两种或以上";
+sipo.portal.register.usernamenull="用户名不能为空";
+sipo.portal.register.usernameexist="该用户名已存在";
+sipo.portal.register.usernamereg="4-20个字符，须字母、下划线、数字两种或以上组合";
+sipo.portal.register.passworderror="密码长度为6-20位,须字母、符号、数字两种或以上组合";
+sipo.portal.register.passwordreg="6-20个字符，字母、数字和符号两种或以上组合";
+sipo.portal.register.passwordnull="密码不能为空";
+sipo.portal.register.recheckpwderror="两次输入的密码不一致";
+sipo.portal.register.oldnewerror="新密码不能与原密码一致";
+sipo.portal.register.emailerror="请输入正确的邮箱格式";
+sipo.portal.register.emailreg="用于注册验证、接收定制信息和找回密码";
+sipo.portal.register.emailsentsuccess="验证码发送成功";
+sipo.portal.register.emailsentfail="验证码发送失败";
+sipo.portal.register.emailcodenull="请先输入邮箱验证码";
+sipo.portal.register.emailcodefail="邮箱验证码输入错误";
+sipo.portal.register.emailcodenotsent="请先发送邮箱验证码";
+sipo.portal.register.mobileerror="请输入正确的手机号码";
+sipo.portal.register.telephoneMobileerror="*电话为固定电话或者手机，如：010-12345678/15904027290";
+sipo.portal.register.url="*请输入正确的网址，如：http://baidu.com";
+sipo.portal.register.telephoneerror="* 固定电话请用数字和“-”，如：010-12345678";
+sipo.portal.register.companytelerror= "* 限用数字和“-”，如：010-12345678";
+sipo.portal.register.oldpasswordinput = "请输入原密码";
+sipo.portal.register.oldpassworderror = "原密码错误，请重新输入";
+//维护定制服务 begin
+sipo.portal.servicemgr={};
+sipo.portal.servicemgr.pub = "已发布";
+sipo.portal.servicemgr.notpub = "未发布";
+sipo.portal.servicemgr.cancelpub = "取消发布";
+sipo.portal.servicemgr.cancelserviceitem = "取消发布";
+sipo.portal.servicemgr.pubserviceitem = "发布";
+sipo.portal.servicemgr.ifcancel = "是否取消发布该服务项?";
+sipo.portal.servicemgr.cancelsuccess = "取消发布成功!";
+sipo.portal.servicemgr.cancelfail = "取消发布失败!";
+sipo.portal.servicemgr.ifpub = "是否发布该服务项?";
+sipo.portal.servicemgr.pubsuccess = "发布成功!";
+sipo.portal.servicemgr.pubfail = "发布失败!";
+sipo.portal.servicemgr.selectServiceItem = "选择服务项";
+sipo.portal.servicemgr.servicedetails = "服务消息详细信息";
+sipo.portal.servicemgr.dateLimit = "起始时间要小于等于截止时间！";
+sipo.portal.servicemgr.message = "站内消息";
+sipo.portal.servicemgr.shortMessage = "短信";
+sipo.portal.servicemgr.email = "邮件";
+sipo.portal.servicemgr.pushTypeState = "结果改变";
+sipo.portal.servicemgr.pushTypeDate = "每个月";
+sipo.portal.servicemgr.view = "查看";
+sipo.portal.servicemgr.viewDetail = "详细";
+sipo.portal.servicemgr.using = "启用";
+sipo.portal.servicemgr.deleted = "删除";
+sipo.portal.servicemgr.unsend = "未发送";
+sipo.portal.servicemgr.sendSuccess = "发送成功";
+sipo.portal.servicemgr.sendFail = "发送失败";
+//维护定制服务 end
+
+// 定制服务 bengin
+sipo.portal.service={}; 
+sipo.portal.service.MaxInput="最多可以一起查询五个申请号的法律状态";
+sipo.portal.service.loadData = sipo.search.generalsearch.loading;
+sipo.portal.service.selectInventor = "请至少选择一个发明人！";
+sipo.portal.service.selectTechnic = "请至少选择一个技术领域！";
+sipo.portal.service.selectArea = "请至少选择一个待分析区域！";
+sipo.portal.service.selectAppor = "请至少选择一个申请人！";
+sipo.portal.service.pnScope = "申请日开始时间小于结束时间！";
+sipo.portal.service.illegalEmail = "邮件地址不合法！";
+sipo.portal.service.illegalTel = "手机号码不合法！";
+sipo.portal.service.illegalTelNull = "您的电话号码为空，请修改您的电话号码！";
+sipo.portal.service.isShowTypeTable = "分析的结果为“表格”的展现方式不支持，短信发送！";
+sipo.portal.service.TelNotSave ="请保存您的电话号码！";
+sipo.portal.service.illegalEmailNull = "您的邮箱地址为空，请修改您的邮箱地址！";
+sipo.portal.service.EmailNotSave = "请保存您的邮箱地址！";
+sipo.portal.service.serviceNumLimit = "您创建的定制服务已达到系统限制数量！";
+sipo.portal.service.annull = "个申请号为空";
+sipo.portal.service.st="第";
+sipo.portal.service.serviceItemCancel = "该服务项已不提供服务！";
+sipo.portal.service.tips="提示";
+sipo.portal.service.ok="确定";
+sipo.portal.service.cancel="取消";
+sipo.portal.service.searchexpnull="请输入检索式！";
+sipo.portal.service.servicenamenull="请输入服务名！";
+sipo.portal.service.letterAndNumberSer="个申请号输入不正确，请输入正确的号码格式，如：CN123456789";
+sipo.portal.service.letterAndNumberSerCN="个申请号输入不正确，只能输入以CN为开头的申请号！";
+//定制服务 end
+//站内消息 begin
+sipo.portal.message={};
+sipo.portal.message.chooseRecord = "请选择要删除的消息";
+sipo.portal.message.messgedelete = "是否确认删除？";
+sipo.portal.message.deleteSuccess = "删除成功！";
+sipo.portal.message.messageNotice = "您好！您有新的消息，请查看："
+sipo.portal.message.messageSelectfail = "弹出信息查询失败"
+//站内消息 end
+	
+//站内检索
+sipo.portal.stationSearch={};
+sipo.portal.stationSearch.keywordnull="关键字不能为空！";
+sipo.portal.stationSearch.tips = sipo.portal.service.tips;
+sipo.portal.stationSearch.ok = sipo.portal.service.ok;
+sipo.portal.stationSearch.cancel = sipo.portal.service.cancel;
+/******* 房庇寒 end *********/
+
+/******* 石泽宇 start *********/
+sipo.search.tablesearch={};
+sipo.search.tablesearch.sf1="您的检索历史已有";
+sipo.search.tablesearch.sf2="条，系统为您保存300条检索历史！";
+sipo.search.tablesearch.writeN="请输入n的值：";
+//表格检索提示
+sipo.search.tablesearch.cue={};
+sipo.search.tablesearch.cue.cut="<li>非日期型表格项支持截词符<span>+</span>、<span>?</span>、<span>#</span>。<span>+</span>：任何长度的字符串；<span>?</span>：一个或没有字符；<span>#</span>：一个强制存在的字符。所有截词符均为<span>半角字符</span>。</li>";
+sipo.search.tablesearch.cue.msg="<li>点击检索表格项可以在检索式编辑区快速输入检索表格项名称。</li>";
+sipo.search.tablesearch.cue.expTitle="检索式编辑区域";
+sipo.search.tablesearch.cue.expContent="<li>可使用<span>运算符</span>在检索式编辑区域编辑检索式。</li><li>检索式格式如：<span>摘要=(computer) OR 申请日=20050101:20061230</span>，具体规则可参见表格项提示。</li>"+sipo.search.tablesearch.cue.cut+sipo.search.tablesearch.cue.msg;
+//命令检索提示
+sipo.search.commandsearch={};
+sipo.search.commandsearch.S="检索";
+sipo.search.commandsearch.ES="二次检索";
+sipo.search.commandsearch.XD="限定范围检索";
+sipo.search.commandsearch.PCL="批处理命令";
+sipo.search.commandsearch.SQ="申请日限定检索";
+sipo.search.commandsearch.QXSQ="取消申请日限定检索";
+sipo.search.commandsearch.TZ="同族查询";
+sipo.search.commandsearch.QXXD="取消限定";
+sipo.search.commandsearch.LS="显示检索历史";
+sipo.search.commandsearch.SLS="删除检索历史";
+sipo.search.commandsearch.ZD="显示字段";
+sipo.search.commandsearch.BZ="显示命令帮助信息";
+sipo.search.commandsearch.PZ="检索历史显示配置";
+
+sipo.search.commandsearch.SContent="格式：SS 检索式 检索命令。<br>当命令行没有命令词，使用检索命令。检索式的书写方法与表格、常规检索一致。<br>例如：SS 发明人=(中国石油) AND 申请日>2010 ";
+sipo.search.commandsearch.ESContent="格式：ES 检索历史编号 检索式。<br>对指定检索历史进行二次检索。检索历史编号表示指定的检索历史，如果指定的检索历史命中数为0，则不能进行二次检索；如果指定的检索历史模式为同族检索，也不能进行二次检索。<br>例如：ES 9 发明人=(王勇)";
+sipo.search.commandsearch.XDContent="格式：XD 检索历史编号 、 XD 检索式。<br>XD 检索历史编号 表示对这一编号的检索历史进行限定检索。如果指定的检索历史命中数为0，则不能进行限定操作；如果指定的检索历史模式为同族检索，也不能进行限定操作。<br>XD 检索式  表示先根据检索式进行检索，然后对检索结果进行限定。<br>例如：XD 10、XD 发明人=(王勇)。";
+sipo.search.commandsearch.PCLContent="格式：PCL、PCL 批处理名<br>PCL  显示批处理记录列表<br>PCL 批处理名  表示执行该批处理<br>例如：PCL 、PCL 批量检索";
+sipo.search.commandsearch.SQContent="格式：SQ 时间 时间  申请日时间限定。<br>在指定时间范围内限定。支持的时间格式为 yyyyMMdd、yyyy-MM-dd、yyyy。如果只有一个时间如：SQ 2009  表示限定到2009这一年。如果SQ >2009 表示限定到2009年以后。如果SQ <2009 表示限定到2009年以前。如果SQ <=2009 表示限定到2009年以前，并包含2009。<br>例如：SQ 2009 、SQ 200901 201008 、SQ 20090101 20110101、SQ 2010-01-01、SQ >2009、SQ <2009、SQ<=2009";
+sipo.search.commandsearch.TZContent="格式：TZ 申请号/公开号 查询同族文献。 <br>TZ 申请号（公开号）使用申请号或公开（公告）号查询同族文献。<br>例如：TZ CN201110127460 ";
+sipo.search.commandsearch.QXXDContent="格式：QXXD (ALL)取消限定。<br>不添加All表示取消最近一条限定，添加ALL取消全部限定。<br>例如：QXXD ALL 表示取消全部限定，QXXD 表示取消最近一条限定。";
+sipo.search.commandsearch.LSContent="格式：LS ALL/编号范围，显示检索历史。 <br>LS 1-20显示检索历史编号1-20的记录，LS 20 显示第20条记录。LS ALL显示全部检索历史。<br>例如：LS 190-200（显示检索历史中编号190至200的检索历史）、LS 190（显示单个检索历史）、LS ALL（显示全部检索历史）。";
+sipo.search.commandsearch.SLSContent="格式：SLS ALL/编号范围 删除检索历史。<br> SLS 1-20 删除检索历史编号为1-20的记录，SLS 20 删除第20条记录。<br>例如：SLS 190-200（删除检索历史中编号190至200的检索历史）、SLS 190（删除单个检索历史）、SLS ALL（删除全部检索历史）。";
+sipo.search.commandsearch.ZDContent="格式：ZD  显示文献库支持检索的字段。<br>例如：ZD 显示专利检索文献库支持检索的字段。";
+sipo.search.commandsearch.BZContent="格式：BZ、 BZ SS 命令 显示检索命令帮助信息。<br>BZ SS显示检索命令使用说明，BZ显示全部命令说明。<br>例如：BZ、BZ LS（显示检索历史的帮助命令说明）。";
+sipo.search.commandsearch.PZContent="格式:PZ、PZ 数量（1-100） 设置一次显示多少条记录，在显示检索历史和批处理记录中有效。<br>PZ 显示当前配置的值,PZ 20 设置当前配置的值。<br>例如：PZ 5（表示在命令行查看检索历史时显示5条检索历史）。";
+sipo.search.commandsearch.QXSQContent="格式:QXSQ 取消申请日限定。";
+
+
+//批处理
+sipo.search.batch = {};
+sipo.search.batch.createwindow = "编辑批处理文件";
+sipo.search.batch.viewwindow = "查看批处理文件";
+sipo.search.batch.exist = "该批处理名称已经存在！";
+sipo.search.batch.batchname="输入规则";
+sipo.search.batch.modifybatch = "批处理命令格式";
+sipo.search.batch.modifybatchcue = '<li>批处理由多条命令行命令组成，如：<br/><span>XD</span> 申请(专利权)人=(东软集团)<br/><span>SS</span> 优先权日>=201106<br/></li><li> 命令之间必须用<span>“回车键”</span>间隔</li><li>命令中不能包含<span>“PCL”</span>关键字</li>';
+sipo.search.batch.batchnamecue='<li>批处理名称不能重复</li><li>在命令行检索中可以使用<span>“PCL 批处理名称”</span>执行命令</li>';
+sipo.search.batch.batchcontent = "批处理命令中不能包含\“PCL\”关键字";
+sipo.search.batch.limitbatchcount = "您创建的批处理文件已达到系统最大创建数量！";
+sipo.search.batch.save="保存";
+sipo.search.batch.run="执行";
+sipo.search.batch.close="关闭";
+sipo.search.batch.confirmdelete ="是否删除批处理文件？";
+sipo.search.batch.deletesuccess = "删除成功！";
+sipo.search.batch.nospecialcharacters = "* 不允许输入特殊字符";
+sipo.search.batch.commandlimit = "命令条数不能超过20条！";
+/******* 石泽宇 end *********/
+
+/******* 赵云斌 start *********/
+/******* 赵云斌 end *********/
+
+/******* 周福宁 start *********/
+//概览
+sipo.search.result={};
+sipo.search.result.btn={};
+sipo.search.result.label={};
+sipo.search.result.tip={};
+sipo.search.result.btn.selectall='全选';
+sipo.search.result.btn.deselectall='取消全选';
+sipo.search.result.btn.uses='应用';
+sipo.search.result.btn.cancel='取消';
+sipo.search.result.btn.disable='禁用';
+sipo.search.result.btn.enable='启用';
+sipo.search.result.btn.ok='确定';
+sipo.search.result.label.filter_field='显示字段';
+sipo.search.result.label.filter_date='日期筛选';
+sipo.search.result.label.filter_lang='显示语言';
+sipo.search.result.label.apd='申请日';
+sipo.search.result.label.pd='公开日';
+sipo.search.result.label.to='至';
+sipo.search.result.label.high='高';
+sipo.search.result.label.midde='中';
+sipo.search.result.label.low='低';
+sipo.search.result.label.cn='中文';
+sipo.search.result.label.en='英文';
+sipo.search.result.label.jp='日文';
+sipo.search.result.label.tip='提示';
+sipo.search.result.tip.filter_selectfiled='请选择要显示的字段！';
+sipo.search.result.tip.beginDateTitleTip = "起始年份输入规则"
+sipo.search.result.tip.beginDateTipMsg = "<p>支持4位数字年份，例如：<span style='color:red;'>2000</span>。</p><p>如果输入了结束年份，则起始年份为必填项。</p><p>起始年份需小于结束年份。</p>";
+sipo.search.result.tip.endDateTitleTip = "结束年份输入规则";
+sipo.search.result.tip.endDateTipMsg = "<p>支持4位数字年份，例如：<span style='color:red;'>2000</span>。</p><p>结束年份不输入，默认为当年年份。</p><p>结束年份需大于起始年份。</p>";
+sipo.search.result.tip.beginDateNotEmpty="起始年份不能为空。";
+sipo.search.result.tip.checkDateFormat = "日期格式不正确，请输入4位数字的年份（例如2000）！";
+sipo.search.result.tip.compareDate = "起始年份不能大于结束年份！";
+sipo.search.result.tip.viewLitera1 = "文献数量超过";
+sipo.search.result.tip.viewLitera2 = "篇，请您缩小范围再进行浏览！";
+sipo.search.result.tip.viewLitera3 = "篇，请您缩小范围再使用设置文献优先显示语言功能！";
+sipo.search.result.tip.viewLitera4 = "篇，请您缩小范围再使用排序功能！";
+sipo.search.result.tip.viewLitera5 = "篇，请您缩小范围再使用统计功能！";
+sipo.search.result.tip.noAuth = "当前用户未登录，请登录后重试！";
+sipo.search.result.tip.statistics = "统计信息失败!";
+sipo.search.result.tip.selectPatentToView="请选择要浏览的文献！"
+sipo.search.result.tip.selectPatentToExport="请选择要加入下载库的文献！"
+sipo.search.result.tip.explength="长度必须在1 - 200之间。";
+sipo.search.result.tip.selectPatentToFavorite="请选择要收藏的文献！"
+
+
+//下载库
+sipo.search.exportdb = {};
+sipo.search.exportdb.loading = "数据正在加载，请稍候……";
+sipo.search.exportdb.tips = "提示";
+sipo.search.exportdb.ok = "确定";
+sipo.search.exportdb.cancel = "取消";
+sipo.search.exportdb.addsuccess = "加入下载库成功。";
+sipo.search.exportdb.addfail = "加入下载库失败。";
+sipo.search.exportdb.countlimit = "文献数量超过系统限制";
+sipo.search.exportdb.mustselect = "请选择需要删除的文献！";
+sipo.search.exportdb.confirmdelete = "是否删除所选文献信息？";
+sipo.search.exportdb.confirmclear = "是否清空当前下载库？";
+sipo.search.exportdb.deletesuccess = "删除成功！";
+sipo.search.exportdb.settitle = "下载任务设置";
+sipo.search.exportdb.nolitera = "当前下载库没有文献！";
+sipo.search.exportdb.createsuccess ="任务创建成功！";
+sipo.search.exportdb.emailnotnull = "邮件地址不能为空！";
+sipo.search.exportdb.illegalemail = "邮件地址不合法！";
+sipo.search.exportdb.errorcode = "验证码不正确，请重新输入！";
+sipo.search.exportdb.taskcountlimit = "您本周创建的下载任务已达到系统限制数量！";
+sipo.search.exportdb.taskcountstat = "下载量统计";
+sipo.search.exportdb.literacountstat = "数据分布统计";
+/******* 周福宁 end *********/
+
+//------- 检索子系统 end   --------/
+
+/**
+ * 分析子系统中文提示信息
+ * 
+ * @type 
+ */
+sipo.analysis={
+	//高级分析
+	advanced : {},
+	//日志
+	log : {},
+	//菜单
+	menu : {},
+	//分析库
+	project : {},
+	//快速分析
+	rapid : {},
+	//分析报告
+	report : {},
+	//清理规则
+	rule : {},
+	//自定义清理规则
+	customrule : {},
+	//定制分析
+	sepc : {},
+	//条件选择
+	condition : {},
+	//公共
+	common : {},
+	//钻取分析
+	deepanalysis : {}
+}
+//维护分析文献库bgein
+sipo.analysis.project.projectalreadyfull="您当前的分析文献库数量已满，无法创建新的分析文献库！";
+sipo.analysis.project.projectrename="存在重名分析文献库，创建失败。"
+sipo.analysis.project.editanalysismodelerror="修改分析文献库去重规则失败"
+sipo.analysis.project.savecleanrulesuccess="保存清理规则成功"
+sipo.analysis.project.getsampletableerror="获取文献表格失败！"
+sipo.analysis.project.getanalysistableerror="获取分析文献库表格失败！"
+sipo.analysis.project.editanalysismodelsuccess="修改分析文献库去重规则成功"
+sipo.analysis.project.areyousuretodeleteanalysis="删除分析文献库同时也会删除该分析文献库中的全部样本，确定删除吗？"
+sipo.analysis.project.selectonemore="至少要选择一条记录。"
+sipo.analysis.project.areyousuretodeletesample="确定删除分析文献库中的样本吗？"
+sipo.analysis.project.deletesamplesuccess="删除分析文献成功"
+sipo.analysis.project.deletesampleerror="删除分析文献失败"
+sipo.analysis.project.deleteanalysiserror="删除分析文献库失败"
+sipo.analysis.project.editrenameerror="存在重名分析文献库，修改失败。"
+sipo.analysis.project.editanalysiserror="修改分析文献库失败。"
+sipo.analysis.project.getanalysisdetailerror="获取分析文献库详细信息失败。"
+sipo.analysis.project.addProjectSuccess='创建分析文献库成功！'
+sipo.analysis.project.addProjectFail='创建分析文献库失败！'
+sipo.analysis.project.coverProjectSuccess='覆盖分析文献库成功！'
+sipo.analysis.project.coverProjectFail='覆盖分析文献库失败！'
+sipo.analysis.project.appendProjectSuccess='追加分析文献库成功！'
+sipo.analysis.project.appendProjectFail='追加分析文献库失败！'
+sipo.analysis.project.queryProjectList='获取分析文献库列表失败！'
+sipo.analysis.project.setActiveModeSuccess='激活样本分析文献库成功！'
+sipo.analysis.project.setActiveModeerror='激活样本分析文献库失败！'
+sipo.analysis.project.getsamplelisterror='获取样本分析文献库文献失败！'
+sipo.analysis.project.editanalysis="修改分析文献库"
+sipo.analysis.project.nameerror="分析文献库名称不能包含有特殊字符,长度为1-10个字符";
+sipo.analysis.project.descerror="分析文献库描述不能包含有特殊字符,长度为0-20个字符！"
+sipo.analysis.project.selectnameerror="查询条件不能包含有特殊字符。"
+sipo.analysis.project.pleaseinputright="请按照输入规则进行有效输入！"
+sipo.analysis.project.coverProjectConfirmMessage="覆盖分析文献库会清空该库中全部文献，确认覆盖吗？"
+
+//维护分析文献库end
+
+//维护 日志/报告begin
+sipo.analysis.log.noresulttosave="没有可以保存的日志结果！"
+sipo.analysis.log.choosenone="请选择分析日志！"
+sipo.analysis.log.confirmdelete="确定要删除日志吗？"
+sipo.analysis.log.deletesuccess="删除成功"
+sipo.analysis.log.logsusedbyreport="所选的日志中一个或者几个已经用于生成分析报告，删除后会对分析报告造成影响，是否确认删除？"
+sipo.analysis.log.deletelogsuccess="删除分析日志成功"
+sipo.analysis.log.deletelogerror="删除分析日志失败"
+sipo.analysis.log.getloglisterror="获取日志列表失败"
+sipo.analysis.log.loadcharterror="加载图形控件失败，请刷新页面重试！"
+sipo.analysis.log.editlogsuccess="修改分析日志成功"
+sipo.analysis.log.editlogerror="修改分析日志失败"
+sipo.analysis.log.nowsaving="正在保存中，请稍后操作！"
+sipo.analysis.log.savelogsuccess="日志保存成功"
+sipo.analysis.log.savelogerror="日志保存失败"
+sipo.analysis.log.enterlogname="请输入日志名称"
+
+sipo.analysis.report.editreporterror="修改分析报告失败"
+sipo.analysis.report.getreportdetailerror="修改分析报告失败"
+sipo.analysis.report.defeat="失败"
+sipo.analysis.report.confirmdelete="确定要删除报告吗？"
+sipo.analysis.report.deletereportsuccess="删除分析报告成功"
+sipo.analysis.report.deletereporterror="删除分析报告失败"
+sipo.analysis.report.choosenone="请选择分析报告！"
+sipo.analysis.report.getrptlisterror="获取报告列表失败"
+sipo.analysis.report.editreport="修改分析报告"
+sipo.analysis.report.savesuccess="保存成功";
+sipo.analysis.report.savedefeat="保存失败";
+sipo.analysis.report.creatingreport="报告正在生成，请稍候...";
+//维护 日志/报告end
+
+//清理规则begin
+sipo.analysis.rule.editfailed="修改失败！"
+sipo.analysis.rule.invent="发明"
+sipo.analysis.rule.newtype="实用新型"
+sipo.analysis.rule.design="外观设计"
+sipo.analysis.rule.editfailed="修改失败"
+sipo.analysis.rule.fixword="修正"
+sipo.analysis.rule.avaliable="有效"
+sipo.analysis.rule.uncentain="未决"
+sipo.analysis.rule.unavaliable="无效"
+sipo.analysis.rule.college="大专院校"
+sipo.analysis.rule.scientific="科研单位"
+sipo.analysis.rule.company="各类企业"
+sipo.analysis.rule.department="机关团体"
+sipo.analysis.rule.unknown="未知"
+sipo.analysis.rule.editproposercountry="请选择修正国家"
+sipo.analysis.rule.showfixunknowcolfail="显示修正字段tab页失败"
+//清理规则end
+
+//自定义清理规则begin
+sipo.analysis.customrule.addproposer="新增企业申请人清理规则"
+sipo.analysis.customrule.addinventor="新增发明人清理规则"
+sipo.analysis.customrule.addarea="新增省市区域清理规则"
+sipo.analysis.customrule.proposernameexists="企业申请人清理规则名称已经存在，请重新输入！";
+sipo.analysis.customrule.inventornameexists="发明人清理规则名称已经存在，请重新输入！";
+sipo.analysis.customrule.areanameexists="省市区域清理规则名称已经存在，请重新输入！";
+sipo.analysis.customrule.specialcharacter="只能输入中文、英文和数字的组合！";
+sipo.analysis.customrule.notonlynumber="不能只用数字命名清理规则！";
+sipo.analysis.customrule.addproposersuccess="新增企业申请人清理规则成功！"
+sipo.analysis.customrule.updateproposersuccess="修改企业申请人清理规则成功！"
+sipo.analysis.customrule.addareasuccess="新增省市区域清理规则成功！"
+sipo.analysis.customrule.updateareasuccess="修改省市区域清理规则成功！"
+sipo.analysis.customrule.addinventorsuccess="新增发明人清理规则成功！"
+sipo.analysis.customrule.updateinventorsuccess="修改发明人清理规则成功！"
+sipo.analysis.customrule.updatecorrectsuccess="拼写错误清理成功！"
+sipo.analysis.customrule.showcustomfixrulefail="显示清理规则页面失败"
+sipo.analysis.customrule.countrycodisnull="国别代码不能为空"
+sipo.analysis.customrule.ipccodeisnull="IPC分类号不能为空"
+sipo.analysis.customrule.pleasechooseonegroup="请至少选择一个清理规则！";
+sipo.analysis.customrule.pleasechooseonefixp="请至少选择一个待清理项！";
+sipo.analysis.customrule.pleasechoosealreadyfixp="请至少选择一个已清理项！";
+sipo.analysis.customrule.notoalreadysuccess="将待清理项转为已清理项成功！";
+sipo.analysis.customrule.alreadytonosuccess="将已清理项转为待清理项成功！";
+sipo.analysis.customrule.modifyfixrule="重命名清理规则";
+sipo.analysis.customrule.confirmdelete="您确定要删除该清理规则？";
+sipo.analysis.customrule.deletesuccess="删除清理规则成功！";
+sipo.analysis.customrule.countrycodeiserror="请用英文输入正确的国别代码";
+
+//自定义清理规则end
+
+//定制分析begin
+sipo.analysis.sepc.selectone="请选择一条特征"
+sipo.analysis.sepc.entrychar="请输入技术特征"
+sipo.analysis.sepc.entrykey="请输入关键词"
+sipo.analysis.sepc.editsuccess="修改成功"
+sipo.analysis.sepc.failed="失败"
+sipo.analysis.sepc.confirmdelete="确定删除吗？"
+sipo.analysis.sepc.choosechar="请选择特征"
+sipo.analysis.sepc.updatelistfailed="更新列表失败"
+sipo.analysis.sepc.choose="请进行选择（是/否）?"
+sipo.analysis.sepc.nameerror="查询条件不能包含有特殊字符。"
+sipo.analysis.sepc.supportcn="暂时只支持中国文献"
+sipo.analysis.sepc.entryinfor="请填写相关信息"
+sipo.analysis.sepc.entrycnorpn="请输入申请号或公开（公告）号"
+sipo.analysis.sepc.chooseoneipc="请至少在表格中选择一个技术领域进入到扩展分析！"
+sipo.analysis.sepc.chooseoneregion="请至少在表格中选择一个国家信息进入到扩展分析！"
+sipo.analysis.sepc.chooseoneregiontogl="请至少在表格中选择一个国家信息进入到指标分析！"
+sipo.analysis.sepc.chooseonepro="请至少在表格中选择一个核心竞争者进入到扩展分析！"
+sipo.analysis.sepc.chooseoneprotomatrix="请至少在表格中选择一个核心竞争者进入到专利矩阵分析！"
+sipo.analysis.sepc.chooseoneinv="请至少在表格中选择一个核心发明人！"
+sipo.analysis.sepc.threeyear="分析年份必须是3的倍数！"
+sipo.analysis.sepc.nochoosechar="没有选定的技术特征"
+sipo.analysis.sepc.nochooseyn="请对下列技术特征进行判断"
+sipo.analysis.sepc.high="<br>该专利与原专利属于高度相关"
+sipo.analysis.sepc.medium="<br>该专利与原专利属于非常相关"
+sipo.analysis.sepc.low="<br>该专利与原专利属于不相关"
+sipo.analysis.sepc.editchar="修改技术特征信息"
+sipo.analysis.sepc.addchar="增加技术特征信息"
+
+sipo.analysis.sepc.development="技术衍变趋势分析"
+sipo.analysis.sepc.developmentregion="地域分析"
+sipo.analysis.sepc.developmentproposer="申请人分析"
+sipo.analysis.sepc.developmentinventor="发明人分析"
+sipo.analysis.sepc.lifecycle="技术生命周期"
+sipo.analysis.sepc.region="地域性信息分布"
+sipo.analysis.sepc.regincountryguideline1="技术独立性指标"
+sipo.analysis.sepc.regincountryguideline2="国家专利竞争指标"
+sipo.analysis.sepc.regincountryguideline3="市场吸引力指标"
+sipo.analysis.sepc.reginipc="技术领域分析"
+sipo.analysis.sepc.reginproposer="申请人分析"
+sipo.analysis.sepc.regininventor="发明人分析"
+sipo.analysis.sepc.regincn1="专利类型统计"
+sipo.analysis.sepc.regincn2="发明专利法律状态"
+sipo.analysis.sepc.regincn3="各省分布情况"
+sipo.analysis.sepc.trend="申请趋势预测"
+sipo.analysis.sepc.competitor="核心申请人统计"
+sipo.analysis.sepc.competitorcollaborate="核心申请人之间合作分析"
+sipo.analysis.sepc.competitoripc="核心申请人与IPC技术领域对应分析"
+sipo.analysis.sepc.competitorapdate="核心申请人与申请年份对应分析"
+sipo.analysis.sepc.competitormarket="全球市场布置范围分析"
+sipo.analysis.sepc.competitorincrease="专利成长率分析"
+sipo.analysis.sepc.competitormature="技术研制的成熟程度分析"
+sipo.analysis.sepc.competitorstrength="研发实力分析"
+sipo.analysis.sepc.competitorarrangement="技术研发层次分析"
+sipo.analysis.sepc.competitorinter="国际化程度分析"
+sipo.analysis.sepc.invapdate="发明人与申请年份对应分析"
+sipo.analysis.sepc.inventorarrangement="技术研发层次分析"
+sipo.analysis.sepc.invcollaborate="核心发明人之间合作分析"
+sipo.analysis.sepc.inventorincrease="专利成长率分析"
+sipo.analysis.sepc.inventorcol="核心发明人统计"
+sipo.analysis.sepc.invipc="核心发明人与IPC技术领域对应分析"
+sipo.analysis.sepc.inventormarket="全球市场布置范围分析"
+sipo.analysis.sepc.inventormature="技术研制的成熟程度分析"
+sipo.analysis.sepc.inventorstrength="研发实力分析"
+sipo.analysis.sepc.coretechnic="核心技术统计"
+sipo.analysis.sepc.technicipc="技术领域申请趋势分析"
+sipo.analysis.sepc.technicarea="地域分布分析"
+sipo.analysis.sepc.technicproposer="申请人分析"
+sipo.analysis.sepc.technicinventor="发明人分析"
+
+sipo.analysis.sepc.centerproposer="核心申请人"
+sipo.analysis.sepc.centerinventor="核心发明人"
+sipo.analysis.sepc.centeripc="核心技术领域"
+sipo.analysis.sepc.chooseyn="针对每一技术特征，必须至少有一项选择“是”"
+
+//企业创新能力评价START
+sipo.analysis.sepc.calculationfail="计算企业创新能力失败"
+sipo.analysis.sepc.numisnotmatch="请输入0~1之间的小数或百分比"
+//企业创新能力评价END
+//定制分析end
+
+//条件选择begin
+sipo.analysis.condition.queryregion="获取区域条件失败！"
+sipo.analysis.condition.queryipc="获取技术领域条件失败！"
+sipo.analysis.condition.querypro="获取申请（专利权）人条件失败！"
+sipo.analysis.condition.queryinv="获取发明人条件失败！"
+sipo.analysis.condition.rulesuc="保存清理规则成功"
+sipo.analysis.condition.rulefail="保存清理规则失败"
+sipo.analysis.condition.noregion="没有满足条件的地域"
+sipo.analysis.condition.noipc="没有满足条件的技术领域"
+sipo.analysis.condition.nopro="没有满足条件的申请（专利权）人"
+sipo.analysis.condition.noinv="没有满足条件的发明人"
+sipo.analysis.condition.judgeconditionnull="没有满足条件的";
+sipo.analysis.condition.country="文献申请国"
+sipo.analysis.condition.city="申请人省市"
+sipo.analysis.condition.appcountry="申请人所在国"
+sipo.analysis.condition.prncountry="优先权国"
+sipo.analysis.condition.section="部"
+sipo.analysis.condition.dalei="大类"
+sipo.analysis.condition.subclass="小类"
+sipo.analysis.condition.checkdate="结束日期不能够小于开始日期！"
+sipo.analysis.condition.checknum="请填写0-20之间的数字！"
+sipo.analysis.condition.conditiontip="请选择要分析的条件"
+sipo.analysis.condition.citationtip="请在右边列表中选择绘制引文树的条件"
+//条件选择end
+
+//common begin
+sipo.analysis.common.cteatefail="加载图形控件失败，请刷新页面重试！"
+sipo.analysis.common.noresult="当前分析无分析结果！"
+sipo.analysis.common.changechartfail="切换展示图形失败！"
+sipo.analysis.common.gettableresultfail="获取表格分析结果失败！"
+sipo.analysis.common.getresultfail="获取分析结果失败！"
+
+sipo.analysis.common.changeprojectfailed="切换分析文献库失败！"
+sipo.analysis.common.noload="临时提示：子页面未载入完整"
+sipo.analysis.common.loading="数据正在加载中,请稍候......"
+sipo.analysis.common.trichartrule="三维图形显示规则"
+sipo.analysis.common.nodatatodispaly="当前分析无分析结果"
+//common end
+
+//deepAnalysis start
+sipo.analysis.deepanalysis.getconditionfail="获取钻取条件失败！"
+sipo.analysis.deepanalysis.selectcondition="请选择一个钻取条件"
+sipo.analysis.deepanalysis.selectconditions="请选择您要进行的操作"
+sipo.analysis.deepanalysis.deep="钻取分析"
+sipo.analysis.deepanalysis.showDetailList="查看列表详情"
+//deepAnalysis end
+//系统管理子系统
+//管理子系统
+sipo.sysmgr={};
+//+++++++++++++资源管理 begin++++++++++++++++++++
+sipo.sysmgr.resource={};
+sipo.sysmgr.resource.pleaseenteripc="请按照IPC8标准输入IPC分类号";
+//+++++++++++++++ 分析子系统 end ++++++++++++++++++++++++
+
+//--------------------------------Wee平台 Start--------------------------
+wee={platform:{}};
+wee.platform.okbutton="确 定";
+wee.platform.closebutton="关 闭";
+wee.platform.enClosebutton=" Close";
+wee.platform.cancelbutton="取 消";
+wee.platform.popDefaultTitle="提 示";
+wee.platform.enpopDefaultTitle="Title";
+wee.platform.errorMsgTitle="系统异常";
+wee.platform.enErrorMsgTitle=" System Exception";
+wee.platform.timeout="您的会话已超时，请重新登录！<br>Your session has timed out, please click<br> the button below to login again!";
+wee.platform.transtimeout="您的会话已超时，请重新登录！";
+wee.platform.reloginbutton="登录 Login"
+//--------------------------------Wee平台 End----------------------------
+sipo.search.i18n = {};
+sipo.search.i18n.message1 = "点击事件";

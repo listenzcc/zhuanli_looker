@@ -1,0 +1,406 @@
+$(document).ready(function(){
+	$.ajaxSetup({
+	  global: true,
+	  dataFilter:function(data,dataType){
+			if((data!=undefined||data!=null)&&data.indexOf("IsAjaxAndJsonData_")!=-1&&dataType=="json"){
+				window.location.href = contextPath +"/portal/uilogin-forwardLogin.shtml";
+			}else{
+				return data;
+			}
+		}
+	});
+});
+var showPersonalDialog;
+function showHelp(){
+	var d = dialog({
+	    align: 'bottom',
+	    width:60,
+	    height: 90,
+	    content: $("#centerContent").html(),
+	    quickClose: true
+	});
+	d.show(document.getElementById('helpCenter'));
+}
+$(function(){
+	//$(".nav-items>ul>li").eq($("#menu_pos").val()).addClass("active");
+	$(".nav-items>ul>li[name='"+$("#menu_pos").val()+"']").addClass("active");
+	$("#personalCenterHomeLi>ul>li").addClass("active");
+	//$("#ui_searchTools>ul>li").eq($("#child_pos").val()).addClass("active");
+//	$("#ui_searchTools").click(function(e){
+//		if($(this).find("ul").css("display") == "block"){
+//			$(this).find("ul").css("display","none");
+//		}else{
+//			$(this).find("ul").css("display","block");
+//		}
+//		e.stopPropagation();
+//	});
+//	$(window.document).click(function(){
+//		$("#ui_searchTools").find("ul").css("display","none");
+//	});
+	
+	$('.menuLI').live("click",function(){
+		var id = $(this).attr('menuId');
+		if(checkModulePermission(id)){
+			showSearchMenu(id);
+		}
+	});
+	
+	$('.main_menuLI').live("click",function(){
+		var id = $(this).attr('menuId');
+		if(checkModulePermission(id)){
+			showSearchMenu_main(id);
+		}
+	});
+	
+	//header--gen_portal
+	$('#gen_head').live("click",function(){
+		var id = 'ui_general_search';
+		if(checkModulePermission(id)){
+			showSearchMenu_main(id);
+		}
+	});
+	
+});
+/**首页点击IPC分类号进入导航检索
+**/
+function queryIpc(index){
+	//获取主机地址之后的目录， 
+	//var pathName=window.document.location.pathname;
+	//获取带"/"的项目名，如：/uimcardprj    
+	//var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	//window.open(projectName+"/patentsearch/showNavigationClassifyNum-showBasicClassifyNumPageByIPC.shtml?queryIpcQC.searchType=ClassifyNumSearch&&queryIpcQC.searchCondition="+index);
+//	$("#searchType").val('ClassifyNumSearch');
+//	$("#searchCondition").val(index);
+//	$("#queryIpcForm").submit();
+	
+//	$.ajax({
+//		type : "POST",
+//		url : contextPath+"/patentsearch/showNavigationClassifyNum-showBasicClassifyNumPageByIPC.shtml", 
+//		data:{
+//			 "queryIpcQC.searchType":'ClassifyNumSearch',
+//			 "queryIpcQC.searchCondition":index,
+//			 'wee.bizlog.modulelevel':"0101901"
+//		}, 
+//		success : function(data) {
+//			$('#globleBody').html(data);
+//		},
+//		error : function(XMLHttpRequest, textStatus, errorThrown) {
+//			return false;
+//		}
+//	});
+	if(!checkModulePermission('ui_navgationSearch')){
+		return;
+	}
+	var params = "queryIpcQC.searchCondition="+index+"&&wee.bizlog.modulelevel=0101901";
+	$.ajax({
+		url : contextPath + '/portal/paramRewriter-paramEncode.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		data : "params="+params,
+		success : function(data) {
+			params = data.params;
+			window.location.href = contextPath+"/patentsearch/showNavigationClassifyNum-showBasicClassifyNumPageByIPC.shtml?"+params;
+		},
+		error : function() {
+		}
+	});
+	
+	
+	
+	
+}
+
+//跳转分析页面
+function jumpToAnalysis(){
+	var userName = $("#userName").val();
+	var loginUrl = contextPath +"/portal/uilogin-forwardLogin.shtml";
+	var registerUrl = contextPath +"/portal/uiregister-showRegisterPage.shtml";
+	if(userName == '' || userName == 'undefind'){
+		 var d = dialog({
+			title: '提示',
+			content: '<p>匿名用户不能访问专利分析，请注册登录后使用！</p><p>登录地址：<a href='+loginUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p><p>如果您没有注册，注册地址：<a href='+registerUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p>',
+			okValue: sipo.search.tableSearch.ok,
+			ok: function () {}
+		})
+		d.showModal();
+	}else{
+		window.open(contextPath + "/analysis/proposetStat-initProposerTrend.shtml?params=991CFE73D4DF553253D44E119219BF31366856FF4B1522261A645708DE09C223E3775CD2E8DEA06641B4DB59FD11B7F44158339E1079C94A83A21BEF9E0976ADB04118DE11967B923716157CED29903DBC193A51ABFB1C0767FF0A36277556B6");
+	}
+}
+//获取根目录中第一个子节点menuId
+function jumpAnalysis(index){
+	switch(index){
+		case "0"://申请人分析
+			var menuId = "ui_applicant_trend_analysis";
+			returnToAnalysis(menuId);
+		break;
+		case "1"://发明人分析
+			var menuId = "ui_inventor_trend_analysis";
+			returnToAnalysis(menuId);
+		break;
+		case "2"://区域分析
+			var menuId = "ui_region_compose_analysis";
+			returnToAnalysis(menuId);
+		break;
+		case "3"://技术领域分析
+			var menuId = "ui_technical_trend_analysis";
+			returnToAnalysis(menuId);
+		break;
+		case "4"://中国专项分析
+			var menuId = "ui_patent_type_analysis";
+			returnToAnalysis(menuId);
+		break;
+		case "5"://高级分析
+			var menuId = "ui_list_date_analysis";
+			returnToAnalysis(menuId);
+		break;
+		
+	}
+}
+//跳转分析页面
+function returnToAnalysis(menuId){
+	var params = "menuId="+menuId;
+	params=params.replace(/\x26/g,'@==@');
+	$.ajax({
+		url : contextPath + '/portal/paramRewriter-paramEncode.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		data : "params="+params,
+		success : function(data) {
+			params = data.params;
+			var url = "showAnalysisMenu-menuPermission.shtml?"+params;
+			$("#menuAnalysisForm").attr("action",url);
+			$("#menuAnalysisForm").submit();
+		},
+		error : function() {
+		
+		}
+	});
+}
+//<n:UrlRewrite url="/portal/uiloginAC!forwardLogin.do"/>
+function forwardLogin(){
+	var url = window.location.href;
+	url = url.replace(/\%/g, "%25");
+	url = url.replace(/\&/g, "%26");
+	$("#forward_url").val(url);
+	$("#fowardLoginForm").submit();
+	
+}
+
+/**
+ * 过滤UI改版专利检索menu权限
+ * */
+function showSearchMenu(menuId){
+	if(menuId != "" && menuId != null){
+		$.ajax({
+			url : contextPath + '/portal/uiIndexAC!checkPermission.do',
+			type : 'post',
+			dataType : 'json',
+			data : {
+				"searchMenuId" : menuId
+			},
+			success : function(data) {
+				var searchMenuUrl = data.searchMenuUrl;
+				if(searchMenuUrl != null && searchMenuUrl !=""){
+					searchMenuUrl = contextPath + searchMenuUrl;
+					window.location.href = searchMenuUrl;
+				}				
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+            }
+		});
+	}
+}
+
+/**
+ * 过滤UI改版专利检索menu权限
+ * */
+function showSearchMenu_main(menuId){
+	if(menuId != "" && menuId != null){
+		$.ajax({
+			url : contextPath + '/portal/uiIndexAC!checkPermission.do',
+			type : 'post',
+			dataType : 'json',
+			data : {
+				"searchMenuId" : menuId
+			},
+			success : function(data) {
+				var searchMenuUrl = data.searchMenuUrl;
+				if(searchMenuUrl != null && searchMenuUrl !=""){
+					searchMenuUrl = contextPath + searchMenuUrl;
+					window.open(searchMenuUrl);
+				}				
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+            }
+		});
+	}
+}
+function jumpToAnalysisMenu(index){
+	var userName = $("#userName").val();
+	var loginUrl = contextPath +"/portal/uilogin-forwardLogin.shtml";
+	var registerUrl = contextPath +"/portal/uiregister-showRegisterPage.shtml";
+	if(userName == '' || userName == 'undefind'){
+		 var d = dialog({
+			title: '提示',
+			width:320,
+			content: '<p>匿名用户不能访问专利分析，请注册登录后使用！</p><p>登录地址：<a href='+loginUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p><p>如果您没有注册，注册地址：<a href='+registerUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p>',
+			okValue: sipo.search.tableSearch.ok,
+			ok: function () {}
+		})
+		d.showModal();
+	}else{
+		var url ='';
+		if(index == "1"){
+			//申请人分析
+			var menuId = "ui_applicant_trend_analysis";
+			checkMenuPermission(menuId);
+		}else if(index=="2"){
+			//发明人分析
+			var menuId = "ui_inventor_trend_analysis";
+			checkMenuPermission(menuId);
+		}else if(index=="3"){
+			//区域分析
+			var menuId = "ui_region_compose_analysis";
+			checkMenuPermission(menuId);
+		}else if(index=="4"){
+			//技术领域分析
+			var menuId = "ui_technical_trend_analysis";
+			checkMenuPermission(menuId);
+		}else if(index=="5"){
+			//中国专项分析 
+			var menuId = "ui_patent_type_analysis";
+			checkMenuPermission(menuId);
+		}else if(index=="6"){
+			//高级分析
+			var menuId = "ui_list_date_analysis";
+			checkMenuPermission(menuId);
+		}
+ 	}
+}
+//验证用户是否有权限跳转分析页面
+function checkMenuPermission(menuId){
+	var params = "menuId="+menuId;
+	params=params.replace(/\x26/g,'@==@');
+	$.ajax({
+		url : contextPath + '/portal/paramRewriter-paramEncode.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		data : "params="+params,
+		success : function(data) {
+			params = data.params;
+			var url =  contextPath +"/analysis/showAnalysisMenu-menuPermission.shtml?"+params;
+			window.location.href = url;
+		},
+		error : function() {
+		
+		}
+	});
+}
+
+function checkModulePermission(id){
+	var loginUrl = contextPath +"/portal/uilogin-forwardLogin.shtml";
+	var registerUrl = contextPath +"/portal/uiregister-showRegisterPage.shtml";
+	var content_tip1 = '<p>匿名用户不能访问';
+	var content_module = "";
+	if(id != null && id != '' && id != undefined){
+		switch(id){
+			case "ui_general_search":
+				content_module = "常规检索";
+			break;
+			case "ui_tableSearch":
+				content_module = "高级检索";
+			break;
+			case "ui_navgationSearch":
+				content_module = "导航检索";
+			break;
+			case "ui_buildSearch":
+				content_module = "自建专题库检索";
+			break;
+			case "ui_commandSearch":
+				content_module = "命令行检索";
+			break;
+			case "ui_medcineSearch":
+				content_module = "药物检索";
+			break;
+			case "tools_itself":
+				content_module = "热门工具";
+			break;
+			case "tools_cognation":
+				content_module = "同族查询";
+			break;
+			case "tools_quote":
+				content_module = "引证/被引证查询";
+			break;
+			case "tools_lawstate":
+				content_module = "法律状态查询";
+			break;
+			case "tools_proposer":
+				content_module = "申请人别名查询";
+			break;
+			case "tools_relevancenum":
+				content_module = "分类号关联查询";
+			break;
+			case "tools_doubleword":
+				content_module = "双语词典";
+			break;
+		}
+	}
+	var content_tip2 = '，请注册登录后使用！</p><p>登录地址：<a href='+loginUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p><p>如果您没有注册，注册地址：<a href='+registerUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a></p>';
+	var alive=false;
+	$.ajax({
+		url : contextPath+ '/portal/keepAlive.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		success : function(data) {
+			if (data.alive == false) {
+				var d = dialog({
+					title: '提示',
+					content: content_tip1 + content_module + content_tip2,
+					okValue: sipo.search.tableSearch.ok,
+					ok: function () {}
+				})
+				d.showModal();
+				alive=false;
+			}else{
+				alive=true;
+			}
+		},
+		error : function() {
+			alive=false;
+		}
+	});
+	return alive;
+}
+
+/*
+ * 验证用户是否有访问权限
+ */
+function validateServicePermission(_url){
+	var applicanUserUrl = contextPath + "/portal/uiregister-showGuidePage.shtml";
+	$.ajax({
+			type: "POST",
+			url: contextPath+"/portal/initPortalHome-validateServicePermission.shtml",
+			async:false,
+			success: function(data){
+				if(data.servicePermission == true){
+					 window.location.href = contextPath + _url;
+				}else{
+					var d = dialog({
+						title: '提示',
+						content: '<p>很抱歉，您没有权限访问该菜单，需要高级用户权限才可以使用。</p><p>如果需要申请高级用户，请查看申请向导：<a href='+applicanUserUrl+'><font style="color:rgb(112, 155, 194)">请点击这里</font></a>。</p>',
+						okValue: sipo.search.tableSearch.ok,
+						ok: function () {}
+					})
+					d.show();
+				}
+			},
+			error: function(){
+			}
+		}); 
+}
+

@@ -1,0 +1,36 @@
+@charset "utf-8";
+/**.main-body{height:1044px;min-height:924px;}**/
+.main-body .re-ri{}
+.main-body .re-ri .re-content{}
+.main-body .re-ri .re-content .re-table{width:100%;overflow-y:hidden;overflow-x:auto;}
+.main-body .re-ri .re-content .re-table table{width:100%;table-layout:fixed;}
+.main-body .re-ri .re-content .re-table table thead tr{border-bottom:1px solid #dbdbdb;}
+.main-body .re-ri .re-content .re-table table thead th{font-size: 1.4em;/*font-size:12px;　*/;color:#242424;text-align: center;padding:13px 0;}
+.main-body .re-ri .re-content .re-table table thead th,
+.main-body .re-ri .re-content .re-table table  td{text-overflow: ellipsis;  overflow: hidden;  white-space:nowrap;}
+.main-body .re-ri .re-content .re-table table thead th.w140{width:140px;}
+.main-body .re-ri .re-content .re-table table thead th.w123{width:123px;}
+.main-body .re-ri .re-content .re-table table thead th.w130{width:130px;}
+.main-body .re-ri .re-content .re-table table thead th.w100{width:100px;}
+.main-body .re-ri .re-content .re-table table thead th.w132{width:132px;}
+.main-body .re-ri .re-content .re-table table thead th.w190{width:190px;}
+.main-body .re-ri .re-content .re-table table tbody td{padding:15px 5px;text-align: center;color:#535353;font-size:12px;  line-height: 18px;height: 18px;vertical-align: middle;}
+.main-body .re-ri .re-content .re-table table tbody td a{font-size:12px;color:#535353;}
+
+.re_page_content_bottom {width : 100%;}
+
+/*.main-body .re-ri .re-content .re-table table tbody td .operation{}*/
+.main-body .re-ri .re-content .re-table table tbody tr.even td{background:#f7f7f8;}
+
+.main-body .re-ri .re-content .re-table table tbody td a{width:21px;height: 21px;margin:0 1px;}
+.main-body .re-ri .re-content .re-table table tbody td a.select-all_sm{background: url("../images/select-all_sm.png") no-repeat center center;}
+.main-body .re-ri .re-content .re-table table tbody td a.collection_sm{background: url("../images/collection_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.down_sm{background: url("../images/down_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.analyze_sm{background: url("../images/analyze_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.mark_sm{background: url("../images/mark_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.full-text_sm{background: url("../images/full-text_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.watch_sm{background: url("../images/watch.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.proposor_sm{background: url("../images/inventor_sm.png") no-repeat center center; }
+.main-body .re-ri .re-content .re-table table tbody td a.lawstate_sm{background: url("../images/lawstate_sm.png") no-repeat center center; }
+
+.main-body .re-ri .re-content .re-table table tbody td font{color:red;font-size:12px;}

@@ -1,0 +1,530 @@
+var selectType_general = "AI";// 检索类型,用户区分检索类型
+var searchExp_general = "";
+$(function() {
+	
+	if(!getCookieImportantNotice('hardwareBug')){
+	      //重要通知
+	      $("#popup_poster").addClass("showTime");
+	      //系统功能故障 - 弹窗
+	      setTimeout(function(){
+	          $("#popup_poster").removeClass('showTime');
+	      },20000);
+	}
+	
+  //重要通知  弹窗 - 关闭
+    $(document).on("click","#popup_poster span",function(){
+        $("#popup_poster").removeClass('showTime');
+        setCookieImportantNotice();
+    });
+
+    //重要通知 弹窗 - 查看
+    $(document).on("click","#popup_poster a",function(){
+    	var url = contextPath + "/portal/showUIContentDetail-showContentDetail.shtml?params=991CFE73D4DF553253D44E119219BF31366856FF4B1522262FA5BBC8CD3E57403028E34AB967B99CB3D126FF5325F451CD0189F2411434D86A3130CEF6FB5B03480ADCE872574C4CEAE11CE6D6C6A59951E02730C0574CD9400D732514D4CEB1";
+        window.open(url);
+        setCookieImportantNotice();
+    });
+    
+	//绑定checkbox点击事件 start   by zhengchj
+	$("#checkbox_select_all").click(function(){
+		var me=$(this);
+		if(me.hasClass("checked")){
+			$("#left_icon_extend").find(".checkbox-area>label>span").removeClass("checked");
+		}else{
+			$("#left_icon_extend").find(".checkbox-area>label>span").addClass("checked");
+		}
+	})
+	$("#left_icon_extend span[name='checkbox_select_row']").click(function(){
+		var me=$(this);
+		var root=me.parent().parent().parent().parent();
+		if(me.hasClass("checked")){
+			root.find(".checkbox-area>label>span").removeClass("checked");
+		}else{
+			root.find(".checkbox-area>label>span").addClass("checked");
+		}
+	})
+	$("#left_icon_extend").find("[name='checkbox_select_normal'] span").click(function(){
+		var me=$(this);
+		if(me.hasClass("checked")){
+			me.removeClass("checked");
+		}else{
+			me.addClass("checked");
+		}
+	})
+	//绑定checkbox点击事件 end   by zhengchj     **/
+	
+	
+	
+	//引用的表格检索cue
+	sipo.search.tablesearch.cue.manCharactersContent="<li>如果输入有空格，则需加英文双引号，如<span>\"沈阳 中国石油\"</span>；否则系统将按照<span>沈阳 OR 中国石油</span>检索。</li><li>如果输入保留关键字(运算符)，需要在保留关键字两边加英文的双引号。例如<span>沈阳 \"and\" 中国石油</span>、<span>\"(沈阳)\"</span>。</li>";
+	sipo.search.tablesearch.cue.applicateNumTitle="申请号";
+	sipo.search.tablesearch.cue.publicNumTitle="公开（公告）号";
+	sipo.search.tablesearch.cue.applicantTitle="申请（专利权）人";
+	sipo.search.tablesearch.cue.inventorTitle="发明人";
+	sipo.search.tablesearch.cue.inventionTitle="发明名称";
+	
+	sipo.search.tablesearch.cue.zlContent="<li>输入<span>ZL123456789</span>,系统会按照<span>CN123456789</span>进行检索。</li>";
+	sipo.search.tablesearch.cue.matching="<li>支持模糊匹配，如果输入<span>12345</span>,系统会按照<span>CN12345 </span><span>OR 123456789</span>进行检索。</li>";
+	sipo.search.tablesearch.cue.numORContent="<li>输入<span>CN123456789 CN987654321</span>，系统会按照<span>CN123456789 OR CN987654321</span>进行检索。</li>";
+	sipo.search.tablesearch.cue.nonsupport="<li>不支持所有临近同在运算符：<span>F、P、S、W、D、NOTF、NOTP、nW、nD</span>。</li>";
+	sipo.search.tablesearch.cue.numContent=sipo.search.tablesearch.cue.numORContent+sipo.search.tablesearch.cue.nonsupport;
+	
+	//关键词
+	sipo.search.tablesearch.cue.kwContent="<li>在<span>发明标题</span>、<span>摘要</span>和<span>权利要求</span>中同时检索。</li>"+sipo.search.tablesearch.cue.charContent;
+	//常规检索提示借用表格检索的提示，故放表格下面
+	sipo.search.generalsearch.cue={};
+	sipo.search.generalsearch.cue.defaultTitile="检索要素";
+	sipo.search.generalsearch.cue.defaultOne="<li>在<span>标题</span>、<span>摘要</span>、<span>权利要求</span>和<span>分类号</span>中同时检索。</li>";
+	sipo.search.generalsearch.cue.NumFunctor="<li>支持二目逻辑运算符<span>or</span>、<span>not</span>。</li>";
+	sipo.search.generalsearch.cue.cut="<li>支持截词符<span>+</span>、<span>?</span>、<span>#</span>。<span>+</span>：任意长度的字符串；<span>?</span>：一个或没有字符；<span>#</span>：一个强制存在的字符。所有截词符均为<span>半角字符</span>。</li>";
+	sipo.search.generalsearch.cue.anContent="<li>申请号格式：<span>文献的申请国+申请流水号</span>。例如：<span>CN123456789</span>。</li>";
+	sipo.search.generalsearch.cue.pnContent="<li>公开（公告）号格式：<span>文献的公开国+公开流水号+公布级别</span>。例如：<span>CN123456789A</span>。</li>";
+	sipo.search.generalsearch.cue.anCheckBit="<li>自动去掉校验位，如果输入<span>CN12345678.9</span>，系统会按照<span>CN12345678</span>进行检索。</li>";
+	sipo.search.generalsearch.cue.common="<li>支持二目逻辑运算符<span>and</span>、<span >or</span>、<span>not</span>。</li>";
+	sipo.search.generalsearch.cue.defaultContent=sipo.search.generalsearch.cue.defaultOne+sipo.search.generalsearch.cue.common+sipo.search.tablesearch.cue.manCharactersContent;
+	sipo.search.generalsearch.cue.commonNameContent=sipo.search.generalsearch.cue.common+sipo.search.tablesearch.cue.manCharactersContent;
+	sipo.search.generalsearch.cue.numCommon=sipo.search.tablesearch.cue.numORContent+sipo.search.generalsearch.cue.cut+sipo.search.generalsearch.cue.NumFunctor;
+	sipo.search.generalsearch.cue.apContent=sipo.search.generalsearch.cue.anContent+sipo.search.generalsearch.cue.anCheckBit+sipo.search.tablesearch.cue.zlContent+sipo.search.tablesearch.cue.matching+sipo.search.generalsearch.cue.numCommon;
+	sipo.search.generalsearch.cue.pnContent=sipo.search.generalsearch.cue.pnContent+sipo.search.tablesearch.cue.zlContent+sipo.search.tablesearch.cue.matching+sipo.search.generalsearch.cue.numCommon;
+	/************=======================蛤蟆=============================**/
+	//一站式检索提示
+	sipo.search.smartsearch={};
+	sipo.search.smartsearch.cue={};
+	sipo.search.smartsearch.cue.defaultTitile="自动识别";
+	sipo.search.smartsearch.cue.defaultContent1="<li>支持二目逻辑运算符<span>AND</span>、<span>OR</span>。</li>";
+	sipo.search.smartsearch.cue.defaultContent2="<li>多个检索词之间用空格间隔，如：<span>智能 手机</span>。</li>";
+	sipo.search.smartsearch.cue.defaultContent3="<li>系统默认二目逻辑运算符是<span>AND</span>,如输入<span>智能 手机</span>，系统按照<span>智能 AND 手机</span>进行检索。</li>";
+	sipo.search.smartsearch.cue.defaultContent4="<li>日期支持间隔符<span>\"-\"</span>、<span>\".\"</span>，支持如下格式：<span>YYYY-MM-DD、YYYY.MM.DD、YYYYMMDD、YYYYMM、YYYY</span>。</li>";
+	sipo.search.smartsearch.cue.defaultContent5="<li>支持半角<span>()</span>算符，如输入<span>国产 (智能 手机)</span>，系统优先执行<span>智能 AND 手机</span>，然后将所得结果集与<span>国产</span>进行<span>AND</span>运算。</li>";
+	sipo.search.smartsearch.cue.defaultContent6="<li>如果检索条件中包含<span>空格、保留关键字</span>或<span>运算符</span>，需使用<span>半角双引号</span>，如：<span>\"WILLIAMS AND LANE INC\"</span>。</li>";
+	sipo.search.smartsearch.cue.defaultContent=sipo.search.smartsearch.cue.defaultContent1+sipo.search.smartsearch.cue.defaultContent2+sipo.search.smartsearch.cue.defaultContent3+sipo.search.smartsearch.cue.defaultContent4+sipo.search.smartsearch.cue.defaultContent5+sipo.search.smartsearch.cue.defaultContent6;
+
+	
+	
+	$("#search_input").focus();
+	
+//	$("#search_input").jqTip({
+//		title : "default",
+//		content : "default",
+//		width : 400
+//	});
+	showCueDiv_general("AI");
+	
+	$("input[name='radioType']").click(function(){
+		showCueDiv_general($(this).attr("value"));
+//		unautocomplete_generalSearch();
+		autocomplete_generalSearch($(this).attr("value"));
+	});
+	
+	var searchExpFromIndex = $("#searchExpFromIndex").val();
+	if(searchExpFromIndex != "" && searchExpFromIndex != null){
+		$("#search_input").val(searchExpFromIndex);
+		$("#search_input").blur();
+		search();
+	}
+	
+	// 执行检索
+	$("#btn_generalSearch").click(function() {
+		if(!checkModulePermission('ui_general_search')){
+			return;
+		}
+		onCheckOnPage();
+		if($.trim($("#search_input").val())==""){
+			var d = dialog({
+			    title: sipo.search.generalsearch.tips,
+			    width : 260,
+				fixed:true,
+			    content: sipo.search.generalsearch.inputContent,
+			    ok: function(){return true},
+			    okValue: sipo.search.generalsearch.OK
+			}).showModal();
+			return false;
+		}
+		$("#search_input").blur();
+		search();
+	});
+
+	// 添加回车监听
+	$('#search_input').bind("keydown", function(event) {
+		return enterKeySubmit(event,'search_input','btn_generalSearch',null);
+	});
+});
+/***
+ * 新增需求：对PCF号进行转换
+ * @param strInput
+ * @return
+ */
+function PCFOperation(strInput){
+	var newStrInput=strInput;
+	var myDate = new Date();
+	var nowYear=myDate.getFullYear().toString(); 
+	var nowYearFormat=nowYear.slice(2);
+	//匹配PCT/原始国国别CC+YY/+NNNNN类型的PCT  (PCT/US93/09294)
+	var PCTReg1 = /^[a-zA-Z]{3}\/[a-zA-Z]{2}\d{2}\/\d{5}$/;
+	if (PCTReg1.test(strInput)) {
+		var indexValue=strInput.split('/');
+		var PFTCountry='WO';
+		var countryId=indexValue[1].slice(0,2);
+		var year=indexValue[1].slice(2,4);
+		var randomNum=indexValue[2];
+		if (year>nowYearFormat) {
+			year = "19" + year;
+		} else {
+			year = "20" + year;
+		}
+		newStrInput=PFTCountry+year+countryId+randomNum;
+	}
+	//匹配PCT/原始国国别CC+YYYY/+NNNNNN  （PCT/GB2004/002203）
+	var PCTReg2 = /^[a-zA-Z]{3}\/[a-zA-Z]{2}\d{4}\/\d{6}$/;
+	if (PCTReg2.test(strInput)) {
+		var indexValue=strInput.split('/');
+		var PFTCountry='WO';
+		var countryId=indexValue[1].slice(0,2);
+		var year=indexValue[1].slice(2);
+		var randomNum=indexValue[2];
+		var randomNumOne=randomNum.slice(0,1);
+		if(randomNumOne=='0'){
+			randomNum=randomNum.slice(1);
+		}
+		newStrInput=PFTCountry+year+countryId+randomNum;
+	}
+	return newStrInput;
+}
+function search() {
+//	if ($("#search_input").validation()) {
+		var searchExpVal;
+		var action;
+		var strInput = $.trim($("#search_input").val());
+		var typeName = "";
+		var typeValue = "";
+		if($("#searchCondition_type").val() != "" && $("#searchCondition_type").val() != null && $("#searchCondition_type").val() != 'undefined'){
+			typeValue = $("#searchCondition_type").val();
+			$(":radio").each(function(index) {
+			    if ($(":radio").get(index).value == typeValue) {
+			    	typeName = $(":radio").eq(index).next().html();
+			    }
+			});
+		}else{
+			typeName = $(":radio:checked").next().html();
+			typeValue = $(":radio:checked").val();
+		}
+		typeName = $.trim(typeName);
+		selectType_general = typeValue;
+		if (typeValue == 'AI') {
+			searchExpVal = strInput.replace(/\"/g, "%22");
+			action = "executeSmartSearchMDkyMQ-executeSmartSearch.shtml";
+		} else {
+			if (typeValue == 'UNI_AN' || typeValue == 'UNI_PN') {
+				strInput=PCFOperation(strInput);
+				if (strInput.slice(0, 1) == "+") {
+					strInput = strInput.slice(1);
+				}
+				// 中国文献ZL转CN
+				if (strInput.slice(0, 2).toUpperCase() == 'ZL') {
+					strInput = "CN" + strInput.slice(2);
+				}
+				// 处理申请号校验位
+				if (typeValue == 'UNI_AN') {
+					strInput = strInput.split(".")[0];
+				}
+				// 验证前两位是否为字母
+				var numReg = /^[a-zA-Z]{2}$/;
+				if (!numReg.test(strInput.slice(0, 2))) {
+					strInput = "+" + strInput;
+				}
+				if (strInput.slice(strInput.length - 1) != "+") {
+					strInput = strInput + "+";
+				}
+			}
+			searchExpVal = organiseExp(strInput, typeName);
+			action = "executeGeneralSearchMDkyMQ-executeGeneralSearch.shtml";
+		}
+		$("#searchInfoCommon").val($.trim(strInput));
+		searchExp_general = $.trim(strInput);
+		commonSearch(searchExpVal, "resultDiv", action,typeValue);
+//	}
+}
+
+/**
+ * 组织检索式，返回code=(value)的形式
+ */
+function organiseExp(str, index) {
+	var reVal = "";
+	str=$.trim(str);
+	reVal = index+"=("+str+")";
+	//reVal = index+"="+str;
+	return reVal;
+}
+
+//根据检索式和targetId发送检索请求
+function commonSearch(searchExp1, targetId, action,typeValue) {
+	var searchExpVal = searchExp1.replace(/\"/g, "%22");
+	$("#searchCondition_searchExp").val(searchExpVal);
+	//拼接数据范围条件
+	if($("#searchCondition_scope").val() == "" || $("#searchCondition_scope").val() == null || $("#searchCondition_scope").val() == 'undefined'){
+		generate_searchCondition_scope();
+	}
+	var sc = $.param($("#executeGeneralSearchACForm").find("input"));
+	showBlock();//改为资源文件
+	$.ajax({
+				type : "POST",
+				url : contextPath + "/patentsearch/" + action,
+				data : sc,
+				success : function(jsonData) {
+					reload_common_history();
+					$("#"+targetId).empty();
+					var resultListHtml;
+					if(typeValue == "GEN"){
+						resultListHtml = generateResultWithSetting(jsonData);
+					}else{
+						resultListHtml = generate_common_result(jsonData,typeValue);
+					}
+					$("#"+targetId).html(resultListHtml);
+					$("#drillSearchMode").val("general_search");
+					closeBlock();
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					closeBlock();
+				}
+			});
+}
+
+function generate_searchCondition_scope(){
+	var searchCondition_scope ='';
+	var temp_scope = '';
+	$("#left_icon_extend").find("span[name='countrytypevalue']").each(function (index, domEle){ 
+		if($(domEle).hasClass("checked")){
+			var tempVal = $(this).attr("value");
+			if(temp_scope == ''){
+				if(tempVal == "DE/DD"){
+					temp_scope = "CC=(@@@@DE@@@@) OR CC=(@@@@DD@@@@)";
+				}else{
+					temp_scope = "CC=(@@@@" + tempVal + "@@@@)";
+				}
+			}else{
+				if(tempVal == "DE/DD"){
+					temp_scope += " OR CC=(@@@@DE@@@@) OR CC=(@@@@DD@@@@)";
+				}else{
+					temp_scope += " OR CC=(@@@@" + tempVal + "@@@@)";
+				}
+			}
+			
+			
+		} 
+	});
+	
+	$("#left_icon_extend").find("span[name='inventiontype']").each(function (index, domEle){ 
+		if($(domEle).hasClass("checked")){
+			if($(domEle).attr('value') == "I" || $(domEle).attr('value') == "U" || $(domEle).attr('value') == "D"){
+				cn_flag = true;
+			}
+			var tempVal = $(this).attr("value");
+			if(temp_scope == ''){
+				if(cn_flag){
+					temp_scope = "(DOC_TYPE=(@@@@" + tempVal + "@@@@) AND CC=(@@@@CN@@@@))";
+				}else{
+					temp_scope = "(DOC_TYPE=(@@@@" + tempVal + "@@@@))";
+				}
+				
+			}else{
+				if(cn_flag){
+					temp_scope += " OR (DOC_TYPE=(@@@@" + tempVal + "@@@@) AND CC=(@@@@CN@@@@))";
+				}else{
+					temp_scope += " OR (DOC_TYPE=(@@@@" + tempVal + "@@@@))";
+				}
+				
+			}
+		} 
+	});
+	
+	if(temp_scope != ''){
+		searchCondition_scope += " AND ("+temp_scope+")";
+	}
+	$("#searchCondition_scope").val(searchCondition_scope);
+}
+
+//提示信息
+function showCueDiv_general(type) {
+	switch (type) {
+	  case "AI":
+		setCueContent_general(sipo.search.smartsearch.cue.defaultTitile,sipo.search.smartsearch.cue.defaultContent);
+	  	break;
+	  case "BI":
+		setCueContent_general(sipo.search.generalsearch.cue.defaultTitile, sipo.search.generalsearch.cue.defaultContent);
+		break;
+	  case "UNI_AN":
+		setCueContent_general(sipo.search.tablesearch.cue.applicateNumTitle, sipo.search.generalsearch.cue.apContent);
+		break;
+	  case "UNI_PN":
+		setCueContent_general(sipo.search.tablesearch.cue.publicNumTitle, sipo.search.generalsearch.cue.pnContent);
+		break;
+	  case "PAVIEW":
+		setCueContent_general(sipo.search.tablesearch.cue.applicantTitle, sipo.search.generalsearch.cue.commonNameContent);
+		break;
+	  case "INVIEW":
+		setCueContent_general(sipo.search.tablesearch.cue.inventorTitle, sipo.search.generalsearch.cue.commonNameContent);
+		break;
+	  case "TIVIEW":
+		setCueContent_general(sipo.search.tablesearch.cue.inventionTitle, sipo.search.generalsearch.cue.commonNameContent);
+		break;
+	}
+}
+
+function setCueContent_general(title,content){
+	//备份原提示信息
+//	$("#search_input").setTipTitle(title);
+//	$("#search_input").setTipContent(content);
+	$("#tipTitle").html("检索模式："+title);
+	$("#tipInfo").html(content);
+}
+
+function unautocomplete_generalSearch(){
+//	$(input).unautocomplete();
+	var $search_input = $("#search_input");
+	var $parent = $search_input.parent();
+	var value = $search_input.val();
+	var inputHtml = $parent.html();
+	$parent.empty();
+	$parent.append(inputHtml);
+	$search_input.val(value);
+	//提示信息
+	$search_input.bind("keypress", function (event) {
+		if(!$(".ac_results").is(":visible")){
+			return enterKeySubmit(event,'search_input','btn_generalSearch',null);
+		}else if($(".ac_over").length<1){
+			return enterKeySubmit(event,'search_input','btn_generalSearch',null);
+		}
+	});
+}
+function autocomplete_generalSearch(type){
+	var $search_input = $("#search_input");
+	$search_input.bind("focus", function (event){
+		try{
+		var txt = this.createTextRange(); 
+		txt.moveStart('character',this.value.length);    
+		txt.collapse(true);    
+		txt.select();
+		}catch(e){}
+	});
+	switch (type) {
+	  case "AI":
+	  case "BI":
+	  	break;
+	  case "UNI_AN":
+	  case "UNI_PN":
+	  autocompleteremote2(type);
+		break;
+	  case "PAVIEW":
+	  case "INVIEW":
+	  case "TIVIEW":
+		autocompleteremote(type);
+		break;
+	}
+}
+
+function autocompleteremote(type){
+	var $search_input = $("#search_input");
+    var params = 'type=' +type;
+	params=params.replace(/\x26/g,'@==@');
+	$.ajax({
+		url : contextPath + '/portal/paramRewriter-paramEncode.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		data : "params="+params,
+		success : function(data) {
+			params = data.params;
+			$search_input.autocomplete(contextPath+'/patentsearch/showAssociationalWord-showAssociationalWord.shtml?'+params, {
+		multiple: false,		
+//		multipleSeparator : " ",
+		minChars: 0,
+		scrollHeight: 210,
+		mustMatch: false,	
+		selectFirst: false,
+		autoFill: false,
+		dataType: "json",
+		parse: function(data) {
+			if(data.associationalWordList && data.associationalWordList.length>=1){
+				return $.map(data.associationalWordList, function(row) {
+					return {
+						data: row,
+						value: row,
+						result: "\""+row + "\""
+					}
+				});
+			}else{
+				return [];
+			}
+		},
+		formatItem: function(item) {
+			return item;
+		}
+	});
+		},
+		error : function() {
+		}
+	});
+//	autocomleteObject.result(function(e, item) {
+//		return false;
+//	});
+}
+
+function autocompleteremote2(type){
+	var $search_input = $("#search_input");
+    var params = 'type=' +type;
+	params=params.replace(/\x26/g,'@==@');
+	$.ajax({
+		url : contextPath + '/portal/paramRewriter-paramEncode.shtml',
+		async: false,
+		type : 'post',
+		dataType : 'json',
+		data : "params="+params,
+		success : function(data) {
+		$search_input.autocomplete(contextPath+'/patentsearch/searchCountryCode-retrieveCountryCode.shtml?' +params, {
+		multiple: false,		
+//		multipleSeparator : " ",
+		minChars: 0,
+		scrollHeight: 210,
+		mustMatch: false,	
+		selectFirst: false,
+		autoFill: false,
+		dataType: "json",
+		parse: function(data) {
+			if(data.countryCodeList && data.countryCodeList.length>=1){
+//				alert(data.q);
+				return $.map(data.countryCodeList, function(row) {
+					return {
+						data: row.code + " <" + row.name + ">",
+						value: row.code + " <" + row.name + ">",
+						result: row.code
+					}
+				});
+			}else{
+				return [];
+			}
+		},
+		formatItem: function(item) {
+			return item;
+		}
+	});
+		},
+		error : function() {
+		
+		}
+	});
+//	autocomleteObject.result(function(e, item) {
+//		return false;
+//	});
+	
+}
+//获取cookie
+function getCookieImportantNotice(name) {
+    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");    //匹配字段
+    return document.cookie.match(reg);
+}
+
+// 添加cookie
+function setCookieImportantNotice(){
+    var date = new Date();
+    date.setTime(date.getTime() + 24 * 180 * 3600 * 1000); //半年
+    document.cookie = "hardwareBug=true;expires=" + date.toGMTString();
+}

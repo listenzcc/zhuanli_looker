@@ -1,0 +1,104 @@
+.search-mode-content .left{
+    float: left;
+}
+.search-mode-content .right{
+    float: right;
+}
+
+.main-body .re-ri .search-mode-content .list-container{
+
+}
+.main-body .re-ri .search-mode-content .list-container ul{
+    list-style: none;
+}
+.main-body .re-ri .search-mode-content .list-container ul li{
+    padding: 10px 25px;
+}
+.main-body .re-ri .search-mode-content .list-container ul li.bottomApp{
+    border-bottom: rgb(213,219,231) 2px solid; 
+}
+
+.main-body .re-ri .search-mode-content .list-container ul li.sameApp{
+    border-top: rgb(213,219,231) 1px dashed; 
+}
+.main-body .re-ri .search-mode-content .list-container ul li.normalApp{
+    border-top: rgb(213,219,231) 2px solid; 
+}
+
+.main-body .re-ri .search-mode-content .list-container ul li h1{
+    font-size: 1.6em;
+    margin-right: 10px;
+    line-height: 26px;
+}
+.main-body .re-ri .search-mode-content .list-container ul li h1 input{
+    margin-right: 9px;
+}
+.search-mode-content .btn-group{
+
+}
+.search-mode-content .btn-group .btn{
+    float: left;
+}
+.search-mode-content .btn-group .btn-tag{
+    background-color: rgb(72,166,238);
+    padding: 6px 3px;
+    font-size: 1.4em;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.search-mode-content .btn-group .btn-tag-unable{
+    background-color: #ccc;
+    padding: 6px 3px;
+    font-size: 1.4em;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.search-mode-content .item .item-content .item-content-body{
+    width: 550px;
+    margin-left: 25px;
+}
+.search-mode-content .item .item-content{
+    border-bottom: 1px dotted rgb(213,219,231);
+}
+.search-mode-content .item .item-content .item-content-body p{
+    font-size: 1.4em;
+    color: rgb(75,75,75);
+    line-height: 30px;
+}
+.search-mode-content .item .item-content .item-content-body p a{color:#2da3e2;}
+.search-mode-content .item .item-content .item-content-img{
+    margin:10px 25px;
+}
+.search-mode-content .item .item-footer{
+    margin-top: 10px;
+}
+.search-mode-content .btn-group .btn-operation{
+    background-color: rgb(72,166,238);
+    padding: 6px 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    font-size: 1.4em;
+}
+.search-mode-content .btn-group .btn-operation.btn-translate{
+    background-color: rgb(249,152,35);
+}
+
+.search-mode-content .item .item-content .item-content-body p.abview-content sub{
+	vertical-align: sub;
+    font-size: smaller;
+}
+
+.search-mode-content .item .item-content .item-content-body p.abview-content sup{
+	vertical-align: super;
+    font-size: smaller;
+}
+
+.search-mode-content .item .item-content .item-content-body p.abview-content sb{
+	vertical-align: sub;
+    font-size: smaller;
+}
+
+.search-mode-content .item .item-content .item-content-body p.abview-content sp{
+	vertical-align: super;
+    font-size: smaller;
+}

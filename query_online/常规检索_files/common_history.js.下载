@@ -1,0 +1,488 @@
+var common_top_slider; // 检索历史插件对象
+var g_mode;
+var searchTips = "<li>可使用运算符关联检索式，支持AND、OR、NOT、以及括号“()”等运算符，数字将优先解析为检索式历史编号。例如<span>“(1 AND 2) OR (关键词=(电脑))”</span> 系统会将编号为1和2的检索式使用<span>“AND”</span>运算符关联并与后续检索式运算</li>"
+/**
+* 检索历史
+*/
+	function initSlideBox(mode){
+		var dbId;
+		var searchType;
+		g_mode = mode;
+		if(mode == "MODE_MEDICINE"){//药物检索
+			dbId = "MED";
+			searchType = "medicine";
+		}else if(mode == "MODE_PRESCRIPTION"){// 方及检索
+			dbId = "CMEFM";
+			searchType = "formulation";
+		}else{// 其它检索
+			dbId = "VDB";
+			searchType = "Sino_foreign";
+		}
+	 common_top_slider = $("#common_search_history").slideBox({
+	        itemWidth:275,
+	        itemHeight:154,
+	        limit:4,
+	        ajax:{
+	            dataKey:"searchHistoryList",
+	            url:contextPath +'/patentsearch/showSearchHistory-showSearchHistoryList.shtml',
+	            data:{
+	        	    "searchHistory.dbCode":dbId,
+					"searchHistory.searchType":searchType,
+					"searchHistory.searchMode":mode,
+					"historyPagination.limit":4,
+					"historyPagination.start":0
+	            },
+	            totalCountKey:"historyPagination.totalCount",
+	            limitPageKey:"historyPagination.limit",
+	            startPageKey:"historyPagination.start",
+	            render:function(item){
+	            	if(item=="default"){
+	            		return '<img style="width:252px; height:152px; margin-left:15px;" src="'+contextPath+'/search-ui/app/navigationsearch/images/no.png"/>';
+	            	}
+	            	var searchMode = "";
+					if(item.searchMode == "MODE_GENERAL" || item.searchMode == "MODE_SMART"){
+						searchMode = "常规检索";
+					}else if(item.searchMode == "MODE_TABLE"){
+						searchMode = "高级检索";
+					}else if(item.searchMode == "MODE_HISTORY"){
+						searchMode = "历史表检索";
+					}else if(item.searchMode == "COGNATION_SEARCH"){
+						searchMode = "同族检索";
+					}else if(item.searchMode == "PROPOSER_ALIAS_SEARCH"){
+						searchMode = "申请人别名查询";
+					}else if(item.searchMode == "MODE_MEDICINE"){
+						searchMode = "药物检索";
+					}else if(item.searchMode == "MODE_PRESCRIPTION"){
+						searchMode = "方剂检索";
+					}else if(item.searchMode == "MODE_IPC"){
+						searchMode = "导航检索";
+					}else if(item.searchMode == "MODE_BUILD"){
+						searchMode = "自建专题库检索";
+					}else if(item.searchMode == "MODE_CMD"){
+						searchMode = "命令行检索";
+					}
+					var hitNum='' + item.hitNum;
+					if(hitNum.length>8){
+						hitNum = hitNum.substring(0,6)+'...';
+					}
+					if(mode == "MODE_GENERAL" || mode == "MODE_SMART"){//常规检索、自动识别取消引用按钮功能
+						return '<div class="history-item"><div class="history-search history-row clear"><span class="history-order history-left">'+item.displayId+'</span><a href="javascript:;" title="'+searchMode+'" class="history-btn-general-search history-right">'+searchMode+'</a></div><div class="history-exp-title history-row"><span class="history-exp" title=\''+item.shorSearchFormula+'\' style="width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;">'+item.shorSearchFormula+'</span></div><div class="history-info history-row clear"><span class="history-count history-left">'+hitNum+'篇</span><span class="history-date history-right">'+item.searchTime.substring(0,10)+'</span></div><div class="history-btn-group history-row clear"><a href="javascript:;" class="history-btn history-btn-quote-disabled history-left">引 用</a><a href="javascript:;" class="history-btn history-btn-view history-right" onclick = "navigation_browse(\''+item.ssId+'\')">检 索</a></div></div>'
+					}
+	                return '<div class="history-item"><div class="history-search history-row clear"><span class="history-order history-left">'+item.displayId+'</span><a href="javascript:;" title="'+searchMode+'" class="history-btn-general-search history-right">'+searchMode+'</a></div><div class="history-exp-title history-row"><span class="history-exp" title=\''+item.shorSearchFormula+'\' style="width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;">'+item.shorSearchFormula+'</span></div><div class="history-info history-row clear"><span class="history-count history-left" title="'+item.hitNum+'">'+hitNum+'篇</span><span class="history-date history-right">'+item.searchTime.substring(0,10)+'</span></div><div class="history-btn-group history-row clear"><a href="javascript:;" class="history-btn history-btn-quote history-left" onclick = "quote_history(\''+item.ssId+'\')">引 用</a><a href="javascript:;" class="history-btn history-btn-view history-right" onclick = "navigation_browse(\''+item.ssId+'\',\''+mode+'\')">检 索</a></div></div>'
+	            }
+	        }
+	    });
+}
+function setSlideBoxParams(mode){
+//	common_top_slider.setParams(params)
+	var dbId;
+	var searchType;
+	g_mode = mode;
+	if(mode == "MODE_MEDICINE"){//药物检索
+		dbId = "MED";
+		searchType = "medicine";
+	}else if(mode == "MODE_PRESCRIPTION"){// 方及检索
+		dbId = "CMEFM";
+		searchType = "formulation";
+	}else{// 其它检索
+		dbId = "VDB";
+		searchType = "Sino_foreign";
+	}
+	common_top_slider.setParams({
+		ajax:{
+			data:{
+	    		"searchHistory.dbCode":dbId,
+	    		"searchHistory.searchType":searchType,
+	    		"searchHistory.searchMode":mode
+    		},
+    		render:function(item){
+            	if(item=="default"){
+            		return '<img style="width:252px; height:152px; margin-left:15px;" src="'+contextPath+'/search-ui/app/navigationsearch/images/no.png"/>';
+            	}
+            	var searchMode = "";
+				if(item.searchMode == "MODE_GENERAL" || item.searchMode == "MODE_SMART"){
+					searchMode = "常规检索";
+				}else if(item.searchMode == "MODE_TABLE"){
+					searchMode = "高级检索";
+				}else if(item.searchMode == "MODE_HISTORY"){
+					searchMode = "历史表检索";
+				}else if(item.searchMode == "COGNATION_SEARCH"){
+					searchMode = "同族检索";
+				}else if(item.searchMode == "PROPOSER_ALIAS_SEARCH"){
+					searchMode = "申请人别名查询";
+				}else if(item.searchMode == "MODE_MEDICINE"){
+					searchMode = "药物检索";
+				}else if(item.searchMode == "MODE_PRESCRIPTION"){
+					searchMode = "方剂检索";
+				}else if(item.searchMode == "MODE_IPC"){
+					searchMode = "导航检索";
+				}else if(item.searchMode == "MODE_BUILD"){
+					searchMode = "自建专题库检索";
+				}else if(item.searchMode == "MODE_CMD"){
+					searchMode = "命令行检索";
+				}
+				var hitNum='' + item.hitNum;
+				if(hitNum.length>8){
+					hitNum = hitNum.substring(0,6)+'...';
+				}
+				if(mode == "MODE_GENERAL" || mode == "MODE_SMART"){//常规检索、自动识别取消引用按钮功能
+					return '<div class="history-item"><div class="history-search history-row clear"><span class="history-order history-left">'+item.displayId+'</span><a href="javascript:;" title="'+searchMode+'" class="history-btn-general-search history-right">'+searchMode+'</a></div><div class="history-exp-title history-row"><span class="history-exp" title="'+item.shorSearchFormula+'" style="width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;">'+item.shorSearchFormula+'</span></div><div class="history-info history-row clear"><span class="history-count history-left">'+hitNum+'篇</span><span class="history-date history-right">'+item.searchTime.substring(0,10)+'</span></div><div class="history-btn-group history-row clear"><a href="javascript:;" class="history-btn history-btn-quote-disabled history-left">引 用</a><a href="javascript:;" class="history-btn history-btn-view history-right" onclick = "navigation_browse(\''+item.ssId+'\')">检 索</a></div></div>'
+				}
+                return '<div class="history-item"><div class="history-search history-row clear"><span class="history-order history-left">'+item.displayId+'</span><a href="javascript:;" title="'+searchMode+'" class="history-btn-general-search history-right">'+searchMode+'</a></div><div class="history-exp-title history-row"><span class="history-exp" title="'+item.shorSearchFormula+'" style="width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;">'+item.shorSearchFormula+'</span></div><div class="history-info history-row clear"><span class="history-count history-left" title="'+item.hitNum+'">'+hitNum+'篇</span><span class="history-date history-right">'+item.searchTime.substring(0,10)+'</span></div><div class="history-btn-group history-row clear"><a href="javascript:;" class="history-btn history-btn-quote history-left" onclick = "quote_history(\''+item.ssId+'\')">引 用</a><a href="javascript:;" class="history-btn history-btn-view history-right" onclick = "navigation_browse(\''+item.ssId+'\',\''+mode+'\')">检 索</a></div></div>'
+            }
+		}	
+	}).reload();
+}
+
+function reload_common_history(){
+	if(common_top_slider != null){
+		common_top_slider.reload();
+	}
+	else{
+		initSlideBox("");
+	}
+}
+	
+/**
+ **点击检索历史中引用 
+ **/
+function quote_history(ssId){
+	var searchExps = "";
+	var crossLanguage = '' ;
+	if($.trim(ssId) != ""){
+		$.ajax({
+			type : "post",
+			url : contextPath
+							+ "/patentsearch/showSearchHistory-showWholeSearchExp.shtml",
+			data : {
+				'ssIds' : ssId,
+				'wee.bizlog.modulelevel' : '0200809'
+			},
+			dataType : 'json',
+			success : function(data) {
+				getCursor("searchExpDisplay");
+				if (data != null) {
+					searchExps = data.searchHistory.searchExp;
+					crossLanguage = data.searchHistory.crossLanguage;
+					if(searchExps != ""){
+						insertAtCursor(document.getElementById('searchExpDisplay'), searchExps);
+						document.getElementById('searchExpDisplay').scrollIntoView();
+					}
+					if(crossLanguage!=null){
+				    	var crossLanguage_ = crossLanguage.split(":");
+				    	originalCode = crossLanguage_[0];
+				    	targetCode = crossLanguage_[1];
+				    }
+				}
+			},error : function(){
+				
+			}
+		});
+	}
+}
+
+///**
+// ** 同族检索引用检索历史
+// */
+//
+//function quote_history_cognation(displayId){
+//	var temp = $.trim(displayId);
+//	if(temp != ""){
+//		$("#cognation_search_textbox").val(temp);
+//	}
+//}
+
+
+/**
+* 点击检索历史中浏览
+*/
+function navigation_browse(ssId,mode){
+		onCheckOnPage();
+		var searchExp = '' ;
+  		var crossLanguage = '' ;
+  		// 隐藏结构式检索面板
+  		if($(".msketch_search")){
+  			$(".msketch_search").hide();
+  		}
+  		showBlock();//添加遮罩
+		$.ajax({
+				type : "post",
+				url : contextPath
+							+ "/patentsearch/showSearchHistory-showWholeSearchExp.shtml",
+				data : {
+					'ssIds' : ssId,
+					'wee.bizlog.modulelevel' : '0200809'
+				},
+				dataType : 'json',
+				success : function(data) {
+					if (data != null) {
+						searchExp = data.searchHistory.searchExp;
+						crossLanguage = data.searchHistory.crossLanguage;
+						
+						var urlExecutableSearchExp;
+						var searchType;
+						var dbCode;
+						if(mode == "MODE_MEDICINE"){//药物检索
+							dbCode = "MED";
+							searchType = "medicine";
+							urlExecutableSearchExp = "/patentsearch/executeMedicineSearch-executeSearchByExp.shtml";
+						}else if(mode == "MODE_PRESCRIPTION"){// 方及检索
+							dbCode = "CMEFM";
+							searchType = "formulation";
+							urlExecutableSearchExp = "/patentsearch/executeMedicineSearch-executeSearchByExp.shtml";
+						}else{// 其它检索
+							dbCode = "VDB";
+							searchType = "Sino_foreign";
+							urlExecutableSearchExp = "/patentsearch/executeSearchStrategy-executeSearchByExp.shtml";
+						}
+						
+					    if(crossLanguage!=null){
+					    	var crossLanguage_ = crossLanguage.split(":");
+						    var data = {
+							    'searchCondition.searchExp' : searchExp,
+								'searchCondition.originalLanguage': crossLanguage_[0],
+								'searchCondition.targetLanguage': crossLanguage_[1],
+								'searchCondition.dbId' : dbCode,
+								'searchCondition.searchType' : searchType,
+								'searchCondition.registerSS' : true,
+								'wee.bizlog.modulelevel' : '0200807'
+				      		};
+					    }else{
+					        var data = {
+							    'searchCondition.searchExp' : searchExp,
+							    'searchCondition.dbId' : dbCode,
+								'searchCondition.searchType' : searchType,
+								'searchCondition.registerSS' : true,
+								'wee.bizlog.modulelevel' : '0200807'
+						      };
+					    }
+						}
+						$.ajax({
+							type : "POST",
+							url : contextPath + urlExecutableSearchExp,
+							data : data,
+							dataType : 'json',
+							success : function(data) {
+									if (data.searchExpMessage != null
+											&& data.searchExpMessage != '') {
+										var showExcute = dialog({
+				    						title: '提示',
+				    						width : 260,
+											fixed:true,
+				    						content: data.searchExpMessage,
+				    						okValue: '确定',
+				    						ok: function(){}
+										}).showModal();
+										return false;
+									}
+									if (data.searchCondition != null) {
+										var executableSearchExp = data.searchCondition.executableSearchExp;
+										var ssId = data.searchCondition.ssId;
+										navigation_showResultList(executableSearchExp, searchExp, ssId, mode);
+									}
+								},
+								error : function(data) {
+								}
+						});
+					},
+					error : function(data) {
+					}
+				});
+}
+
+
+
+function navigation_showResultList(executableSearchExp, searchExp, ssId, mode) {
+	var url;
+	var divObj;
+	var searchType;
+	var urlByHistory;
+		
+	if(mode == "MODE_MEDICINE"){//药物检索
+		searchType = "medicine";
+		urlByHistory = '/patentsearch/executeMedicineSearch-executeSearchByHistory.shtml';
+	}else if(mode == "MODE_PRESCRIPTION"){// 方及检索
+		searchType = "formulation";
+		urlByHistory = '/patentsearch/executeMedicineSearch-executeSearchByHistory.shtml';
+	}else{// 其它检索
+		searchType = "Sino_foreign";
+		urlByHistory = '/patentsearch/showSearchResultMDkyMQ-executeSearchByHistoryRegister.shtml';
+	}
+	
+		url = contextPath + urlByHistory;
+		divObj = $('#resultList');
+		$('#navigation_resultQC_historyFlag').val(true);
+	var data = {
+		'searchCondition.executableSearchExp' : executableSearchExp,
+		'searchCondition.searchExp' : searchExp,
+		'searchCondition.ssId' : ssId,
+		'resultQC.historyFlag' : $('#history_resultQC_historyFlag').val(),
+		'searchCondition.searchType' : searchType,
+		'wee.bizlog.modulelevel' : '0200505'
+	};
+	
+	if(mode == "MODE_MEDICINE" || mode == "MODE_PRESCRIPTION"){
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : data,
+			dataType : 'html',
+			success : function(html) {
+				divObj.empty();
+				divObj.html(html);
+				document.getElementById('resultList').scrollIntoView();
+				// 如果resultQC中的executableSearchExp的值为空，则表示是从检索接口刷新页面，则保存用户的原始可执行检索式
+//					if ($('#resultQC_executableSearchExp').text() == '') {
+//						$('#resultQC_executableSearchExp')
+//								.text($('#result_executableSearchExp').text());
+//					}
+				common_top_slider.reload();
+				closeBlock();
+				if($(".msketch_search")){
+	        		$(".msketch_search").show();
+	        	}
+			},
+			error : function(html) {
+				closeBlock();
+				if($(".msketch_search")){
+	        		$(".msketch_search").show();
+	        	}
+			}
+		});
+	}else{
+		//其他检索
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : data,
+			dataType : 'json',
+			success : function(jsonData) {
+				divObj.empty();
+				var resultHtml = generateResultWithSetting(jsonData);
+				divObj.html(resultHtml);
+				document.getElementById('resultList').scrollIntoView();
+				// 如果resultQC中的executableSearchExp的值为空，则表示是从检索接口刷新页面，则保存用户的原始可执行检索式
+//					if ($('#resultQC_executableSearchExp').text() == '') {
+//						$('#resultQC_executableSearchExp')
+//								.text($('#result_executableSearchExp').text());
+//					}
+				common_top_slider.reload();
+				closeBlock();
+				if($(".msketch_search")){
+	        		$(".msketch_search").show();
+	        	}
+			},
+			error : function(html) {
+				closeBlock();
+				if($(".msketch_search")){
+	        		$(".msketch_search").show();
+	        	}
+			}
+		});
+	}
+	
+}
+
+/**
+* 检索式检索 go
+*/
+function common_history_searchExp(){
+    var searchExp = $.trim($('#common_history_SearchExpInput').val());
+    if(searchExp == "" || searchExp == null){
+    	dialog({
+    		title:"提示",
+    		width : 260,
+    		fixed:true,
+    		content: "请输入内容！",
+    		okValue: "确定",
+    		ok: function(){
+    			this.remove();
+    		}
+    	}).showModal();
+    	return false;
+    }
+    var searchType;
+	var daCode = '';
+	var urlByHistory = '';
+	
+	if(g_mode == "MODE_MEDICINE"){//药物检索
+		searchType = "medicine";
+		daCode = 'MED';
+		urlByHistory = '/patentsearch/executeMedicineSearch-executeSearchByHistory.shtml';
+	}else if(g_mode == "MODE_PRESCRIPTION"){// 方及检索
+		searchType = "formulation";
+		daCode = 'CMEFM';
+		urlByHistory = '/patentsearch/executeMedicineSearch-executeSearchByHistory.shtml';
+	}else{// 其它检索
+		searchType = "Sino_foreign";
+		daCode = 'VDB';
+		urlByHistory = '/patentsearch/showSearchResultMDkyMQ-executeSearchByHistoryRegister.shtml';
+	}
+	onCheckOnPage();
+	showBlock();
+	if(g_mode == "MODE_MEDICINE" || g_mode == "MODE_PRESCRIPTION"){
+		$.ajax({
+			type : "post",
+			url : contextPath + urlByHistory,
+			data : {
+				'searchCondition.searchExp' : searchExp,
+				'searchCondition.dbId' : daCode,
+				'searchCondition.searchType' : searchType,
+				'wee.bizlog.modulelevel' : '0200802'
+			},
+			dataType : 'html',
+			success : function(html) {
+				$("#resultList").empty();
+				$("#resultList").html(html);
+				document.getElementById('resultList').scrollIntoView();
+				common_top_slider.reload();
+				closeBlock();
+			},
+			error : function(html) {
+				closeBlock();
+			}
+		});
+	}else{
+		$.ajax({
+			type : "post",
+			url : contextPath + urlByHistory,
+			data : {
+				'searchCondition.searchExp' : searchExp,
+				'searchCondition.dbId' : daCode,
+				'searchCondition.searchType' : searchType,
+				'wee.bizlog.modulelevel' : '0200802'
+			},
+			dataType : 'json',
+			success : function(jsonData) {
+				$("#resultList").empty();
+				var resultHtml = generateResultWithSetting(jsonData);
+				$("#resultList").html(resultHtml);
+				document.getElementById('resultList').scrollIntoView();
+				common_top_slider.reload();
+				closeBlock();
+			},
+			error : function(html) {
+				closeBlock();
+			}
+		});
+	}
+
+}
+
+
+/**
+* 显示隐藏历史信息
+*/
+
+function common_history_hidden(){
+//	$("#common_search_history").hide();
+	
+	var objImg_common_history = $('#common_history_dec');
+	if (objImg_common_history.attr('src').indexOf('unextend') != -1) {
+		objImg_common_history.attr('src', contextPath+ '/search-ui/app/viewtools/images/extend.png');
+		$("#common_search_history").hide();
+	} else {
+		objImg_common_history.attr('src', contextPath+ '/search-ui/app/viewtools/images/unextend.png');
+		$("#common_search_history").show();
+	}
+}

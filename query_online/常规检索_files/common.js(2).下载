@@ -1,0 +1,524 @@
+/*
+ * 用途：根据条件拼装检索式
+ * str:用户输入；
+ * index
+ * return：组合后可提交的检索式。
+ */
+function organizeExp(str) {
+	var reVal = "";
+	str=$.trim(str);
+	reVal = "("+str+")";
+	//reVal = index+"="+str;
+	return reVal;
+}
+/**
+ * 组织检索式，返回code=(value)的形式
+ */
+function organiseExp(str, index) {
+	var reVal = "";
+	str=$.trim(str);
+	reVal = index+"=("+str+")";
+	//reVal = index+"="+str;
+	return reVal;
+}
+/**
+ * 组织可执行检索式，返回code='value'的形式。 主要用于id等不包含特殊字符的方式。
+ */
+function organiseExecutableExp(value, code) {
+	value = $.trim(value);
+	return code + "='" + value + "'";
+}
+/**
+ * 设置DIV显示位置
+ */
+function setDIVPosition(divId, width, height) {
+	if (!divId) {
+		return;
+	}
+	if (!width) {
+		width = 0;
+	}
+	if (!height) {
+		height = 0;
+	}
+	var left = screen.availWidth / 2 - width;
+	var top = screen.availHeight / 2 - height;
+	$("#" + divId).css("left", left);
+	$("#" + divId).css("top", top);
+}
+/**
+ *查询国家区域代码辅助查询
+ */
+ function helpAnPn(textId) {
+	window.inputId = textId;
+	var path = contextPath + "/patentsearch/searchCountryCode-helpCountryCodeInput.shtml?params=991CFE73D4DF553253D44E119219BF31366856FF4B1522260FAE3A16D1098D95";
+	window.open(path, "countryCode", "menubar=no,width=1000,height=480,toolbar=no");
+}
+/**
+ *别名查询
+ */
+ function proposerAlias(textId) {
+ 	window.proposerId = textId;
+	var path = contextPath + "/patentsearch/searchProposerAlias-initPage.shtml?apply=true";
+	window.open(path, "proposerAlias", "menubar=no,width=1000,height=480,toolbar=no");
+}
+/**
+ * 分类号基本查询帮助
+ * @param {} textId
+ */
+function helpBasicClassifyNum(textId){
+	window.textId = textId;
+//	var x = screen.availWidth / 3;
+//	var y = screen.availHeight / 3;
+	var path = contextPath + '/patentsearch/showBasicClassifyNum-showBasicClassifyNumPage.shtml?params=8ACC8E48508BDDF8C9A44EA7F741FCF9';
+	window.open(path,"basicClassifyNum","height=1000,width=1200,status=yes,toolbar=no,menubar=no,location=no,directories=no");
+}
+/**
+ * Tab更换效果
+ * @param {} activeId
+ * @param {} allIds
+ */
+function tabChangeView(activeId,allIds){
+	//allIds = new Array();
+	if(allIds){
+		for(var i=0;i<allIds.length;i++){
+			$('#'+allIds[i]).css('background','url('+contextPath+'/search-ui/common/images/forms5.gif)');
+		}
+	}
+	if(activeId){
+		$('#'+activeId).css('background','url('+contextPath+'/search-ui/common/images/forms2.gif)');
+	}
+}
+/**
+ * 自适应DIV
+ * @param {} autoDIVId
+ * @param {} contentDIVId
+ * @param {} height
+ */
+function autoDIV(divId,height,contentDivId){
+	if(divId){
+		if(contentDivId){
+			var h = 0;
+			for(var i=0;i<contentDivId.length;i++){
+				h += $('#'+contentDivId[i]).attr('offsetHeight');
+			}
+			if(h>height){
+				$('#'+divId).css('height','auto');
+			}else{
+				$('#'+divId).css('height',height+'px');
+			}
+		}else{
+			if($('#'+divId).attr('offsetHeight')>height){
+				$('#'+divId).css('height','auto');
+			}else{
+				$('#'+divId).css('height',height+'px');
+			}		
+		}
+	}
+}
+/**
+ * 获取event元素
+ * @param {} event
+ * @return {}
+ */
+function eventElement(event){
+	var element = null;
+	if(event){
+		if(event.srcElement){
+			element = event.srcElement;
+		}else{
+			element = event.target;
+		}
+	}
+	return element;
+}
+/**
+ * 获取元素innerText
+ * @param {} event
+ * @param {} element
+ * @return {}
+ */
+function elementInnerText(event,element){
+	var innerText;
+	if(event){
+		var element;
+		if(event.srcElement){
+			element = event.srcElement;
+		}else{
+			element = event.target;
+		}
+		if(element.innerText){
+			innerText = element.innerText;
+		}else{
+			innerText = element.textContent;
+		}	
+	}else if(element){
+		if(element.innerText){
+			innerText = element.innerText;
+		}else{
+			innerText = element.textContent;
+		}
+	}
+	return innerText;
+}
+/**
+ * 判断浏览器类型
+ * @return {String}
+ */
+function getOs()
+{ 
+   var OsObject = ""; 
+   if(navigator.userAgent.indexOf("MSIE")!=-1) { 
+        OsObject = "MSIE"; 
+   } 
+   else if(navigator.userAgent.indexOf("Firefox")!=-1){ 
+        OsObject = "Firefox"; 
+   } 
+   else if(navigator.userAgent.indexOf("Safari")!=-1) { 
+        OsObject = "Safari"; 
+   }  
+   else if(navigator.userAgent.indexOf("Camino")!=-1){ 
+        OsObject = "Camino"; 
+   } 
+   else if(navigator.userAgent.indexOf("Opera")!=-1){ 
+        OsObject = "Opera"; 
+   } 
+   return OsObject;
+} 
+
+/**
+ * 输入域控制回车
+ * @param {} event 事件
+ * @param {} eId 元素ID
+ * @param {} btnId 按钮 ID
+ * @param {} call 回调函数名称
+ */
+function enterKeySubmit(event,eId,btnId,call) {
+	if(!event){
+		return;
+	}
+	if (event.keyCode == 13) {
+		event.returnValue = false;
+		event.cancel = true;
+		var id = eId?eId:eventElement(event).id;
+		$('#' + id).blur();
+		if(btnId){
+			$('#' + btnId).click();
+		}else if(call){
+			call();
+		}
+		return false;
+	}
+}
+/**
+ * 回车执行方法
+ * @param {} event 事件
+ * @param {} eId 元素ID
+ * @param {} funName 方法名
+ * @param {} call 回调函数名称
+ */
+function enterKeySubmitFun(event,eId,funName,call) {
+	if(!event){
+		return;
+	}
+	if (event.keyCode == 13) {
+		var id = eId?eId:eventElement(event).id;
+		$('#' + id).blur();
+		funName();
+		return false;
+	}
+}
+/**
+ * 错误检索式提示信息
+ * @param {} data
+ */
+function searchExpMsg(data){
+	/*if(data && data.indexOf("searchExpMessage")!=-1){
+		popMessage(eval('('+data+')').searchExpMessage);
+		return true;
+	}*/
+	return false;
+}
+
+/**
+ * 验证日期：9999-99-99 9999.99.99 99999999
+ * @param {} val
+ */
+function validatorCalendar(val){
+	var result = {
+		value : false,//默认验证通过
+		alertText : sipo.search.checkDateFormat
+	}
+	if(val){
+		if(/.{0,}[.].{0,}[-].{0,}|.{0,}[-].{0,}[.].{0,}|.{0,}[-.]$|^[-.].{0,}/.test(val)){
+			result.value = true;
+			return result;
+		}
+		var vd;
+		if(/[-\.]/.test(val)){
+			//日期以分隔符形式判断
+			var vals = val.split(/[-\.]/);
+			var len = vals.length;
+			switch(len){
+				case 3:
+					vd = validatorDate(vals[0],vals[1],vals[2]);
+					result.value = !(vd.year && vd.month && vd.day);
+					break;
+				case 2:
+					vd = validatorDate(vals[0],vals[1]);
+					result.value = !(vd.year && vd.month);
+					break;
+				case 1:
+					vd = validatorDate(vals[0]);
+					result.value = !(vd.year);
+					break;
+				default:
+					result.value = true;
+					break;
+			}
+		}else if(/^(\d{4}|\d{6}|\d{8})$/.test(val)){
+			//日期以99999999形式判断
+			var len = val.length;
+			switch(len){
+				case 4:
+					vd = validatorDate(val);
+					result.value = !(vd.year);
+					break;
+				case 6:
+					vd = validatorDate(val.substring(0,4),val.substring(4,6));
+					result.value = !(vd.year && vd.month);
+					break;
+				case 8:
+					vd = validatorDate(val.substring(0,4),val.substring(4,6),val.substring(6,8));
+					result.value = !(vd.year && vd.month && vd.day);
+					break;
+				default:
+					result.value = true;
+					break;
+			}
+		}else{
+			result.value = true;
+		}
+	}
+	return result;
+}
+
+/**
+ * 日期验证 9999-99-99 9999-99 9999
+ * @param {} val
+ */
+function validatorCal(val){
+	var result = {
+		value : false,
+		alertText : sipo.search.checkDateFormat
+	}
+	if(val){
+		var vd;
+		var vals = val.split("-");
+		var len = vals.length;
+		switch(len){
+			case 3:
+				vd = validatorDate(vals[0],vals[1],vals[2]);
+				result.value = !(vd.year && vd.month && vd.day);
+				break;
+			case 2:
+				vd = validatorDate(vals[0],vals[1]);
+				result.value = !(vd.year && vd.month);
+				break;
+			case 1:
+				vd = validatorDate(vals[0]);
+				result.value = !(vd.year);
+				break;
+			default:
+				result.value = true;
+				break;
+		}
+	}
+	return result;
+}
+/**
+ * 判断日期
+ * @param {} year
+ * @param {} month
+ * @param {} day
+ */
+function validatorDate(year,month,day){
+	var result = {
+		year : false,
+		month :false,
+		day : false
+	};
+	if(year){
+		if(/^\d{4}$/.test(year) && parseInt(year,10) > 1000){
+			result.year = true;	
+		}
+	}
+	if(month){
+		if(/^(([0]{0,1}[1-9]{1})|([1]{1}[0,1,2]{1}))$/.test(month)){
+			result.month = true;
+		}
+	}
+	if(day && result.year && result.month){
+		if(/^\d{1,2}$/.test(day) && parseInt(day,10) > 0){
+			year = parseInt(year,10);
+			month = parseInt(month,10);
+			day = parseInt(day,10);
+			if(/^([1,3,5,7,8]{1}|(1[0,2]{1}))$/.test(month)){
+				//大月
+				if(day<=31){
+					result.day = true;
+				}
+			}else if(/^([4,6,9]{1}|11)$/.test(month)){
+				//小月
+				if(day<=30){
+					result.day = true;
+				}
+			}else{
+				//2月
+				if(validatorLeapYear(year)){
+					//闰年
+					if(day<=29){
+						result.day = true;
+					}
+				}else{
+					if(day<=28){
+						result.day = true;
+					}
+				}
+			}	
+		}
+	}
+	return result;
+}
+/**
+ * 判断闰年
+ * @param {} year
+ */
+function validatorLeapYear(year){
+	var result = false;
+	if(year){
+		result = /^\d{4}$/.test(year);
+		if(result){
+			year = parseInt(year,10);
+			if(!(year%400==0 || (year%4==0 && year%100!=0))){
+				result = false;
+			}
+		}
+	}
+	return result;
+}
+/**
+ *去掉公布级
+ *应用场景：引文，对比文献浏览文献时对公开号所作的处理
+ */
+function dealPublicLevel(num){
+	var regexp=/^[A-Za-z]{2,}[\d]+/;
+	var arr=regexp.exec(num);
+	var reval=arr[0];
+	return reval;
+}
+
+/**
+ * 加入检索文献库进入浏览
+ * @param {} jqueryFormInnerHtml
+ */
+function openView(jquery){
+	$('#viewerACForm').empty();
+	$('#viewerACForm').append(jquery.html());
+	$('#viewerACForm').submit();
+}
+
+/**
+ * 重置
+ */
+function reset(objId){
+	if(objId){
+		$('#'+objId).clearValidationPrompt();
+		$('#'+objId).val("");
+		$('#'+objId).focus();	
+	}
+}
+/**
+ *校验字母和数字
+ */
+function validatorLetterNumber(val){
+	var result = {
+		value : false,
+		alertText : sipo.search.letterAndNumber
+	}
+	if(val){
+		var re=/^[0-9a-zA-Z\/]+$/;
+		if(re.test(val)){
+			result.value=false;
+		}else{
+			result.value=true;
+		}
+	}
+	return result;
+}
+/**
+ *校验字母和数字去掉/
+ */
+function validatorLetterNumberDelete(val){
+	var result = {
+		value : false,
+		alertText : sipo.search.letterAndNumber3
+	}
+	if(val){
+		var re=/^[0-9a-zA-Z\.]+$/;
+		if(re.test(val)){
+			result.value=false;
+		}else{
+			result.value=true;
+		}
+	}
+	return result;
+}
+/**
+ *校验字母和数字去掉/
+ */
+function validatorLetterTwoNumber(val){
+	var result = {
+		value : false,
+		alertText : sipo.search.letterAndNumber2
+	}
+	if(val){
+		var re=/\d{2,}|[a-zA-Z]{2,}|[a-zA-Z]{1,}\d{1,}|\d{1,}[a-zA-Z]{1,}/;
+		if(re.test(val)){
+			result.value=false;
+		}else{
+			result.value=true;
+		}
+	}
+	return result;
+}
+/**
+ * 获取匿名用户PN号
+ * @param {} val
+ * @return {}
+ */
+function getAnonymityPN(val){
+	if(val){
+		return val.match(/[a-zA-Z]{2}[a-zA-Z]{0,2}\d{1,}[a-zA-Z]{0,1}\d{0,1}/i);
+	}
+}
+/**
+ * 按钮全选方法
+ */
+function selAllBox(sid,tname){
+	$('input[name="'+tname+'"]').each(function(i) {
+		$('input[name="'+tname+'"]')[i].checked = $('#'+sid).attr('checked');
+	});
+}
+
+/**
+ * 验证全选按钮选中状态
+ */
+function validateAllCheck(sid,tname){
+	if($('input[name="'+tname+'"]:checked').length == $('input[name="'+tname+'"]').length){
+	
+		$('#'+sid).prop('checked','true');
+	}else{
+		$('#'+sid).prop('checked','');
+	}
+}

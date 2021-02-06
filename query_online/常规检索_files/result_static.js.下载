@@ -1,0 +1,1140 @@
+var jsonDataDTO;
+var dealSearchKeywords;
+var resultWithSetting_pos;
+var perTag,watchPerTag;
+function generateResult(jsonData){
+	var resultListHtml = "";
+	if(jsonData){
+		jsonDataDTO = jsonData;
+		dealSearchKeywords = new Array();
+		for(i in jsonData.searchResultDTO.dealSearchKeywords){
+			dealSearchKeywords.push(jsonData.searchResultDTO.dealSearchKeywords[i]);
+		}
+		/*
+		 *渲染结果页面 
+		 **/
+		resultListHtml = 
+			"<div>"+
+				"<input type='hidden' id='result_isAnonymousUserHidden' value='"+dataHandle(jsonData.anonymousUser)+"'>"+
+				"<input type='hidden' id='result_searchType' value='"+jsonData.searchCondition.searchType+"'>"+
+				"<input type='hidden' id='result_maxViewLiteraNum' name='maxViewLiteraNum' value='"+jsonData.searchResultDTO.maxViewLiteraNum+"'>"+
+				"<input type='hidden' id='result_start'>"+
+				"<input id='second_searchExpMessage' type='hidden' name='searchExpMessage' value='"+jsonData.searchExpMessage+"'>"+
+				"<style>"+
+					"body .main-body1{width: 100%;}"+
+					".test-class{width:1190px;margin:0 auto;margin-bottom:20px;}"+
+				"</style>"+
+				"<div id='search_result'>"+
+					"<div id='panel_statics' status='on'>"+
+						"<div class='re-le' id='itemsbox'>"+
+							"<div class='le' id='itemsList' style='width: 220px; position: static; top: 0px;'>"+
+								"<div class='boxHead'>"+
+									"<h2>检索结果统计</h2>"+
+								"</div>"+
+								"<div class='le-list'>"+
+									"<div class='title-type'>"+
+										"<h3><a href='javascript:;' name='link_statics' sort='PASTAT'> <span class='in-bl'></span>申请人统计</a></h3>"+
+										"<ul sort='PASTAT'></ul>"+
+									"</div>"+
+									"<div class='title-type'>"+
+										"<h3><a href='javascript:;' name='link_statics' sort='INSTAT'> <span class='in-bl'></span>发明人统计</a></h3>"+
+										"<ul sort='INSTAT'></ul>"+
+									"</div>"+
+									"<div class='title-type'>"+
+										"<h3><a href='javascript:;' name='link_statics' sort='ICST'> <span class='in-bl'></span>技术领域统计</a></h3>"+
+										"<ul sort='ICST'></ul>"+
+									"</div>" +
+									"<div class='title-type'>"+
+										"<h3><a href='javascript:;' name='link_statics' sort='ADY'> <span class='in-bl'></span>申请日统计</a></h3>"+
+										"<ul sort='ADY'></ul>"+
+									"</div>"+
+									"<div class='title-type'>"+
+										"<h3><a href='javascript:;' name='link_statics' sort='PDY'> <span class='in-bl'></span>公开日统计</a></h3>"+
+										"<ul sort='PDY'></ul>"+
+									"</div>"+
+								"</div>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
+					"<div id='search_result_former' class='re-ri'>"+
+						"<div class='ri-top clear' style='margin-bottom: 20px;' id='view_mode_selector'>"+
+							"<div id='result_view_mode' class='btn-group'>";
+				var resultMode = jsonData.searchCondition.resultMode;
+				if(resultMode == "TABLE_MODE"){
+					resultListHtml +=
+								"<a href='javascript:void(0)' mode='SEARCH_MODE' class='btn result-style-btn search-style-btn'>搜索式</a>"+
+								"<a href='javascript:void(0)' mode='TABLE_MODE' class='select btn result-style-btn list-style-btn'>列表式</a>"+
+								"<a href='javascript:void(0)' mode='IMAGE_MODE' class='btn result-style-btn picture-style-btn'>多图式</a>";
+				}else if(resultMode == "IMAGE_MODE"){
+					resultListHtml +=
+								"<a href='javascript:void(0)' mode='SEARCH_MODE' class='btn result-style-btn search-style-btn'>搜索式</a>"+
+								"<a href='javascript:void(0)' mode='TABLE_MODE' class='btn result-style-btn list-style-btn'>列表式</a>"+
+								"<a href='javascript:void(0)' mode='IMAGE_MODE' class='select btn result-style-btn picture-style-btn'>多图式</a>";
+				}else{
+					resultListHtml +=
+								"<a href='javascript:void(0)' mode='SEARCH_MODE' class='select btn result-style-btn search-style-btn'>搜索式</a>"+
+								"<a href='javascript:void(0)' mode='TABLE_MODE' class='btn result-style-btn list-style-btn'>列表式</a>"+
+								"<a href='javascript:void(0)' mode='IMAGE_MODE' class='btn result-style-btn picture-style-btn'>多图式</a>";
+				}
+				resultListHtml +=
+							"</div>"+
+							"<div class='select-group'>"+
+								"<div id='tool_sort' class='select in-bl' style='vertical-align:top; display:none;' data-height='30' data-width='120' data-border='false' data-handler='sort_tool_callback'>";	
+				if(jsonData.searchCondition.sortFields == "+APD"){
+					resultListHtml += 
+									"<div value='-APD'>申请日降序</div>"+
+									"<div value='+APD' checked='checked'>申请日升序</div>"+
+									"<div value='-PD'>公开日降序</div>"+
+									"<div value='+PD'>公开日升序</div>";
+				}else if(jsonData.searchCondition.sortFields == "-PD"){
+					resultListHtml += 
+									"<div value='-APD'>申请日降序</div>"+
+									"<div value='+APD'>申请日升序</div>"+
+									"<div value='-PD' checked='checked'>公开日降序</div>"+
+									"<div value='+PD'>公开日升序</div>";
+				}else if(jsonData.searchCondition.sortFields == "+PD"){
+					resultListHtml += 
+									"<div value='-APD'>申请日降序</div>"+
+									"<div value='+APD'>申请日升序</div>"+
+									"<div value='-PD'>公开日降序</div>"+
+									"<div value='+PD' checked='checked'>公开日升序</div>";
+				}else{
+					resultListHtml += 
+									"<div value='-APD' checked='checked'>申请日降序</div>"+
+									"<div value='+APD'>申请日升序</div>"+
+									"<div value='-PD'>公开日降序</div>"+
+									"<div value='+PD'>公开日升序</div>";
+				}
+
+				resultListHtml +=
+								"</div>"+
+								"<div id='tool_sort_fake' class='in-bl' style='height: 30px; width: 120px; margin: 0px 6px; font-size: 1.6em; border: 1px solid rgb(213, 219, 231); vertical-align: top; line-height: 30px; display: none;'>"+
+									"<div style='padding-left:10px;'>申请日降序</div>"+
+								"</div>"+
+								"<a href='javascript:;' id='tool_filter' class='btn filter_btn'>过滤</a>"+
+							"</div>"+
+							"<div id='page_top' class='page-group'>"+
+								generatePage(jsonData,"resultlistForm_top","uipicText","/patentsearch/showSearchResultMDkyMQ-startWa.shtml",true,"resultMode",true) +
+							"</div>"+
+						"</div>"+
+						"<div class='fixed-menu1' id='fixed-menu1'>"+
+							"<ul>"+
+								"<li><a id='assist_selectpage' href='javascript:;' class='btn-hover btn-select-all'><strong>全选本页</strong></a></li>"+
+								"<li><a id='assist_detail' href='javascript:;' class='btn-hover btn-full-text'><strong>详 览</strong></a></li>"+
+								"<li><a id='assist_detail_all' href='javascript:;' class='btn-hover btn-full-text-all'><strong>详览全部</strong></a></li>"+
+								"<li><a id='assist_favorite' href='javascript:;' class='btn-hover btn-collection'><strong>收 藏</strong></a></li>";
+						if(perTag){
+							resultListHtml +=
+								"<li><a id='assist_exportdb' href='javascript:;' class='btn-hover btn-down'><strong>加入批量下载库</strong></a></li>"+
+								"<li><a id='assist_exportdb_all' href='javascript:;' class='btn-hover btn-down-all'><strong>全部加入批量下载库</strong></a></li>";
+						}
+						resultListHtml +=
+								"<li><a id='assist_anylasisdb' href='javascript:;' class='btn-hover btn-analyze'><strong>加入分析库</strong></a></li>"+
+								"<li><a id='assist_anylasisdb_all' href='javascript:;' class='btn-hover btn-analyze-all'><strong>全部加入分析库</strong></a></li>"+
+							"</ul>"+
+						"</div>"+
+						"<div class='to-top-area'>"+
+							"<a href='javascript:;' class='btn-hover btn-to-top'><strong>返回顶部</strong></a>"+
+						"</div>";
+				if(notEmptyAndNull(jsonData.searchResultDTO.searchResultRecord) && jsonData.searchResultDTO.searchResultRecord.length>0){
+					resultListHtml +=
+						"<div id='resultMode'>"+
+							generateList(jsonData,resultMode) +
+						"</div>"+
+						"<input type='hidden' id='result_maxSortNum' name='maxSortNum' value='"+jsonData.searchResultDTO.maxSortNum+"'>"+
+						"<input type='hidden' id='result_totalCount' value='"+jsonData.resultPagination.totalCount+"'>";
+				}else{
+					resultListHtml +=
+						"<input type='hidden' id='result_totalCount' value='"+jsonData.resultPagination.totalCount+"'>"+
+						"<div class='notice-box'>"+
+							"<div class='no-result-wrapper'>"+
+								"<div class='notice'>";
+					if(notEmptyAndNull(jsonData.searchExpMessage)){
+						resultListHtml +=
+									"<h1 class='clear'><div>您输入的检索式</div> <span style='max-width:500px;'>"+jsonData.searchCondition.searchExp+"</span><div>格式错误，请更正后重新输入！</div></h1>"+
+									"<h2><span>您输入的检索式格式错误，请您核对更正检索式后重新输入</span></h2>";
+					}else{
+						resultListHtml +=
+									"<h1><div>没有检索到</div> <span>"+jsonData.searchCondition.searchExp+"</span> 相关专利</h1>"+
+									"<h2>没有检索到相关专利，<span>请调整检索式或检索词后重新输入。</span></h2>";
+					}
+					resultListHtml +=
+								"</div>"+
+								"<div class='text'>"+
+									"<h2>请您特别注意：</h2>"+
+									"<div class='example light'>"+
+										"<p>检查检索式中是否含有“：”（“：”为系统关键字），如需使用请在输入检索式前后加入双引号（英文）。</p>"+
+										'<p>例如  其特征在于:所述 应该为  "其特征在于:所述"</p>'+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>多个关键词之间用空格隔开。常规检索和表格检索中多个关键词之间是“OR”关系，一站式检索中多个关键词之间是“AND”关系。</p>"+
+										"<p>例如“手机 病毒”比“手机病毒”检索结果多。</p>"+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>如果检索的关键词中包含空格“ ”，要用英文双引号将关键词括起来。</p>"+
+										'<p>例如分类号检索“G06K 9/00”应写成“"G06K 9/00"”。</p>'+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>二目逻辑运算符“AND”、“OR”和“NOT”，不能在同一级使用，要用英文括号“()”进行分割。</p>"+
+										"<p>例如“手机 NOT 病毒 AND 智能”应写成“(手机 NOT 病毒) AND 智能”。</p>"+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>如果检索的关键词中包含二目逻辑运算符“AND”、“OR”或者“NOT”，要用英文双引号将关键词括起来。</p>"+
+										'<p>例如“AND AND OR”应写成“"AND" AND "OR"”。第一个词“AND”和第三个词“OR”是关键词，第二个词“AND”是二目运算符。</p>'+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>二目逻辑运算符“AND”、“OR”和“NOT”，不区分大小写。</p>"+
+										"<p>例如“手机 AND 病毒”和“手机 and 病毒”检索效果相同。</p>"+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>通过申请号检索时，号码格式为：国别+申请流水号，会使检索结果更准确。</p>"+
+										"<p>例如“CN201010109988”。</p>"+
+									"</div>"+
+									"<div class='example light'>"+
+										"<p>通过公开（公告）号检索时，号码格式为：国别+申请流水号+公布等级，会使检索结果更准确。</p>"+
+										"<p>例如“CN201033311Y”。</p>"+
+									"</div>"+
+								"</div>"+
+							"</div>"+
+						"</div>";
+				}
+			
+					resultListHtml +=
+						"<form action='"+contextPath+"/patentsearch/showViewList-jumpToView.shtml' target='_blank' method='post' id='detailViewForm'>"+
+							"<input type='hidden' name='viewQC.type' value='' id='viewQCType'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[0].type' value='COGNATION' id='viewQC_viewLiteraQCList_0__type'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[0].srcCnName' value='' id='coSrcCnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[0].srcEnName' value='' id='coSrcEnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[0].searchCondition.searchExp' value='' id='coExp'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[0].searchCondition.dbId' value='VDB' id='viewQC_viewLiteraQCList_0__searchCondition_dbId'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[1].type' value='ADDUCE' id='viewQC_viewLiteraQCList_1__type'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[1].srcCnName' value='' id='paSrcCnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[1].srcEnName' value='' id='paSrcEnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[1].searchCondition.searchExp' value='' id='paExp'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[1].searchCondition.dbId' value='VDB' id='viewQC_viewLiteraQCList_1__searchCondition_dbId'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[2].type' value='ADDUCED' id='viewQC_viewLiteraQCList_2__type'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[2].srcCnName' value='' id='citSrcCnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[2].srcEnName' value='' id='citSrcEnName'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[2].searchCondition.searchExp' value='' id='citExp'>"+
+							"<input type='hidden' name='viewQC.viewLiteraQCList[2].searchCondition.dbId' value='VDB' id='viewQC_viewLiteraQCList_2__searchCondition_dbId'>"+
+						"</form>"+
+					"</div>"+
+				"</div>"+
+				"<div style='display: none'>"+
+					"<input type='hidden' id='result_displayFields' value=''>"+
+					"<input type='hidden' id='result_sortFields' value='"+jsonData.searchCondition.sortFields+"'>"+
+					"<input type='hidden' id='result_currentPage' value=''>"+
+					"<input type='hidden' id='result_strategy' value='"+jsonData.searchResultDTO.strategy+"'>"+
+					"<input type='hidden' id='result_ssId' value='"+jsonData.searchResultDTO.ssId+"'>"+
+					"<input type='hidden' id='result_resultMode' value='"+jsonData.searchCondition.resultMode+"'>"+
+					"<input type='hidden' id='panation_limit' value='"+jsonData.resultPagination.limit+"'>"+
+					"<input type='hidden' id='result_historyCount' value='"+dataHandle(jsonData.historyCount)+"'>"+
+				"<div id='show_language'></div>"+
+				"<form id='viewACForm' action='"+contextPath+"/patentsearch/showViewList-jumpToView.shtml' method='post' target='_blank'></form>"+
+				"<input type='hidden' id='searchInfoCommon' value=''>"+
+				"<form id='executeGeneralSearchACForm'>"+
+					"<input type='hidden' name='searchCondition.searchExp' id='searchCondition_searchExp'>"+
+					"<input type='hidden' name='searchCondition.dbId' id='searchCondition_dbId' value='VDB'>"+
+					"<input type='hidden' name='searchCondition.searchType' id='searchCondition_searchType' value='table_ui'>"+
+					"<input type='hidden' name='wee.bizlog.modulelevel' id='wee_bizlog_modulelevel' value='0200101'>"+
+					"<input type='hidden' name='resultPagination.limit' value='"+jsonData.resultPagination.limit+"'>"+
+					"<input type=\"hidden\" name=\"searchCondition.extendInfo['MODE']\" id=\"mode\" value=\"MODE_SMART\">"+
+				"</form>"+
+				"<form id='figureForm' name='figureForm' action='"+contextPath+"/patentsearch/viewAbstractFigure.shtml' target='_blank' method='post'>"+
+					"<input type='hidden' name='wee.bizlog.modulelevel' value='0201102' id='figureForm_wee_bizlog_modulelevel'>"+
+					"<input id='figureUrlHidden' type='hidden' name='figureUrl' value=''>"+
+				"</form>"+
+				"<form id='drillSearchForm' action='"+contextPath+"/patentsearch/showSearchResultMDkyMQ-drillSearchByViewSetting.shtml' method='post' target='_blank'>"+
+					"<input type='hidden' id='drillSearchExp' name='searchCondition.searchExp' value=''>"+
+					"<input type='hidden' name='searchCondition.dbId' value='VDB'>"+
+					"<input type='hidden' name='resultPagination.limit' value='"+jsonData.resultPagination.limit+"'>"+
+					"<input type='hidden' id='drillSearchMode' name='searchMode' value='"+dataHandle(jsonData.searchMode)+"'> "+
+				"</form>"+
+				"<form id='linkForm' action='"+contextPath+"/patentsearch/showAssistantToolsAC!showAssistantTools.do' target='assistantToolsPage' method='post'>"+
+					"<input type='hidden' name='assistantDTO.invTitle'>"+
+					"<input type='hidden' name='assistantDTO.nrdAn'>"+
+					"<input type='hidden' name='assistantDTO.nrdPn'>"+
+					"<input type='hidden' name='assistantDTO.appSn'>"+
+					"<input type='hidden' name='assistantDTO.pnSn'>"+
+					"<input type='hidden' name='assistantDTO.appName'>"+
+					"<input type='hidden' name='assistantDTO.appAddr'>"+
+					"<input type='hidden' name='assistantDTO.appZip'>"+
+					"<input type='hidden' name='assistantDTO.appCountry'>"+
+					"<input type='hidden' name='assistantDTO.lang'>"+
+					"<input type='hidden' name='assistantDTO.docStatus'>"+
+					"<input type='hidden' name='option' id='option'>"+
+					"<input type='hidden' name='actionUrl' id='actionUrl'>"+
+					"<input type='hidden' name='urlArray' id='urlArray'>"+
+					"<input type='hidden' name='wee.bizlog.modulelevel' id='wee_bizlog_modulelevel'>"+
+				"</form>"+
+				"<form id='quotationForm' action='"+contextPath+"/patentsearch/showQuotationLiteraDB-showAddQuotation.shtml' target='addQuotationPage' method='post'>"+
+					"<input id='literaIds' type='hidden' name='literaIds'>"+
+				"</form>"+
+			"</div>"+
+		"</div>"+
+			/**
+			 * 引用JS
+			 * */
+			"<script type='text/javascript' src='"+contextPath+"/common-ui/js/artDialog/dist/dialog-min.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/tabs.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/common/js/common.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/common/js/viewFulltext.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/common/js/srcName_common.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/common-ui/js/jqSelect/js/jquery.jqSelect.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/common-ui/js/pagnation/jquery.pagination-1.2.7.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/cognationsearch/js/query-cognation-search.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/searchtools/dialog/quote.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/searchliteradb/js/searchliteradbadd.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/viewtools/js/cognation_downloadLitera.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/searchtools/js/examine.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/searchtools/dialog/law_state.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/analysis-ui/app/project/js/build-project.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/viewtools/js/translate.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/common/js/onCheckOnPage.js?version=v1'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_list.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_menus.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_statistics.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_statistics_list.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_assist_common.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_assist.js'></script>";
+	}
+	return resultListHtml;
+}
+
+function generateResultWithSetting(jsonData){
+	perTag = permissionTag("add_exportDB");
+	watchPerTag = permissionTag("resultList_watch");
+	var resutlHtml = 
+	"<div class='main-body clear' style='height: 100%;'>"+
+		"<div id='resultWithSetting'>"+
+		generateResult(jsonData)+
+		"</div>"+
+	"	<div style='display:none;'>"+
+	"		<input type='hidden' id='tool_filter_type' value='APD'>"+
+	"		<input type='hidden' id='tool_filter_from_date'>"+
+	"    	<input type='hidden' id='tool_filter_to_date'>"+
+	"    	<input type='checkbox' name='cacheck' id='cachePub'>"+
+	"    	<input type='checkbox' name='cacheck' id='cacheLit'>"+
+	"    	<input type='checkbox' name='cacheck' id='cacheInv'>"+
+	"    	<input type='checkbox' name='cacheck' id='cacheNew'>"+
+	"    	<input type='checkbox' name='cacheck' id='cacheSur'>"+
+	"    	<input type='checkbox' name='cacheck' id='cacheEna'>"+
+	"		<div id='result_executableSearchExp'>"+jsonData.searchResultDTO.executableSearchExp+"</div>"+
+	"		<div id='result_searchExp'>"+jsonData.searchCondition.searchExp+"</div>"+
+	"		<div id='result_literatureSF'>"+jsonData.searchResultDTO.literatureSF+"</div>"+
+	"		<div id='resultQC_executableSearchExp'></div>"+
+	"		<div id='resultQC_dataExecutableSearchExp'></div>"+
+	"		<div id='resultQC_literaExecutableSearchExp'></div>"+
+	"	</div>"+
+	"</div>";
+	return resutlHtml;
+}
+
+function generateList(jsonData,resultMode){
+	var htmlList = "";
+	if(resultMode == "SEARCH_MODE"){//检索式
+		htmlList +=
+		"<div class='re-content search-mode-content' style='margin-top:0;'>"+
+			"<div class='list-container'>"+
+				"<ul>";
+		var searchResultRecordList = jsonData.searchResultDTO.searchResultRecord;
+		for(var i=0;i<searchResultRecordList.length;i++){
+			var temp_html="";
+			var recordList = searchResultRecordList[i].recordList;
+			var textList = searchResultRecordList[i].textList;
+			if(searchResultRecordList[i].sameApp=="false"){
+				if(i==0){
+					temp_html+=
+					"<li class='patent'>";
+				}else if(i==searchResultRecordList.length-1){
+					temp_html+=
+					"<li class='patent normalApp bottomApp'>";
+				}else{
+					temp_html+=
+					"<li class='patent normalApp'>";
+				}
+			}else{
+				if(i==0){
+					temp_html+=
+					"<li class='patent'>";
+				}else if(i==searchResultRecordList.length-1){
+					temp_html+=
+					"<li class='patent sameApp bottomApp'>";
+				}else{
+					temp_html+=
+					"<li class='patent sameApp'>";
+				}
+			}
+			var titleHidden = searchResultRecordList[i].fieldMap['TIVIEW'];
+			titleHidden = titleHidden.replace(/(\")/g,'&quot;');
+			titleHidden = titleHidden.replace(/(\')/g,'&#39;');
+			temp_html+=	
+						"<div class='item'>"+
+				"			<input type='hidden' name='vIdHidden' value='"+searchResultRecordList[i].fieldMap["VID"]+"'>"+
+				"			<input type='hidden' name='idHidden' value='"+searchResultRecordList[i].fieldMap["ID"]+"'>"+
+				"			<input type='hidden' name='titleHidden' value='"+titleHidden+"'>"+
+				"			<input type='hidden' name='nrdAnHidden' value='"+searchResultRecordList[i].fieldMap["AP"]+"'>"+
+				"			<input type='hidden' name='nrdAdpHidden' value='"+searchResultRecordList[i].fieldMap["APD_VALUE"]+"'>"+
+				"			<input type='hidden' name='nrdpdHidden' value='"+searchResultRecordList[i].fieldMap["PD"]+"'>"+
+				"			<input type='hidden' name='nrdPnHidden' value='"+searchResultRecordList[i].fieldMap["PN_BAK"]+"'>"+
+				"			<input type='hidden' name='appSnHidden' value='"+searchResultRecordList[i].fieldMap["APSN"]+"'>"+
+				"			<input type='hidden' name='pnSnHidden' value='"+searchResultRecordList[i].fieldMap["PNSN"]+"'>"+
+				"			<input type='hidden' name='langHidden' value='"+searchResultRecordList[i].fieldMap["LANG"]+"'>"+
+				"			<input type='hidden' name='docStatusHidden' value='"+searchResultRecordList[i].fieldMap["DOC_STATUS"]+"'>"+
+				"			<input type='hidden' name='appNameHidden' value='"+searchResultRecordList[i].fieldMap["PAVIEW"]+"'>"+
+				"			<input type='hidden' name='appAddrHidden' value='"+searchResultRecordList[i].fieldMap["AA"]+"'>"+
+				"			<input type='hidden' name='appZipHidden' value='"+searchResultRecordList[i].fieldMap["AZ"]+"'>"+
+				"			<input type='hidden' name='appCountryHidden' value='"+searchResultRecordList[i].fieldMap["AC"]+"'>"+
+				"           <div class='item-header clear'>"+
+				"           	<h1 class='left' style='max-width: 580px;'>"+
+				"               	<div style='float: left;'><input type='checkbox' name='patent_flag'></div>";
+			
+			for(j in recordList){
+				if(recordList[j].indexId == "IVDB077"){
+					if(!notEmptyAndNull(recordList[j].itemValue)){
+						temp_html +="<span style='color:#A9A9A9;'>该文献无标题</span>";
+					}else{
+						var itemValue = recordList[j].itemValue;
+						itemValue = itemValue.replace(/(\")/g,'&quot;');
+						itemValue = itemValue.replace(/(\')/g,'&#39;');
+						temp_html +=
+									"<div style='float: left; max-width: 550px; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"+
+										"<a href='javascript:;' style='cursor:default;'" +
+//												"_name='"+itemValue+"'" +
+//												" onclick=\"drillSearch('"+recordList[j].indexId+"','"+recordList[j].indexCNName+"','','false',this);return false;\"" +
+												" title='"+itemValue+"'>"+
+											"<b style='color: #4B4B4B'>"+itemValue+"</b>"+
+										"</a>"+
+									"</div>";
+					}
+				}
+			}
+			
+			temp_html +=
+								"</h1>"+
+								"<div class='btn-group left clear' style='float:left'>";
+			if(notEmptyAndNull(searchResultRecordList[i].fieldMap["PRSC3_VALUE"])){
+				temp_html +=
+									"<a class='btn btn-tag'>"+searchResultRecordList[i].fieldMap["PRSC3_VALUE"]+"</a>";
+			}
+			/**权限未解决*/
+			if(searchResultRecordList[i].fieldMap['FNUM'] != 0){
+				temp_html +=
+									"<a href=\"javascript:cognationSearchDialog('"+searchResultRecordList[i].fieldMap["PN_BAK"]+"');\" class='btn btn-tag'>"+
+										"同族："+searchResultRecordList[i].fieldMap['FNUM']+
+									"</a>";
+			}else{
+				temp_html +=
+									"<a class='btn btn-tag-unable'>"+
+										"同族：0"+
+									"</a>";
+			}
+			
+			if(searchResultRecordList[i].fieldMap['PNUM'] != 0){
+				temp_html +=
+									"<a href=\"javascript:showQuoteDialog('"+searchResultRecordList[i].fieldMap['AP']+"','"+searchResultRecordList[i].fieldMap['PN_BAK']+"')\" class='btn btn-tag'>"+
+										"引证："+searchResultRecordList[i].fieldMap['PNUM']+
+									"</a>";
+			}else{
+				temp_html +=
+									"<a class='btn btn-tag-unable'>"+
+										"引证：0"+
+									"</a>";
+			}
+			
+			if(searchResultRecordList[i].fieldMap['CPNUM'] != 0){
+				temp_html +=
+									"<a href=\"javascript:showCitedDialog('"+searchResultRecordList[i].fieldMap['AP']+"','"+searchResultRecordList[i].fieldMap['PN_BAK']+"')\" class='btn btn-tag'>"+
+										"被引："+searchResultRecordList[i].fieldMap['CPNUM']+
+									"</a>";
+			}else{
+				temp_html +=
+									"<a class='btn btn-tag-unable'>"+
+										"被引：0"+
+									"</a>";
+			}
+			temp_html +=
+								"</div>"+
+							"</div>"+
+							"<div class='item-content clear'>"+
+								"<div class='item-content-body left'>";
+			for(k in recordList){
+				if(k>0 && recordList[k].ifUserConfig == "1"){
+					if(notEmptyAndNull(recordList[k].itemValue)){
+						if(recordList[k].indexId=="IVDB007"||recordList[k].indexId=="IVDB012"||recordList[k].indexId=="IVDB045"||recordList[k].indexId=="IVDB020"||recordList[k].indexId=="IVDB021"
+							||recordList[k].indexId=="IVDB112"||recordList[k].indexId=="IVDB113"){
+							if(recordList[k].indexId=="IVDB007"||recordList[k].indexId=="IVDB012"){
+								temp_html +=
+									"										        	<p><b>"+recordList[k].indexCNName+" : </b>"+
+									"										        		<a href='javascript:;' class='drillSearch' onclick=\"drillSearch('"+recordList[k].indexId+"','"+recordList[k].indexCNName+"','"+recordList[k].itemValue+"','false');return false;\">"+recordList[k].itemValue+"</a>"+
+									"										        	</p>";
+							}else{
+								temp_html +=
+								"													<p class='clear'>";
+								if(recordList[k].indexId=="IVDB020" && searchResultRecordList[i].fieldMap['OWNER_STATUS'] == "1"){
+									temp_html +=
+										"										        		<img  title='申请（专利权）人发生变更' onclick=\"javascript:popMessage('申请（专利权）人发生变更');\""+
+										"										        		style='height: 18px; width: 18px;padding-top:6px;float:left;margin-left:-26px;cursor: pointer;'"+
+										"										        		src='"+contextPath+"/search-ui/app/result_static/images/owner_status.png' />";
+								}
+								if(recordList[k].indexId=="IVDB113"){
+									var invname = recordList[k].itemValue.split("&&&");
+									for(var x=0;x<invname.length;x++){
+										temp_html +=
+											"<p class='clear'>";
+										if(x==0){
+											temp_html +=
+											"<b class='in-bl' style='float:left;margin:5px 0;'>"+recordList[k].indexCNName+" : </b>";
+										}
+										var stname = invname[x].split(";");
+										for(var y=0;y<stname.length;y++){
+											if(stname[y]=="INV"){
+												temp_html +=
+													"<span class='in-bl' style='margin:5px 0;float:left;max-width:400px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"+
+													"INV"+
+													"</span>";
+											}else{
+												if(notEmptyAndNull(stname[y])){
+													temp_html +=
+														"<span class='in-bl' style='margin:5px 0;float:left;max-width:400px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"+
+														"<a href='javascript:;' _name='"+stname[y]+"' onclick=\"drillSearch('"+recordList[k].indexId+"','"+recordList[k].indexCNName+"','','false',this);return false;\">"+
+														stname[y]+
+														"</a>";
+												}
+												if(y != stname.length-1){
+													temp_html += ";";
+												}
+												temp_html +=
+													"</span>";
+											}
+										}
+										temp_html +=
+											"</p>";
+									}
+								}else{
+									temp_html +=
+									"										        		<b class='in-bl' style='float:left;margin:5px 0;'>"+recordList[k].indexCNName+" : </b>";
+									var stname = recordList[k].itemValue.split(";");
+									for(x in stname){
+										if(notEmptyAndNull(stname[x])){
+											temp_html +=
+												"											        			<span class='in-bl' style='margin:5px 0;float:left;max-width:400px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"+
+												"											        			<a href='javascript:;' _name='"+stname[x]+"' onclick=\"drillSearch('"+recordList[k].indexId+"','"+recordList[k].indexCNName+"','','false',this);return false;\">"+
+																							        				stname[x]+
+												"											        			</a>;"+
+												"											        			</span>";
+										}
+									}
+								}
+								temp_html +=
+								"											        </p>";
+							}
+						}else{
+							if(recordList[k].indexId != "IVDB077"){
+								var stname =  recordList[k].itemValue.replace(";","");
+								if(stname == "" || stname == null){
+									temp_html +=
+									"<p><b>"+recordList[k].indexCNName+" : </b></p>";
+								}else{
+									temp_html +=
+									"<p><b>"+recordList[k].indexCNName+" : </b>"+recordList[k].itemValue+"</p>";
+								}
+								
+							}
+						}
+					}
+				}
+			}
+			var wgTextFlag = false;
+			var absTextFlag = false;
+			for(k in textList){
+				if(textList[k].ifUserConfig=="1" && notEmptyAndNull(textList[k].itemValue)){
+					if(textList[k].indexCode == "CLMS"){
+						/**判断非匿名用户
+						if(){
+							
+						}*/
+						temp_html +=
+							"											<p><b>"+textList[k].indexCNName+" : </b>"+textList[k].itemValue +
+							"											&nbsp;&nbsp;<a href='javascript:;' onclick=\"viewClaim('"+searchResultRecordList[i].fieldMap['ID']+"')\" >[查看详细]</a>"+
+							"											</p>";
+					}else if(textList[k].indexCode == "DESC"){
+						/**判断非匿名用户
+						if(){
+							
+						}*/
+						temp_html +=
+							"											<p><b>"+textList[k].indexCNName+" : </b>"+textList[k].itemValue +
+							"											&nbsp;&nbsp;<a href='javascript:;' onclick=\"viewDesc('"+searchResultRecordList[i].fieldMap['ID']+"')\" >[查看详细]</a>"+
+							"											</p>";
+					}else{
+						absTextFlag = true;
+						if(textList[k].indexCode == "WG_DESC"){
+							wgTextFlag = true;
+						}
+						if(textList[k].indexCode == "ABVIEW"){
+							temp_html +=
+								"<p class='abview-content'><b>"+textList[k].indexCNName+" : </b>"+textList[k].itemValue +
+								"</p>";
+						}else{
+							temp_html +=
+								"<p><b>"+textList[k].indexCNName+" : </b>"+textList[k].itemValue +
+									"<a href='javascript:;' onclick=\"viewAbstract('"+searchResultRecordList[i].fieldMap["ID"]+"','"+textList[k].indexCode+"')\" >[查看详细]</a>"+
+								"</p>";
+						}
+					}
+				}
+			}
+			temp_html += 
+								"</div>";
+			if(notEmptyAndNull(searchResultRecordList[i].absImgTI) && searchResultRecordList[i].absImgTI.ifUserConfig =="1"){
+				temp_html +=
+				"            	<div class='item-content-img right'>";
+				if(notEmptyAndNull(searchResultRecordList[i].absImgUrl)){
+					temp_html +=
+//						"									<img class='absImg' style='border:1px solid #d9dfe9;height: 260px; width: 260px;cursor: pointer;' src='"+contextPath+"/search-ui/app/result_static/images/blank.png' original='"+searchResultRecordList[i].absImgUrl+"' />";
+						"									<img class='absImg' style='border:1px solid #d9dfe9;height: 260px; width: 260px;cursor: pointer;' onclick='absImg_click(this);' src='"+contextPath+searchResultRecordList[i].absImgUrl+"' />";
+				}else{
+					temp_html +=
+						"									<img style='border:1px solid #d9dfe9;height: 260px; width: 260px;' src='"+contextPath+"/search-ui/app/result_static/images/noimg.png' />";
+				}
+				temp_html +=
+					"         	</div>";
+			}
+			temp_html +=
+				"        	</div>"+
+				"        	<div class='item-footer'>"+
+				"        		<div class='btn-group clear'>"+
+				"                            <a href='javascript:void(0);' onclick='detail_single(this);' class='btn btn-operation' role='detail'>详览</a>"+
+				"							 <a href='javascript:void(0);' onclick='favorite_single(this);' role='favorite' class='btn btn-operation'>收藏</a>";
+			if(perTag){
+				temp_html +=
+					"						 <a href='javascript:void(0);' onclick='exportDB_single(this);' role='exportDB' class='btn btn-operation'>加入批量下载库</a>";
+			}
+			temp_html +=
+				"							 <a href='javascript:void(0);' onclick='addAnalysis_single(this);' role='addAnalysis' class='btn btn-operation'>+ 分析库</a>"+
+				"                            <a href='javascript:void(0);' onclick='proposor_single(this);' class='btn btn-operation' role='proposor' _name='"+searchResultRecordList[i].fieldMap['PAVIEW']+"' _address='"+searchResultRecordList[i].fieldMap['AA']+"' _zipCode='"+searchResultRecordList[i].fieldMap['AZ']+"' _country='"+searchResultRecordList[i].fieldMap['AC']+"'>申请人</a>"+
+				"                            <a href='javascript:void(0);' onclick='lawState_single(this);' class='btn btn-operation' role='lawState' an='"+searchResultRecordList[i].fieldMap['AP']+"' pn='"+searchResultRecordList[i].fieldMap['PN_BAK']+"'>法律状态</a>";
+			if(watchPerTag){
+				temp_html +=
+					"<a href='javascript:void(0);' onclick='watch_single(this);' role='watch' an='"+searchResultRecordList[i].fieldMap['AP']+"' class='btn btn-operation'>监控</a>";
+			}
+			if(absTextFlag){
+				temp_html +=
+					"<a href='javascript:void(0);' onclick='translate_single(this);' role='translate' wg_flag='"+wgTextFlag+"' _id='"+searchResultRecordList[i].fieldMap['ID']+"' class='btn btn-operation btn-translate'>翻译</a>";
+			}
+			temp_html +=
+					"          </div>"+
+					"      </div>"+
+					"	</div>"+
+					"</li>";
+			htmlList += temp_html;
+		}
+		
+		htmlList +=
+				"</ul>"+
+			"</div>"+
+			"<div class='re-page' style='height:44px;margin-top:10px;'>"+
+				"<div class='re-page-content clear' style='width:auto;margin:auto;'>"+
+					generatePage(jsonData,"uiPage_bottom","uiPage_bottom","/patentsearch/showSearchResultMDkyMQ-startWa.shtml",true,"resultMode",true) +
+				"</div>"+
+			"</div>"+
+		"</div>";
+//		"<script type='text/javascript'>"+
+//		"	$('img.absImg').lazyload();"+
+//		"</script>";
+	}else if(resultMode == "IMAGE_MODE"){//多图式
+		htmlList +=
+		"		<div class='re-content clear' style='margin-top:0;'>"+
+		"        	<div class='clear'>";
+		var searchResultRecordList = jsonData.searchResultDTO.searchResultRecord;
+		for(i in searchResultRecordList){
+			var temp_html = "";
+			temp_html +=
+				"        	<div class='content-item-wrapper patent'>"+
+				"                <div class='content-item'>"+
+				"                    <ul>";
+			var recordList = searchResultRecordList[i].recordList;
+			for(j in recordList){
+				if(recordList[j].indexId == "IVDB104"){
+					temp_html += 
+						"							 <li>"+
+						"                        		<input type='checkbox' style='padding-left: -10px;' class='ck' name='patent_flag'>"+
+						"                            	<span title='"+recordList[j].indexCNName+"'>"+recordList[j].indexCNName+":</span>"+
+						"                            	<span title='"+recordList[j].itemValue+"'>"+recordList[j].itemValue+"</span>"+
+						"                        	</li>";
+				}
+				if(recordList[j].indexId == "IVDB077"){
+					temp_html +=
+						"							<li>"+
+						"                            	<span title='"+recordList[j].indexCNName+"'>"+recordList[j].indexCNName+":</span>"+
+						"                            	<span title='"+recordList[j].itemValue+"'>"+recordList[j].itemValue+"</span>"+
+						"                        	</li>";
+				}
+			}
+			temp_html +=
+				"                        <li style='text-align: center;'>";
+			if(notEmptyAndNull(searchResultRecordList[i].absImgUrl)){
+				temp_html +=
+					"								<img class='absImg' style='border:1px solid #d9dfe9;cursor: pointer;' onclick='absImg_click(this);' src='"+contextPath+searchResultRecordList[i].absImgUrl+"' width='280' height='280' />";
+			}else{
+				temp_html +=
+					"								<img src='"+contextPath+"/search-ui/app/result_static/images/noimg.png' style='border:1px solid #d9dfe9;' width='280' height='280' />";
+			}
+			temp_html +=
+				"                        </li>"+
+				"                    </ul>"+
+				"                </div>"+
+				"                	<div class='operation clear'>"+
+				"                                <a href='javascript:void(0);' onclick='detail_single(this);' role='detail' title='详览' class='in-bl full-text_sm'></a>"+
+				"									<a href='javascript:void(0);' onclick='favorite_single(this);' role='favorite' title='收藏' class='in-bl collection_sm'></a>";
+				if(perTag){
+					temp_html +=
+						"<a href='javascript:void(0);' onclick='exportDB_single(this);' role='exportDB' title='加入批量下载库' class='in-bl down_sm'></a>";
+				}
+				temp_html +=
+				"                            	<a href='javascript:void(0);' onclick='addAnalysis_single(this);' role='addAnalysis' title='加入分析库' class='in-bl analyze_sm'></a>"+
+				"								<a href='javascript:void(0);' onclick='proposor_single(this);' role='proposor' _name='"+searchResultRecordList[i].fieldMap['PAVIEW']+"' _address='"+searchResultRecordList[i].fieldMap['AA']+"' _zipCode='"+searchResultRecordList[i].fieldMap['AZ']+"' _country='"+searchResultRecordList[i].fieldMap['AC']+"' title='申请人' class='in-bl proposor_sm'></a>"+
+				"								<a href='javascript:void(0);' onclick='lawState_single(this);' role='lawState' role='lawState' an='"+searchResultRecordList[i].fieldMap['AP']+"' pn='"+searchResultRecordList[i].fieldMap['PN_BAK']+"' title='法律状态' class='in-bl lawstate_sm'></a>";
+				if(watchPerTag){
+					temp_html +=
+					"<a href='javascript:void(0);' onclick='watch_single(this);' role='watch' an='"+searchResultRecordList[i].fieldMap['AP']+"' title='监控' class='in-bl watch_sm'></a>";
+				}
+				var titleHidden = searchResultRecordList[i].fieldMap['TIVIEW'];
+				titleHidden = titleHidden.replace(/(\")/g,'&quot;');
+				titleHidden = titleHidden.replace(/(\')/g,'&#39;');
+				temp_html +=
+				"                            </div>"+
+				"			<input type='hidden' name='vIdHidden' value='"+searchResultRecordList[i].fieldMap['VID']+"' />"+
+				"			<input type='hidden' name='idHidden' value='"+searchResultRecordList[i].fieldMap['ID']+"' />"+
+				"			<input type='hidden' name='titleHidden' value='"+titleHidden+"' />"+
+				"			<input type='hidden' name='nrdAnHidden' value='"+searchResultRecordList[i].fieldMap['AP']+"' />"+
+				"			<input type='hidden' name='nrdAdpHidden' value='"+searchResultRecordList[i].fieldMap['APD_VALUE']+"' />"+
+				"			<input type='hidden' name='nrdpdHidden' value='"+searchResultRecordList[i].fieldMap['PD']+"' />"+
+				"			<input type='hidden' name='nrdPnHidden' value='"+searchResultRecordList[i].fieldMap['PN_BAK']+"' />"+
+				"			<input type='hidden' name='appSnHidden' value='"+searchResultRecordList[i].fieldMap['APSN']+"' />"+
+				"			<input type='hidden' name='pnSnHidden' value='"+searchResultRecordList[i].fieldMap['PNSN']+"' />"+
+				"			<input type='hidden' name='langHidden' value='"+searchResultRecordList[i].fieldMap['LANG']+"' />"+
+				"			<input type='hidden' name='docStatusHidden' value='"+searchResultRecordList[i].fieldMap['DOC_STATUS']+"' />"+
+				"			<input type='hidden' name='appNameHidden' value='"+searchResultRecordList[i].fieldMap['PAVIEW']+"' />"+
+				"			<input type='hidden' name='appAddrHidden' value='"+searchResultRecordList[i].fieldMap['AA']+"' />"+
+				"			<input type='hidden' name='appZipHidden' value='"+searchResultRecordList[i].fieldMap['AZ']+"' />"+
+				"			<input type='hidden' name='appCountryHidden' value='"+searchResultRecordList[i].fieldMap['AC']+"' />"+
+				"            </div>";
+			htmlList += temp_html;
+		}
+		htmlList +=
+			"		</div>"+
+			"		<div class='re-page' style='height:44px;margin-top:10px;'>"+
+			"		<div class='re-page-content clear' style='width:auto;margin:auto;'>"+
+			generatePage(jsonData,"uiPage_bottom","uiPage_bottom","/patentsearch/showSearchResultMDkyMQ-startWa.shtml",true,"resultMode",true) +
+			"		</div>"+
+			"	</div>"+
+			"</div>";
+//			"<script type='text/javascript'>"+
+//			"	$(\'img.absImg\').lazyload();"+
+//			"</script>";
+	}else{//列表式
+		htmlList +=
+			"<div class='re-content' style='margin-top:0;position:relative;padding-bottom:54px;'>"+
+			"	<div class='re-table'>"+
+			"		<table>"+
+			"			<thead>"+
+			"				<tr>"+
+			"					<th style='width: 30px;'>"+
+			"						<input type='checkbox' name='patent_flag_all' onclick='patent_flag_all()' />"+
+			"					</th>"+
+			"					<th style='width:120px;'>"+
+			"						申请号"+
+			"					</th>"+
+			"					<th style='width: 80px;'>"+
+			"						申请日"+
+			"					</th>"+
+			"					<th style='width: 110px;'>"+
+			"						公开(公告)号"+
+			"					</th>"+
+			"					<th style='width: 110px;'>"+
+			"						公开(公告)日"+
+			"					</th>"+
+			"					<th class='w140'>"+
+			"						发明名称"+
+			"					</th>"+
+			"					<th class='w132'>"+
+			"						申请(专利权)人"+
+			"					</th>"+
+			"					<th style='width: 205px;'>"+
+			"						操作"+
+			"					</th>"+
+			"				</tr>"+
+			"			</thead>"+
+			"			<tbody id='tbody'>";
+		var searchResultRecordList = jsonData.searchResultDTO.searchResultRecord;
+		for(var i=0;i<searchResultRecordList.length;i++){
+			var temp_html = "";
+			if(i%2==0){
+				temp_html +=
+					"						<tr class='even patent'>";
+			}else{
+				temp_html +=
+					"						<tr class='patent'>";
+			}
+			temp_html +=
+				"					<td>"+
+				"						<input type='checkbox' name='patent_flag' onclick='patent_flag()'/>"+
+				"					</td>"+
+				"					<td>"+
+				"						<span title='"+searchResultRecordList[i].fieldMap['APO']+"'>"+searchResultRecordList[i].fieldMap['APO']+"</span>"+
+				"					</td>"+
+				"					<td>"+
+										searchResultRecordList[i].fieldMap['APD']+
+				"					</td>"+
+				"					<td>"+
+				"						<span title='"+searchResultRecordList[i].fieldMap['PN_BAK']+"'>"+searchResultRecordList[i].fieldMap['PN']+"</span>"+
+				"					</td>"+
+				"					<td>"+
+										searchResultRecordList[i].fieldMap['PD']+
+				"					</td>"+
+				"					<td>"+
+				"						<span title='"+searchResultRecordList[i].fieldMap['TIVIEW']+"'>"+searchResultRecordList[i].fieldMap['TIVIEW']+"</span>"+
+				"					</td>"+
+				"					<td>";
+			if(searchResultRecordList[i].fieldMap["OWNER_STATUS"] == "1"){
+				temp_html +=
+					"							<img title='申请（专利权）人发生变更' onclick=\"javascript:popMessage('申请（专利权）人发生变更');\""+
+					"								style='height: 17px; width: 17px;cursor: pointer;'"+
+					"								src='"+contextPath+"/search-ui/app/result_static/images/owner_status.png' />";
+			}
+			temp_html +=
+				"						<span style='vertical-align:text-bottom;' title='"+searchResultRecordList[i].fieldMap['PAVIEW']+"'>"+searchResultRecordList[i].fieldMap['PAVIEW']+"</span>"+
+				"					</td>"+
+				"					<td>"+
+				"						"+
+				"							<a href='javascript:void(0);' onclick='detail_single(this);' role='detail' title='详览' class='full-text_sm in-bl'></a>"+
+				"							<a href='javascript:void(0);' onclick='favorite_single(this);' role='favorite' title='收藏' class='collection_sm in-bl'></a>";
+			if(perTag){
+				temp_html +=
+				"							<a href='javascript:void(0);' onclick='exportDB_single(this);' role='exportDB' title='加入批量下载库' class='down_sm in-bl'></a>";
+			}
+			temp_html +=
+				"                           <a href='javascript:void(0);' onclick='addAnalysis_single(this);' role='addAnalysis' title='加入分析库' class='analyze_sm in-bl'></a>"+
+				"							<a href='javascript:void(0);' onclick='proposor_single(this);' role='proposor' _name='"+searchResultRecordList[i].fieldMap['PAVIEW']+"' _address='"+searchResultRecordList[i].fieldMap['AA']+"' _zipCode='"+searchResultRecordList[i].fieldMap['AZ']+"' _country='"+searchResultRecordList[i].fieldMap['AC']+"' title='申请人' class='proposor_sm in-bl'></a>"+
+				"							<a href='javascript:void(0);' onclick='lawState_single(this);' role='lawState' role='lawState' an='"+searchResultRecordList[i].fieldMap['AP']+"' pn='"+searchResultRecordList[i].fieldMap['PN_BAK']+"' title='法律状态' class='lawstate_sm in-bl'></a>";
+			if(watchPerTag){
+				temp_html +=
+				"							<a href='javascript:void(0);' onclick='watch_single(this);' role='watch' an='"+searchResultRecordList[i].fieldMap['AP']+"' title='监控' class='watch_sm in-bl'></a>";
+			}
+			var titleHidden = searchResultRecordList[i].fieldMap['TIVIEW'];
+			titleHidden = titleHidden.replace(/(\")/g,'&quot;');
+			titleHidden = titleHidden.replace(/(\')/g,'&#39;');
+			temp_html +=
+				"					</td>"+
+				"					<input type='hidden' name='vIdHidden' value='"+searchResultRecordList[i].fieldMap['VID']+"' />"+
+				"					<input type='hidden' name='idHidden' value='"+searchResultRecordList[i].fieldMap['ID']+"' />"+
+				"					<input type='hidden' name='titleHidden' value='"+titleHidden+"' />"+
+				"					<input type='hidden' name='nrdAnHidden' value='"+searchResultRecordList[i].fieldMap['AP']+"' />"+
+				"					<input type='hidden' name='nrdAdpHidden' value='"+searchResultRecordList[i].fieldMap['APD_VALUE']+"' />"+
+				"					<input type='hidden' name='nrdpdHidden' value='"+searchResultRecordList[i].fieldMap['PD']+"' />"+
+				"					<input type='hidden' name='nrdPnHidden' value='"+searchResultRecordList[i].fieldMap['PN_BAK']+"' />"+
+				"					<input type='hidden' name='appSnHidden' value='"+searchResultRecordList[i].fieldMap['APSN']+"' />"+
+				"					<input type='hidden' name='pnSnHidden' value='"+searchResultRecordList[i].fieldMap['PNSN']+"' />"+
+				"					<input type='hidden' name='langHidden' value='"+searchResultRecordList[i].fieldMap['LANG']+"' />"+
+				"					<input type='hidden' name='docStatusHidden' value='"+searchResultRecordList[i].fieldMap['DOC_STATUS']+"' />"+
+				"					<input type='hidden' name='appNameHidden' value='"+searchResultRecordList[i].fieldMap['PAVIEW']+"' />"+
+				"					<input type='hidden' name='appAddrHidden' value='"+searchResultRecordList[i].fieldMap['AA']+"' />"+
+				"					<input type='hidden' name='appZipHidden' value='"+searchResultRecordList[i].fieldMap['AZ']+"' />"+
+				"					<input type='hidden' name='appCountryHidden' value='"+searchResultRecordList[i].fieldMap['AC']+"' />"+
+				"					</tr>";
+			htmlList += temp_html;
+		}
+		htmlList +=
+			"			</tbody>"+
+			"		</table>"+
+			"	</div>"+
+			"	<div class='re-page' style='height:44px;bottom:0;left:0;position:absolute;width:100%;'>"+
+			"		<div class='re-page-content clear' style='width:auto;margin:auto;'>"+
+			generatePage(jsonData,"uiPage_bottom","uiPage_bottom","/patentsearch/showSearchResultMDkyMQ-startWa.shtml",true,"resultMode",true) +
+			"		</div>"+
+			"	</div>"+
+			"</div>";
+	}
+	
+	return htmlList;
+}
+
+function loadJsFile(path){
+	if(notEmptyAndNull(path)){
+		var new_element = document.createElement("script");
+		new_element.setAttribute("type", "text/javascript");
+		new_element.setAttribute("src", contextPath + path);
+		document.body.appendChild(new_element);
+	}
+}
+
+function notEmptyAndNull(original){
+	return original!=""&&original!="null"&&original!=undefined&&original!="undefined";
+}
+function dataHandle(data){
+	if(notEmptyAndNull(data)){
+		return data;
+	}else{
+		return "";
+	}
+}
+
+function generatePage(jsonData,formId,theme,action,ajax,target,showTotalRecord){
+	var page_html = 
+		"<div style='overflow:hidden;float:none;position:static;'>";
+	var pagination = jsonData.resultPagination;
+	var totalCount = pagination.totalCount; 
+	var start = parseInt(pagination.start);
+	var limit= parseInt(pagination.limit);
+	var sumLimit= parseInt(pagination.sumLimit);
+	var cpage = parseInt(start/limit) + 1;
+	var totalPage = Math.floor(totalCount/limit);
+	if (totalCount % limit > 0){
+		totalPage++;
+	}
+	switch(theme){
+		case "uipicText":
+			page_html +=
+				"<div class='uipage'>" +
+//				"<link rel='stylesheet' href='"+contextPath+"/common-ui/css/uiPage/uiPage.css'  type='text/css'>" +
+				" 	<div class='page_top'>";
+				if(totalPage == 1){
+					page_html +=
+						"共&nbsp;"+cpage+"&nbsp;页   "+totalCount+"条数据";
+				}else if(cpage == totalPage){
+					page_html +=
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',0,"+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_1.gif' /></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+(start-limit)+","+ajax+",'"+target+"')\"><img src='"+contextPath+"/wee/platform/common/images/page/page_2.gif' /></a>" +
+						"<a href='javascript:void(0);'><img src='"+contextPath+"/wee/platform/common/images/page/page_7.gif' /></a>" +
+						"<a href='javascript:void(0);'><img src='"+contextPath+"/wee/platform/common/images/page/page_8.gif' /></a>";
+				}else if(cpage == 1){
+					page_html +=
+						"<a href='javascript:void(0);'><img src='"+contextPath+"/wee/platform/common/images/page/page_5.gif' /></a>" +
+						"<a 'javascript:void(0);'><img src='"+contextPath+"/wee/platform/common/images/page/page_6.gif' /></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+(start+limit)+","+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_3.gif'/></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((totalPage - 1) * limit)+","+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_4.gif' /></a>";
+				}else{
+					page_html +=
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',0,"+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_1.gif' /></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+(start-limit)+","+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_2.gif' /></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+(start+limit)+","+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_3.gif' /></a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((totalPage - 1) * limit)+","+ajax+",'"+target+"');\"><img src='"+contextPath+"/wee/platform/common/images/page/page_4.gif' /></a>";
+				}
+				if(totalPage != 1 && showTotalRecord){
+					page_html +=
+						"第&nbsp;<input type='text' style='height:25px;line-height:25px; text-align:center; width:40px;border:#c8c8c8 1px solid;padding:0;' value='"+cpage+"' onkeydown=\"if(event.keyCode == 13){gotoPageStaticNum('"+formId+"',this.value,'"+limit+"','"+totalPage+"','"+cpage+"',"+ajax+",'"+target+"')}\" />&nbsp;页&nbsp;共&nbsp;"+totalPage+"&nbsp;页&nbsp;"+totalCount+"&nbsp;条数据";
+				}
+				page_html +=
+					" 		</div>"+
+					"	</div>";
+				break;
+		case "uiPage_bottom":
+			//定义页数相关变量
+			var pageItem_length = 5;
+			var pageItem_front = 3;
+			page_html +=
+			"<div class='uipage' style='min-width:700px;margin-left:50%;'>"+
+			"<link rel='stylesheet' href='"+contextPath+"/common-ui/css/uiPage/uiPage.css'  type='text/css'>" +
+				"<div class='page_bottom' style='white-space:nowrap;min-width:700px;margin-left:-50%;'>";
+			if(totalPage == 1){
+				page_html += 
+					"<a class='active' ><strong>1</strong></a>"; 
+			}else{
+				if(cpage > 1){
+					page_html +=
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',0,"+ajax+",'"+target+"');\">首页</a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((cpage-2)*limit)+","+ajax+",'"+target+"')\">上一页</a>";
+				}
+				if(totalPage>9999){
+					pageItem_length = 3;
+					pageItem_front = 2;
+				}
+				if(totalPage <= pageItem_length){
+					for (var i = 1; i <= totalPage; i++){
+						if (cpage == i) {
+							page_html +=
+								"<a class='active'><strong>"+i+"</strong></a>";
+						} else {
+							page_html +=
+								"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((i - 1) * limit)+","+ajax+",'"+target+"')\">"+i+"</a>";
+						}
+					}
+				}else if(cpage > pageItem_front && cpage < totalPage - (pageItem_length - pageItem_front)){
+					for (var i = (cpage - pageItem_front) + 1; i <= totalPage && i <= cpage + (pageItem_length - pageItem_front); i++){
+						if (cpage == i) {
+							page_html +=
+								"<a class='active' ><strong>"+i+"</strong></a>";
+						} else {
+							page_html +=
+								"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((i - 1) * limit)+","+ajax+",'"+target+"')\">"+i+"</a>";
+						}
+					}
+				}else if(cpage <= pageItem_front){
+					for (var i = 1; i <= totalPage && i <= pageItem_length; i++){
+						if (cpage == i) {
+							page_html +=
+								"<a class='active' ><strong>"+i+"</strong></a>";
+						} else {
+							page_html +=
+								"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((i - 1) * limit)+","+ajax+",'"+target+"')\">"+i+"</a>";
+						}
+					}
+				}else{
+					for (var i = totalPage - (pageItem_length - 1); i <= totalPage; i++){
+						if (cpage == i) {
+							page_html +=
+								"<a class='active' ><strong>"+i+"</strong></a>";
+						} else {
+							page_html +=
+								"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((i - 1) * limit)+","+ajax+",'"+target+"')\">"+i+"</a>";
+						}
+					}
+				}
+				if(cpage != totalPage){
+					page_html +=
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+(cpage * limit)+","+ajax+",'"+target+"')\">下一页</a>" +
+						"<a href=\"javascript:gotoPageStatic('"+formId+"',"+((totalPage - 1) * limit)+","+ajax+",'"+target+"')\">尾页</a>";
+				}
+				if(showTotalRecord){
+					page_html +=
+						"<p>"+
+							"&nbsp;共&nbsp;" +totalPage+"&nbsp;页&nbsp;"
+						"</p>"
+				}
+			}
+			page_html +=
+				"<p>&nbsp;到第</p>"+
+				"<div class='input_bottom'>"+
+					"<input id='txt' style='width: 60px;border: none;outline: none;font-size: 14px;background: none;padding:0;text-align: center;border: 0px solid #fff;' type='text' value = '"+cpage+"' onkeydown=\"if(event.keyCode == 13){gotoPageStaticNum('"+formId+"',this.value,'"+limit+"','"+totalPage+"','"+cpage+"',"+ajax+",'"+target+"')}\"/>"+
+				"</div>"+
+				"<p>页</p>"+
+				"<a style='margin-left:15px;' href=\"javascript:gotoPageStaticNum('"+formId+"',txt.value,'"+limit+"','"+totalPage+"','"+cpage+"',"+ajax+",'"+target+"')\">确定</a>"+
+				"</div>"+
+			"</div>";
+			break;
+	}
+	page_html +=
+		"	</div>"+
+		"	<form name='"+formId+"' class='pageForm' id='"+formId+"' action='"+contextPath+action+"' method='post'>" +
+		"		<input type='hidden' name='resultPagination.limit' value='"+limit+"' id='resultPagination.limit'>" +
+		"		<input type='hidden' name='resultPagination.sumLimit' value='"+sumLimit+"' id='resultPagination.sumLimit'>" +
+		"		<input type='hidden' name='resultPagination.start' value='"+start+"' id='start'>" +
+		"		<input type='hidden' name='resultPagination.totalCount' value='"+totalCount+"' id='resultPagination.totalCount'>" +
+		"		<input type='hidden' name='searchCondition.sortFields' value='"+dataHandle(jsonData.searchCondition.sortFields)+"'>" +
+		"		<input type='hidden' name='searchCondition.searchType' value='"+dataHandle(jsonData.searchCondition.searchType)+"'>" +
+		"		<input type='hidden' name='searchCondition.originalLanguage' value='"+dataHandle(jsonData.searchCondition.originalLanguage)+"'>";
+	if(jsonData.searchCondition.extendInfo != null){
+		page_html +=
+		"		<input type='hidden' name=\"searchCondition.extendInfo['MODE']\" value='"+dataHandle(jsonData.searchCondition.extendInfo['MODE'])+"'>" +
+		"		<input type='hidden' name=\"searchCondition.extendInfo['STRATEGY']\" value='"+dataHandle(jsonData.searchCondition.extendInfo['STRATEGY'])+"'>";
+	}
+	var searchExp_ = dataHandle(jsonData.searchCondition.searchExp);
+	var executableSearchExp_ = dataHandle(jsonData.searchResultDTO.executableSearchExp);
+	var literatureSF_ = dataHandle(jsonData.searchResultDTO.literatureSF);
+	if(searchExp_.indexOf("\"")>0){
+		page_html +=
+			'		<input type=\'hidden\' name=\'searchCondition.searchExp\' value=\''+searchExp_+'\'>';
+	}else{
+		page_html +=
+			"		<input type=\"hidden\" name=\"searchCondition.searchExp\" value=\""+searchExp_+"\">";
+	}
+	if(executableSearchExp_.indexOf("\"")>-1){
+		page_html +=
+			'		<input type=\'hidden\' name=\'searchCondition.executableSearchExp\' value=\''+executableSearchExp_+'\'>';
+	}else{
+		page_html +=
+			"		<input type=\"hidden\" name=\"searchCondition.executableSearchExp\" value=\""+executableSearchExp_+"\">";
+	}
+	if(executableSearchExp_.indexOf("VDB:")>-1){
+		page_html +=
+			"<input type='hidden' name='searchCondition.dbId' value=''>";	
+	}else{
+		page_html +=
+			"<input type='hidden' name='searchCondition.dbId' value='VDB'>";
+	}
+	if(literatureSF_.indexOf("\"")>0){
+		page_html +=
+			'		<input type=\'hidden\' name=\'searchCondition.literatureSF\' value=\''+literatureSF_+'\'>';
+	}else{
+		page_html +=
+			"		<input type=\"hidden\" name=\"searchCondition.literatureSF\" value=\""+literatureSF_+"\">";
+	}
+	page_html +=
+		"		<input type='hidden' name='searchCondition.targetLanguage' value='"+dataHandle(jsonData.searchCondition.targetLanguage)+"'>" +
+		"		<input type='hidden' class='page_resultMode' name='searchCondition.resultMode' value='"+$('#result_resultMode').val()+"'>" +
+		"		<input type='hidden' name='searchCondition.strategy' value='"+dataHandle(jsonData.searchCondition.strategy)+"'>";
+	if(notEmptyAndNull(jsonData.searchCondition.searchKeywords)){
+		page_html +=
+			"<input type='hidden' name='searchCondition.searchKeywords' value='"+dataHandle(jsonData.searchCondition.searchKeywords)+"'>";
+	}else{
+		$.each(dealSearchKeywords, function(i, value) {
+			page_html +=
+				"<input type='hidden' name='searchCondition.searchKeywords' value='"+value+"'>";
+		});
+	}
+	page_html +=
+//		"		<input type='hidden' name='wee.bizlog.modulelevel' value='"+jsonData.wee.bizlog.modulelevel+"'>" +
+//		"		<input type='hidden' name='searchCondition.ssId' value='"+jsonData.searchCondition.ssId+"'>" +
+		"	</form>";
+	return page_html;
+}
+
+function gotoPageStatic(id, start, isAjax, target) {
+	if (isAjax) {
+		$('#'+id).find('#start').val(start);
+		showBlock();
+		$.ajax({
+					type : "POST",
+					url : $("#"+id).attr("action"),
+					data : $.param($("#"+id).find("input")),
+					dataType : "json",
+					global : true,
+					success : function(jsonData) {
+						jsonDataDTO = jsonData;
+						$("#" + target).html(generateList(jsonData,jsonData.searchCondition.resultMode));
+						$("#page_top").html(generatePage(jsonData,"resultlistForm_top","uipicText","/patentsearch/showSearchResultMDkyMQ-startWa.shtml",true,"resultMode",true));
+						closeBlock();
+					},
+					error : function(data) {
+					}
+				})
+	} else {
+	}
+}
+
+function gotoPageStaticNum(id, start, limit, totalPage, cpage, isAjax, target) {
+	if (parseInt(start) == NaN || ""==start) {
+		start = cpage;
+	} else {
+		if (parseInt(start) > totalPage) {
+			start = totalPage;
+		}
+
+		if (parseFloat(start) < 1) {
+			start = 1;
+		}
+		
+		if(start > parseInt(start) && parseInt(start)!=0){
+			start = parseInt(start);
+		}
+	}
+	gotoPageStatic(id, (start - 1) * limit, isAjax, target);
+}
+function permissionTag(resourceId){
+	var perFlag = false;
+	$.ajax({
+		type : "POST",
+		url : contextPath + '/portal/uiIndexAC!perTag.do',
+		data : {"resourceId":resourceId},
+		dataType : "json",
+		async : false,
+		success : function(jsonData) {
+			perFlag = jsonData.perFlag;
+		},
+		error : function(data) {
+		}
+	});
+	return perFlag;
+}

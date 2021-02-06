@@ -1,0 +1,226 @@
+/*****************检索历史列表开始********************************/
+.history-body .left{
+    float: left;
+}
+.history-body .right{
+    float: right;
+}
+.history-body .body-left{
+    width: 924px;
+}
+.history-body .body-right{
+    width: 250px;
+}
+.history-body{
+		
+}
+.history-body .top-area{
+     
+}
+.history-body .body-left .top-area{
+    margin-bottom: 15px;
+}
+
+.history-body .box{
+    background-color: #fff;
+    border-radius: 3px;
+}
+.history-body .box.no-bottom-radius{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.history-body .box.no-top-radius{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.history-body .box.no-left-radius{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.history-body .box.no-right-radius{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.history-body .box .box-header{
+    padding: 10px 20px;
+    border-bottom: rgb(238,238,238) 1px solid;
+}
+.history-body .box .box-header h1{
+    color: rgb(47,102,153);
+    font-size: 1.7em;
+    padding-left: 30px;
+    line-height: 30px;
+}
+.history-body .box .box-header h1.history{
+    background: url("../images/history-icon.png") no-repeat 0 4px;
+}
+
+.history-body .search-area{
+    position: relative;
+    padding-right: 124px;
+}
+.history-body .body-right .search-area{
+    padding-right: 43px;
+    margin-bottom: 15px;
+    margin-top: 7px;
+}
+.SearchExpInput_add{
+	color: rgb(36,36,36);
+    width: 80px;
+    line-height: 30px;
+    position: absolute;
+    right: 350px;
+    top: 0;
+}
+.history-body .search-area input[type='text']{
+    border: rgb(211,211,211) 1px solid;
+    border-radius: 4px;
+    height: 28px;
+    width: 215px;
+    line-height: 28px;
+    color: black;
+    padding: 0 0 0 10px;
+}
+.history-body .search-area span{
+	font-size:14px;
+}
+.history-body .body-right .search-area input[type='text']{
+    width: 155px;
+    height: 20px;
+    line-height: 20px;
+}
+.history-body .search-area .btn-search{
+    position: absolute;
+    right: 39px;
+    top: 0;
+    height: 30px;
+    border-radius: 4px;
+    background-color: rgb(72,166,238);
+    font-size: 1.3em;
+    padding: 0;
+    width: 79px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+.history-body .search-area .btn-searchDec{
+    position: absolute;
+    right: 970px;
+    top: 0px;
+    cursor: pointer;
+    padding: 5px 5px;
+    background-repeat: no-repeat;
+    background-position: 12px;
+    font-size: 1.5em;
+    border-radius: 3px;
+    font-weight: normal;
+    background-color: rgb(72,166,238);
+}
+.history-body .body-right .search-area .btn-search{
+    line-height: 20px;
+    width: 40px;
+    font-size: 1.1em;
+}
+.history-body .box .box-content{
+    padding: 10px 20px;
+    height:153px;
+}
+/*****************插件部分样式********************************/
+
+
+.history-item{
+	margin-left:15px;
+    width: 220px;
+    border: 1px solid #E5E5E5;
+    padding:10px 15px;
+    height:130px;
+}
+.history-row{
+    margin-top: 10px;
+    vertical-align: bottom;
+}
+.history-order{
+    color: rgb(60,60,60);
+    font-weight:bold;
+    font-size: 1.6em;
+    line-height: 22px;
+}
+.history-order{
+    font-size: 1.6em;
+}
+.history-exp-title .history-exp{
+    color: rgb(60,60,60);
+    font-size: 1.8em;
+    line-height: 25px;
+}
+.history-exp-title .history-exp{
+    font-size: 1.8em;
+}
+.history-search .history-btn-general-search{
+    border: 1px solid rgb(255,151,36);
+    height: 16px;
+    width: 100px;
+    text-align: center;
+    line-height: 16px;
+    color: rgb(255,151,36);
+    font-size: 1.3em;
+    padding-right: 0;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-top: 3px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    cursor: default;
+}
+
+.history-info .history-count{
+    color: rgb(255,151,36);
+    font-size: 1.5em;
+    line-height: normal;
+    width:88px;
+}
+.history-slide-box .history-info .history-count{
+    font-size: 1.5em;
+}
+.history-info .history-date{
+    color: rgb(142,142,142);
+    font-size: 1.5em;
+    line-height: normal;
+}
+.history-info .history-date{
+    font-size: 1.5em;
+}
+.history-btn-group .history-btn{
+    width: 88px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    padding: 0;
+    font-size: 1.6em;
+    border-radius: 3px;
+}
+.history-btn-group .history-btn{
+    width: 88px;
+    font-size: 1.6em;
+    height: 24px;
+    line-height: 24px;
+    color:#fff;
+}
+.history-btn-group .history-btn-quote{
+     background-color: rgb(255,151,36);
+ }
+ 
+.history-btn-group .history-btn-quote-disabled{
+     background-color: #ccc;
+     cursor: default;
+ }
+.history-btn-group .history-btn-view{
+    background-color: rgb(72,166,238);
+}
+.history-left{
+	float:left;
+}
+.history-right{
+	float:right;
+}

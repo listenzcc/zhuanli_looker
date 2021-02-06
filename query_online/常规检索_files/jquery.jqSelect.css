@@ -1,0 +1,84 @@
+.jq-select-container{
+	display:inline-block !important;
+    *display:inline !important;
+    *zoom:1 !important;
+    line-height:normal !important;
+}
+.jq-select-menu{
+    cursor: pointer;
+    display: block;
+    padding: 0 20px 0 10px;
+    position: relative;
+    height: 100%;
+    font-size: 100%;
+    z-index: 5;
+}
+.jq-select-menu.border{
+    border: 1px solid rgb(204,204,204);
+}
+.jq-select-menu span{
+    display:inline-block;
+    *display:inline;
+    *zoom:1;
+    white-space: nowrap;
+    overflow-x: hidden;
+    width: 100%;
+    font-size: inherit;
+}
+.jq-select-menu:hover{
+    border-color: #8c8c8c;
+}
+.jq-select-menu.active{
+    box-shadow: rgb(64, 181, 226) 0px 0px 5px 0px;
+}
+.jq-select-menu i.arrow{
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -5px;
+    background-image: url("images/arrow-icon.png");
+}
+.jq-select-menu ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid rgb(204,204,204);
+    border-right: 1px solid rgb(204,204,204);
+    border-top: 1px solid rgb(204,204,204);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+    position: absolute;
+    left: -1px;
+    top: 100%;
+    min-width: 100%;
+    display: none;
+    font-size: inherit;
+    z-index: 20;
+}
+.jq-select-menu ul li{
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: inherit;
+    z-index: 20;
+    vertical-align:bottom;
+
+}
+.jq-select-menu ul li a{
+    display: block;
+    padding: 12px 10px;
+    color: #000;
+    border-bottom: 1px solid rgb(140,140,142);
+    background-color: #fff;
+    white-space: nowrap;
+    font-size: inherit;
+    vertical-align:bottom;
+}
+.jq-select-menu ul li a.active{
+    background-color: rgb(0,132,199);
+    color: #fff;
+}
+.jq-select-menu ul li a:hover{
+    background-color: rgb(0,132,199);
+    color: #fff;
+}

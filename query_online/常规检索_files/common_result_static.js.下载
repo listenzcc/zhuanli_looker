@@ -1,0 +1,124 @@
+function generate_common_result(jsonData,typeValue){
+	var resultHtml = "";
+	if(typeValue == "AI"){
+		resultHtml +=
+			"<div class='main-body' style='margin-bottom:0'>"+
+			"	<div class='user-exp'>"+
+			"		<span class='general_search_topic'>检索式  : </span>";
+		if(jsonData.searchResultDTO.pagination.totalCount != -1){
+			resultHtml +=
+			"				<div class='select_inner_text'>"+dataHandle_common(jsonData.searchCondition.showHtmltableSearchExp)+"</div>"+
+			"				<a id='generalSearch_top_btn' class='search_icon'></a>";
+		}else{
+			resultHtml +=
+			"				<span class='general_search_exp'>"+dataHandle_common(jsonData.searchCondition.searchExp)+"</span>";
+		}
+		resultHtml +=
+			"	</div>"+
+			"</div>"+
+			"<div class='main-body' style='margin-bottom:0;'>"+
+			"<div class='history-body' style='display:none;'>"+
+			"		<div class='top-area' style='margin-bottom:0;'>"+
+			"			<div class='box'>"+
+			"				<div class='box-header clear'>"+
+			"		            <h1 class='history left'>检 索 历 史</h1>"+
+			"		            <div class='search-area right' id ='common_history_historySearchExp'>"+
+			"		                <span class='SearchExpInput_add'>检索式运算</span>"+
+			"		                <input type='text' class='focus' id ='common_history_SearchExpInput' placeholder='检索式运算'/>"+
+			"		                <input type='hidden' id='common_history_SearchType' />"+
+			"		                <div href='javascript:;' class='btn btn-search' id='common_history_operation'>执行</div>"+
+			"		                <a href='javascript:;' class='btn btn-searchDec' ><img  id='common_history_dec' src='"+contextPath+"/search-ui/app/viewtools/images/unextend.png' /></a>"+
+			"		            </div>"+
+			"	        	</div>"+
+			"	        	<div id='common_search_history' class='box-content'></div>"+
+			"	        	<!-- 后续接口(预留位) -->"+
+			"	        	<div style='height:20px;background-color:#d5dbe7;'></div>"+
+			"			</div>"+
+			"		</div>"+
+			"	</div>"+
+			"</div>"+
+			"<div id='resultList'>"+
+			generateResultWithSetting(jsonData)+
+			"</div>"+
+			"<input type='hidden' id='showHhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmlSelset)+"' />"+
+			"<input type='hidden' id='HhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmltableSearchExp)+"' />"+
+			
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/result_userexp.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/viewtools/js/jquery.ie-placeholder.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/history_static.js'></script>";
+	}else if(typeValue == "DRILL"){
+		resultHtml +=
+			"<div id='resultList'>"+
+			generateResultWithSetting(jsonData)+
+			"</div>"+
+			"<input type='hidden' id='showHhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmlSelset)+"' />"+
+			"<input type='hidden' id='HhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmltableSearchExp)+"' />"+
+			"<input type='hidden' id='drillSearchFlag' value='true' />";
+	}else{
+		resultHtml +=
+			"<div class='main-body' style='margin-bottom:0'>"+
+			"	<div class='user-exp'>"+
+			"		<span class='general_search_topic'>检索项目:</span>"+
+			"		<div class='select_inner_text' id='searchInputDiv1'>"+
+			"<select name='searchType' id='searchType1'>";
+		var generalSearchItemList = jsonData.generalSearchItemList;
+		for(i in generalSearchItemList){
+			resultHtml +=
+			"	    <option value='"+generalSearchItemList[i].indexCode+"'>"+generalSearchItemList[i].indexCNName+"</option>";
+		}
+		resultHtml +=
+			"</select>"+
+			"			="+
+			"			<input type='text' name='searchInfo' id='searchInfo1'"+
+			"					style='width: 300px;font-size:16px;' class='validate[required,length[0,200]]'"+
+			"					maxlength='512' />"+
+			"		</div>"+
+			"		<a id='executeSearch1' class='search_icon'></a>"+
+			"	</div>"+
+			"</div>"+
+			"<div class='main-body' style='margin-bottom:0;'>"+
+			"<div class='history-body' style='display:none;'>"+
+			"		<div class='top-area' style='margin-bottom:0;'>"+
+			"			<div class='box'>"+
+			"				<div class='box-header clear'>"+
+			"		            <h1 class='history left'>检 索 历 史</h1>"+
+			"		            <div class='search-area right' id ='common_history_historySearchExp'>"+
+			"		                <span class='SearchExpInput_add'>检索式运算</span>"+
+			"		                <input type='text' class='focus' id ='common_history_SearchExpInput' placeholder='检索式运算'/>"+
+			"		                <input type='hidden' id='common_history_SearchType' />"+
+			"		                <div href='javascript:;' class='btn btn-search' id='common_history_operation'>执行</div>"+
+			"		                <a href='javascript:;' class='btn btn-searchDec' ><img  id='common_history_dec' src='"+contextPath+"/search-ui/app/viewtools/images/unextend.png' /></a>"+
+			"		            </div>"+
+			"	        	</div>"+
+			"	        	<div id='common_search_history' class='box-content'></div>"+
+			"	        	<!-- 后续接口(预留位) -->"+
+			"	        	<div style='height:20px;background-color:#d5dbe7;'></div>"+
+			"			</div>"+
+			"		</div>"+
+			"	</div>"+
+			"</div>"+
+			"<div id='resultList'>"+
+			generateResultWithSetting(jsonData)+
+			"</div>"+
+			"<input type='hidden' id='showHhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmlSelset)+"' />"+
+			"<input type='hidden' id='HhtmlsearchExp' value='"+dataHandle_common(jsonData.searchCondition.htmltableSearchExp)+"' />"+
+			
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/general_result_userexp.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/viewtools/js/jquery.ie-placeholder.js'></script>"+
+			"<script type='text/javascript' src='"+contextPath+"/search-ui/app/result_static/js/history_static.js'></script>";
+	}
+	
+	return resultHtml;
+}
+
+function dataHandle_common(data){
+	if(notEmptyAndNull_common(data)){
+		return data;
+	}else{
+		return "";
+	}
+}
+
+function notEmptyAndNull_common(original){
+	return original!=""&&original!="null"&&original!=undefined&&original!="undefined";
+}

@@ -1,0 +1,27 @@
+/**
+ * 添加遮罩
+ */
+function showBlock() {
+	$.blockUI({
+		message : "数据正在加载中，请稍候......", // 提示框信息
+		css : { // 提示框样式
+			textAlign : 'center',
+			padding : 2,
+			width : 260,
+			border : '2px ridge #CCCCCC',
+			left : '42%'
+		},
+		overlayCSS : { // 遮罩层样式
+			opacity : 0.3,
+			backgroundColor : '#999999'
+		},
+		baseZ : 1100
+	});
+}
+
+/**
+ * 取消遮罩
+ */
+function closeBlock() {
+	$.unblockUI();
+}

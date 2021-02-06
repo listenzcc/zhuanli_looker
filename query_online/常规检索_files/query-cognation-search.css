@@ -1,0 +1,103 @@
+@CHARSET "UTF-8";
+.cognation_query_refresh {
+	background-color: rgb(242,244,249);
+	padding:10px;
+}
+ .table-headerC{
+    height: 25px;
+    padding-bottom: 5px;
+    line-height: 25px;
+}
+.table-headerC input{
+	margin-left:22px;
+	
+}
+.table-headerC label{
+    height: 100%;
+    font-size: 16px;
+    color: rgb(51,51,51);
+    font-weight: bold;
+    margin-left:20px;
+}
+.table-wrapperC{
+	border-top: 1px solid rgb(214,220,234);
+}
+.table-contentC{
+    background-color: #fff;
+    border-left: 1px solid rgb(214,220,234);
+    border-right: 1px solid rgb(214,220,234);
+    border-bottom: 1px solid rgb(214,220,234);
+}
+.table-contentC .patent-infoC{
+    float: left;
+    width: 830px;
+    height:95px;
+    padding-top: 10px;
+    position: relative;
+    border-right: 1px solid rgb(214,220,234);
+    line-height:1;
+}
+.table-contentC .patent-infoC>input[type='checkbox']{
+    position: absolute;
+    left: 0;
+    top: 15px;
+    margin-left: 12px;
+}
+.table-contentC .patent-infoC>div{
+    margin: 0 8px 10px 0;
+}
+.table-contentC .patent-infoC>div .fieldC{
+    color: rgb(51,51,51);
+    font-size: 13px;
+    width: 120px;
+    text-align: right;
+    font-weight: bold;
+}
+.fieldC1{
+	color: rgb(51,51,51);
+    font-size: 13px;
+    width: 155px;
+    text-align: right;
+    font-weight: bold;
+}
+.table-contentC .patent-infoC>div .valueC{
+    color: rgb(98,62,72);
+    font-size: 13px;
+   
+}
+.table-contentC .patent-infoC>div .valueC.yxq{
+	 max-width: 664px;
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	min-width:270px;
+}
+.table-contentC .patent-operationC{
+    float: left;
+    padding: 10px 0 0 15px;
+    margin-top:10px;
+}
+.table-contentC .patent-operationC a{
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #fff;
+    width: 70px;
+    text-align: center;
+    background-color: rgb(66,129,194);
+    margin-right:2px;
+    padding: 4px 0 4px 0;
+}
+.cognation-center-dialog{
+	width:250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.cognation-input-dialog{
+	padding-left:15px;
+}
+#cognation_pagination_add {
+	height:40px;
+	padding-top:10px;
+}
+
